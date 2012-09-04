@@ -51,31 +51,52 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
 
 #### Instajam.liked([options], callback)
 
-  Returns a list of media recently liked by the authenticated user.
-
-  Endpoint: users/self/media/liked
+  * Returns a list of media recently liked by the authenticated user.
+  * Endpoint: users/self/media/liked
 
 #### Instajam.get(user_id, callback)
 
-  Returns basic information about a user.
-
-  Endpoint: users/[user-id]
+  * Returns basic information about a user.
+  * Endpoint: users/[user-id]
 
 #### Instajam.getRecent(user_id, [options], callback)
 
-  Returns images recently uploaded by a user.
-
-  Endpoint: users/[user-id]/media/recent
+  * Returns images recently uploaded by a user.
+  * Endpoint: users/[user-id]/media/recent
 
 #### Instajam.search(term, [options], callback)
 
-  Returns a list of user results for a given search term.
-
-  Endpoint: users/search
+  * Returns a list of user results for a given search term.
+  * Endpoint: users/search
 
 #### Instajam.lookup(username, callback)
 
-  Returns basic information for the given username.
+  * Returns basic information for the given username.
+
+#### Instajam.follows(user_id, callback)
+
+  * Returns a list of users the currently authenticated user follows.
+  * Endpoint: users/[user-id]/follows
+
+#### Instajam.following(user_id, callback)
+
+  * Returns a list of users followed by the currently authenticated user.
+  * Endpoint: users/[user-id]/followed-by
+
+#### Instajam.requests(callback)
+
+  * Returns a list of pending follow requests for the currently authenticated user.
+  * Endpoint: users/self/requested-by
+
+#### Instajam.getRelationship(user_id, callback)
+
+  * Returns information about the relationship between the currently authenticated user and the given user ID
+  * Endpoint: users/[user-id]/relationship
+
+#### Instajam.setRelationship(user_id, action, callback)
+
+  * Sets the relationship between the currently authenticated user and the provided user ID.
+  * Endpoint: users/[user-id]/relationship
 
 ### Media
 
