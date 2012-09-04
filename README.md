@@ -66,7 +66,7 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
     * _options (optional)_: A JSON object of options
       - count
       - max_like_id
-    * _callback_: A callback function.
+    * _callback(result, error)_: A callback function.
 
 #### Instajam.user.get(user_id, callback)
 
@@ -281,6 +281,31 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
 
 #### Instajam.location.search(options, callback)
 
+ * __Description__: Searches for locations.
+  * __Endpoint__: [/locations/search](http://instagram.com/developer/endpoints/locations/#get_locations_search)
+  * __Arguments__:
+    * _options_: A JSON object of options. Either "lat" and "lng", or "foursquare_v2_id" are required.
+      - lat
+      - lng
+      - distance (in meters, max is 5000)
+      - foursquare_v2_id
+    * _callback(result, error)_: A callback function.
+
 ### Geographies
 
 #### Instajam.geography.get(geography_id, options, callback)
+
+  * __Description__: Gets recent media from a user-defined geography. In order to fetch media for a geography, your app must have created it.
+  * __Endpoint__: [/geographies/[geo-id]/media/recent](http://instagram.com/developer/endpoints/geographies/#get_geographies_media_recent)
+  * __Arguments__:
+    * _geography_id_: The ID of the geography to fetch media for.
+    * _options_: A JSON object of options.
+      - count
+      - min_id
+    * _callback(result, error)_: A callback function.
+
+
+
+
+
+
