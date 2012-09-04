@@ -16,7 +16,7 @@ To use Instajam, just include it in your page. For now, Instajam also requires j
 
 ### Authentication
 
-Instajam doesn't care how you do OAuth authentication. Want to handle it server-side and just pass the access token in? Cool. Would you rather do client-side authentication and pull your access token from a cookie or localStorage? Legit, brah. Regardless of how you do it, initialize Instajam like this:
+Instajam doesn't care how you do OAuth authentication. Want to handle it server-side and just pass the access token in? Cool. Would you rather do client-side authentication and pull your access token from a cookie or localStorage? Legit, brah. Instagram has [documentation on their developer site](http://instagram.com/developer/authentication/) to help you out. Regardless of how you do it, initialize Instajam like this:
 
 ```
 <script type="text/javascript">
@@ -35,40 +35,41 @@ Keep in mind, ```client_id``` is optional if you pass in ```access_token```. How
 
 ## Endpoints
 
-The [official list of Instagram API endpoints](http://instagram.com/developer/endpoints/) has descriptions as well as sample return data, so this documentation will not go into those details. Below you will find the endpoints that Instajam provides and how to call them.
-
-Each of the code samples assumes that you have initialized a variable, INSTAJAM, as demonstrated above.
+The [official list of Instagram API endpoints](http://instagram.com/developer/endpoints/) has detailed descriptions as well as sample return data, so this documentation will not go into those details. Below you will find the endpoints that Instajam provides and how to call them.
 
 ### Users
 
-__/users/self__
+####/users/self####
+
+Returns basic information about the authenticated user.
 
 _Instajam.user.self(callback)_
 
-__/users/self/feed__
+####/users/self/feed####
 
+Returns the
 _Instajam.user.feed([options], callback)_
 
-__/users/self/media/liked__
+####/users/self/media/liked####
 
 _Instajam.liked([options], callback)_
 
-__/users/[user-id]__
+####/users/[user-id]####
 
 _Instajam.get(user_id, callback)_
 
-__/users/[user-id]/media/recent__
+####/users/[user-id]/media/recent####
 
 _Instajam.getRecent(user_id, [options], callback)_
 
-__/users/search__
+####/users/search####
 
 _Instajam.search(term, [options], callback)_
 
 ### Media
 
-__@TODO__
+####@TODO####
 
 ### Locations
 
-__@TODO__
+####@TODO####
