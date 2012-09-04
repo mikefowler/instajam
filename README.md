@@ -260,7 +260,24 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
 
 #### Instajam.location.meta(location_id, callback)
 
+  * __Description__: Requests metadata for a location.
+  * __Endpoint__: [/locations/[location-id]](http://instagram.com/developer/endpoints/locations/#get_locations)
+  * __Arguments__:
+    * _location_id_: The ID of the location to fetch metadata for.
+    * _callback(result, error)_: A callback function.
+
 #### Instajam.location.get(location_id, options, callback)
+
+  * __Description__: Gets media for a location.
+  * __Endpoint__: [/locations/[location-id]/media/recent](http://instagram.com/developer/endpoints/locations/#get_locations_media_recent)
+  * __Arguments__: 
+    * _location_id_: The ID of the location to fetch media for.
+    * _options_: A JSON object of options.
+      - max_timestamp
+      - min_timestamp
+      - min_id
+      - max_id
+    * _callback(result, error)_: A callback function.
 
 #### Instajam.location.search(options, callback)
 
