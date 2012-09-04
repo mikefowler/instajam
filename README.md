@@ -37,16 +37,14 @@ Keep in mind, ```client_id``` is optional if you pass in ```access_token```. How
 
 The [official list of Instagram API endpoints](http://instagram.com/developer/endpoints/) has detailed descriptions as well as sample return data, so this documentation will not go into those details. Below you will find the endpoints that Instajam provides and how to call them.
 
-### Users
-
-#### Instajam.user.self(callback)
+### Instajam.user.self(callback)
 
   * __callback(result, error)__: A callback function.
 
 __Description__: Returns basic information about the authenticated user.
 __Endpoint__: users/self
 
-#### Instajam.user.feed([options], callback)
+### Instajam.user.feed([options], callback)
 
   * __options__: A JSON object of options.
     * access_token
@@ -55,9 +53,7 @@ __Endpoint__: users/self
     * max_id
 
 __Description__: Returns the home feed of the authenticated user.
-__Endpoint__: users/self/feed
-
-[Instagram Documentation](http://instagram.com/developer/endpoints/users/#get_users_feed)
+__Endpoint__: [users/self/feed](http://instagram.com/developer/endpoints/users/#get_users_feed)
 
 #### Instajam.user.liked([options], callback)
 
