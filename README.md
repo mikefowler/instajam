@@ -56,7 +56,7 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
       - max_id
     * _callback(result, error)_: A callback function. 
 
-#### Instajam.user.liked([options], callback)
+#### Instajam.user.liked(options, callback)
 
   * __Description__: Returns a list of media recently liked by the authenticated user.
   * __Endpoint__: [users/self/media/liked](http://instagram.com/developer/endpoints/users/#get_users_feed_liked)
@@ -68,37 +68,65 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
 
 #### Instajam.user.get(user_id, callback)
 
-  * Returns: basic information about a user.
-  * Endpoint: users/[user-id]
+  * __Description__: Returns basic information about a user.
+  * __Endpoint__: [users/[user-id]](http://instagram.com/developer/endpoints/users/#get_users)
+  * __Arguments__:
+    * _user_id_: The user ID to fetch information for.
+    * _callback(result, error)_: A callback function.
 
-#### Instajam.user.getRecent(user_id, [options], callback)
+#### Instajam.user.getRecent(user_id, options, callback)
 
-  * Returns: images recently uploaded by a user.
-  * Endpoint: users/[user-id]/media/recent
+  * __Description__: Returns images recently uploaded by a user.
+  * __Endpoint__: [users/[user-id]/media/recent](http://instagram.com/developer/endpoints/users/#get_users_media_recent)
+  * __Arguments__:
+    * _user_id_: The user ID to fetch information for.
+    * _options_: A JSON object of options
+      - count
+      - max_timestamp
+      - min_timestamp
+      - max_id
+      - min_id
+    * _callback(result, error)_: A callback function.
 
-#### Instajam.user.search(term, [options], callback)
+#### Instajam.user.search(term, options, callback)
 
-  * Returns: a list of user results for a given search term.
-  * Endpoint: users/search
+  * __Description__: Returns a list of user results for a given search term.
+  * __Endpoint__: [users/search](http://instagram.com/developer/endpoints/users/#get_users_search)
+  * __Arguments__:
+    * _term_: The search term string
+    * _options_: A JSON object of options
+      * count
+    * _callback(result, error)_: A callback function
 
 #### Instajam.user.lookup(username, callback)
 
-  * Returns: basic information for the given username.
+  * __Description__: Returns basic information for the given username.
+  * __Arguments__:
+    * _username_: The username string to look up.
+    * _callback(result, error)_: A callback function.
 
 #### Instajam.user.follows(user_id, callback)
 
-  * Returns: a list of users the currently authenticated user follows.
-  * Endpoint: users/[user-id]/follows
+  * __Description__: Returns a list of users the currently authenticated user follows.
+  * __Endpoint__: [users/[user-id]/follows](http://instagram.com/developer/endpoints/users/#get_users_follows)
+  * __Arguments__:
+    * _user_id_: The user ID to fetch information for.
+    * _callback(result, data)_: A callback function.
 
 #### Instajam.user.following(user_id, callback)
 
-  * Returns: a list of users followed by the currently authenticated user.
-  * Endpoint: users/[user-id]/followed-by
+  * __Description__: Returns a list of users followed by the currently authenticated user.
+  * __Endpoint__: [users/[user-id]/followed-by](http://instagram.com/developer/endpoints/users/#get_users_followed_by)
+  * __Arguments__:
+    * _user_id_: The user ID to fetch information for.
+    * _callback(result, data): A callback function.
 
 #### Instajam.user.requests(callback)
 
-  * Returns: a list of pending follow requests for the currently authenticated user.
-  * Endpoint: users/self/requested-by
+  * __Description__: Returns a list of pending follow requests for the currently authenticated user.
+  * __Endpoint__: [users/self/requested-by](http://instagram.com/developer/endpoints/users/#get_incoming_requests)
+  * __Arguments__:
+    * _callback(result, data)_: A callback function.
 
 #### Instajam.user.getRelationship(user_id, callback)
 
