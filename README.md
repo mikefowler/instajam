@@ -209,6 +209,22 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
 
 #### Instajam.media.unlike(media_id, callback)
 
+### Tags
+
+#### Instajam.tag.meta(tag_name, callback)
+
+#### Instajam.tag.get(tag_name, options, callback)
+
+#### Instajam.tag.search(search_term, callback)
+
 ### Locations
 
-####@TODO####
+#### Instajam.location.meta(location_id, callback)
+
+#### Instajam.location.get(location_id, options, callback)
+
+#### Instajam.location.search(options, callback)
+
+### Geographies
+
+#### Instajam.geography.get(geography_id, options, callback)
