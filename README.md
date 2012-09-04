@@ -37,14 +37,16 @@ Keep in mind, ```client_id``` is optional if you pass in ```access_token```. How
 
 The [official list of Instagram API endpoints](http://instagram.com/developer/endpoints/) has detailed descriptions as well as sample return data, so this documentation will not go into those details. Below you will find the endpoints that Instajam provides and how to call them.
 
-### Instajam.user.self(callback)
+### Users
+
+#### Instajam.user.self(callback)
 
   * __Description__: Returns basic information about the authenticated user.
   * __Endpoint__: users/self
   * __Arguments__:
     * _callback(result, error)_: A callback function.
 
-### Instajam.user.feed([options], callback)
+#### Instajam.user.feed([options], callback)
 
   * __Description__: Returns the home feed of the authenticated user.
   * __Endpoint__: [users/self/feed](http://instagram.com/developer/endpoints/users/#get_users_feed)
@@ -108,35 +110,42 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
 #### Instajam.user.follows(user_id, callback)
 
   * __Description__: Returns a list of users the currently authenticated user follows.
-  * __Endpoint__: [users/[user-id]/follows](http://instagram.com/developer/endpoints/users/#get_users_follows)
+  * __Endpoint__: [users/[user-id]/follows](http://instagram.com/developer/endpoints/relationships/#get_users_follows)
   * __Arguments__:
     * _user_id_: The user ID to fetch information for.
-    * _callback(result, data)_: A callback function.
+    * _callback(result, error)_: A callback function.
 
 #### Instajam.user.following(user_id, callback)
 
   * __Description__: Returns a list of users followed by the currently authenticated user.
-  * __Endpoint__: [users/[user-id]/followed-by](http://instagram.com/developer/endpoints/users/#get_users_followed_by)
+  * __Endpoint__: [users/[user-id]/followed-by](http://instagram.com/developer/endpoints/relationships/#get_users_followed_by)
   * __Arguments__:
     * _user_id_: The user ID to fetch information for.
-    * _callback(result, data): A callback function.
+    * _callback(result, error): A callback function.
 
 #### Instajam.user.requests(callback)
 
   * __Description__: Returns a list of pending follow requests for the currently authenticated user.
-  * __Endpoint__: [users/self/requested-by](http://instagram.com/developer/endpoints/users/#get_incoming_requests)
+  * __Endpoint__: [users/self/requested-by](http://instagram.com/developer/endpoints/relationships/#get_incoming_requests)
   * __Arguments__:
-    * _callback(result, data)_: A callback function.
+    * _callback(result, error)_: A callback function.
 
 #### Instajam.user.getRelationship(user_id, callback)
 
-  * Returns: information about the relationship between the currently authenticated user and the given user ID
-  * Endpoint: users/[user-id]/relationship
+  * __Description__: Returns information about the relationship between the currently authenticated user and the given user ID
+  * __Endpoint__: [users/[user-id]/relationship](http://instagram.com/developer/endpoints/relationships/#get_relationship)
+  * __Arguments__:
+    * _user_id_: The user ID to fetch relationship information for.
+    * _callback(result, error)
 
 #### Instajam.user.setRelationship(user_id, action, callback)
 
-  * Sets: the relationship between the currently authenticated user and the provided user ID.
-  * Endpoint: users/[user-id]/relationship
+  * __Description__: Sets the relationship between the currently authenticated user and the provided user ID.
+  * __Endpoint__: [users/[user-id]/relationship](http://instagram.com/developer/endpoints/users/#post_relationship)
+  * __Arguments__:
+    * _user_id_: The user ID to set the relationship for.
+    * _action_: The relationship action: 'follow', 'unfollow', 'block', 'unblock', 'approve' or 'deny'
+    * _callback(result, error)_: A callback function.
 
 ### Media
 
