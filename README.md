@@ -18,7 +18,7 @@ Instajam doesn't care how you do OAuth authentication. Want to handle it server-
 
 ```
 <script type="text/javascript">
-	$(function() {
+  $(function() {
 
     var INSTAJAM = new Instajam({
       access_token: 'ACCESS TOKEN',
@@ -35,7 +35,12 @@ Keep in mind, ```client_id``` is optional if you pass in ```access_token```. How
 
 ### Users
 
+__@TODO__
+
 ### Media
+
+__@TODO__
 
 ### Locations
 
+__@TODO__
