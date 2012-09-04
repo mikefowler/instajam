@@ -1,7 +1,9 @@
 Instajam
 ========
 
-Instajam is a JavaScript wrapper for the Instagram API. You provide the access token, Instajam makes the toast.
+Instajam is a JavaScript wrapper for the Instagram API. You provide the access token, we provide the jam.
+
+(And Instagram provides the gram. Or the pictures. Or... whatever.)
 
 ## Getting Started
 
@@ -33,9 +35,23 @@ Keep in mind, ```client_id``` is optional if you pass in ```access_token```. How
 
 ## Endpoints
 
+The [official list of Instagram API endpoints](http://instagram.com/developer/endpoints/) has descriptions as well as sample return data, so this documentation will not go into those details. Below you will find the endpoints that Instajam provides and how to call them.
+
+Each of the code samples assumes that you have initialized a variable, INSTAJAM, as demonstrated above.
+
 ### Users
 
-__@TODO__
+__/users/self__ Instajam.user.self(callback)
+
+__/users/self/feed__ Instajam.user.feed([options], callback)
+
+__/users/self/media/liked__ Instajam.liked([options], callback)
+
+__/users/[user-id]__ Instajam.get(user_id, callback)
+
+__/users/[user-id]/media/recent__ Instajam.getRecent(user_id, [options], callback)
+
+__/users/search__ Instajam.search(term, [options], callback)
 
 ### Media
 
