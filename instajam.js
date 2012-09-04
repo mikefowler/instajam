@@ -154,7 +154,7 @@
        * @param  {Object}   options  A JSON array of options. Accepts: 'count', 'max_timestamp', 'min_timestamp', 'min_id' and 'max_id'
        * @param  {Function} callback A callback function.
        */
-      get_recent: function(user_id, options, callback) {
+      getRecent: function(user_id, options, callback) {
 
         if(typeof options === "function") {
           callback = options;
@@ -198,7 +198,7 @@
        */
       lookup: function(username, callback) {
         this.search(username, null, function(result, error) {
-          if(result) callback(result.data[0]);
+          xcallback(result.data[0], error);
         });
       },
 
