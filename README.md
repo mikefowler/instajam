@@ -41,66 +41,98 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
 
 #### Instajam.user.self(callback)
 
-  * Returns basic information about the authenticated user.
-  * Endpoint: users/self
+  * __callback(result, error)__: A callback function.
+
+__Description__: Returns basic information about the authenticated user.
+__Endpoint__: users/self
 
 #### Instajam.user.feed([options], callback)
 
-  * Returns the home feed of the authenticated user.
-  * Endpoint: /users/self/feed
+  * __options__: A JSON object of options.
+    * access_token
+    * count
+    * min_id
+    * max_id
 
-#### Instajam.liked([options], callback)
+__Description__: Returns the home feed of the authenticated user.
+__Endpoint__: users/self/feed
 
-  * Returns a list of media recently liked by the authenticated user.
+[Instagram Documentation](http://instagram.com/developer/endpoints/users/#get_users_feed)
+
+#### Instajam.user.liked([options], callback)
+
+  * Returns: a list of media recently liked by the authenticated user.
   * Endpoint: users/self/media/liked
 
-#### Instajam.get(user_id, callback)
+#### Instajam.user.get(user_id, callback)
 
-  * Returns basic information about a user.
+  * Returns: basic information about a user.
   * Endpoint: users/[user-id]
 
-#### Instajam.getRecent(user_id, [options], callback)
+#### Instajam.user.getRecent(user_id, [options], callback)
 
-  * Returns images recently uploaded by a user.
+  * Returns: images recently uploaded by a user.
   * Endpoint: users/[user-id]/media/recent
 
-#### Instajam.search(term, [options], callback)
+#### Instajam.user.search(term, [options], callback)
 
-  * Returns a list of user results for a given search term.
+  * Returns: a list of user results for a given search term.
   * Endpoint: users/search
 
-#### Instajam.lookup(username, callback)
+#### Instajam.user.lookup(username, callback)
 
-  * Returns basic information for the given username.
+  * Returns: basic information for the given username.
 
-#### Instajam.follows(user_id, callback)
+#### Instajam.user.follows(user_id, callback)
 
-  * Returns a list of users the currently authenticated user follows.
+  * Returns: a list of users the currently authenticated user follows.
   * Endpoint: users/[user-id]/follows
 
-#### Instajam.following(user_id, callback)
+#### Instajam.user.following(user_id, callback)
 
-  * Returns a list of users followed by the currently authenticated user.
+  * Returns: a list of users followed by the currently authenticated user.
   * Endpoint: users/[user-id]/followed-by
 
-#### Instajam.requests(callback)
+#### Instajam.user.requests(callback)
 
-  * Returns a list of pending follow requests for the currently authenticated user.
+  * Returns: a list of pending follow requests for the currently authenticated user.
   * Endpoint: users/self/requested-by
 
-#### Instajam.getRelationship(user_id, callback)
+#### Instajam.user.getRelationship(user_id, callback)
 
-  * Returns information about the relationship between the currently authenticated user and the given user ID
+  * Returns: information about the relationship between the currently authenticated user and the given user ID
   * Endpoint: users/[user-id]/relationship
 
-#### Instajam.setRelationship(user_id, action, callback)
+#### Instajam.user.setRelationship(user_id, action, callback)
 
-  * Sets the relationship between the currently authenticated user and the provided user ID.
+  * Sets: the relationship between the currently authenticated user and the provided user ID.
   * Endpoint: users/[user-id]/relationship
 
 ### Media
 
-####@TODO####
+#### Instajam.media.get(media_id, callback)
+
+  * Returns: information for a given media ID
+  * Endpoint: media/[media-id]
+
+#### Instajam.media.search(options, callback)
+
+  * Returns: media matching the provided search parameters.
+  * Endpoint: media/search
+
+#### Instajam.media.popular(callback)
+
+  * Returns: media that is currently popular on Instagram
+  * Endpoint: media/popular
+
+#### Instajam.media.comments(media_id, callback)
+
+  * Returns: a list of comments for a given media ID
+  * Endpoing: media/[media-id]/comments
+
+#### Instajam.media.addComment(media_id, comment, callback)
+
+  * Sets: a new comment for the given media ID
 
 ### Locations
 
