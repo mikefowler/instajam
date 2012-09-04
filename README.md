@@ -147,7 +147,7 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
     * _action_: The relationship action: 'follow', 'unfollow', 'block', 'unblock', 'approve' or 'deny'
     * _callback(result, error)_: A callback function.
 
-### Media
+### Media, Likes and Comments
 
 #### Instajam.media.get(media_id, callback)
 
