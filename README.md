@@ -47,7 +47,7 @@ _Instajam.user.self(callback)_
 
 __/users/self/feed__
 
-_ Instajam.user.feed([options], callback)_
+_Instajam.user.feed([options], callback)_
 
 __/users/self/media/liked__
 
