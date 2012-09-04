@@ -179,7 +179,7 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
 
 #### Instajam.media.comments(media_id, callback)
 
-  * __Description__: Returns a list of comments for a given media ID.
+  * __Description__: Returns a list of comments for a piece of media.
   * __Endpoint__: [media/[media-id]/comments](http://instagram.com/developer/endpoints/comments/#get_media_comments)
   * __Arguments__:
     * _media_id_: The ID of the media to fetch comments for.
@@ -187,10 +187,27 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
 
 #### Instajam.media.addComment(media_id, comment, callback)
 
-  * __Description__: Adds a new comment to the given media ID.
+  * __Description__: Adds a comment to a piece of media.
   * __Endpoint__: [media/[media-id]/comments](http://instagram.com/developer/endpoints/comments/#post_media_comments)
   * __Arguments__:
-  
+    * _media_id_: The ID of the media to add a comment to.
+    * _comment_: The text content of the comment to add.
+    * _callback(result, error)_: A callback function.
+    
+#### Instajam.media.removeComment(media_id, comment_id, callback)
+
+  * __Description__: Removes a comment from a piece of media.
+  * __Endpoint__: [media/[media-id]/comments](http://instagram.com/developer/endpoints/media/#delete_media_comments)
+  * __Arguments__:
+    * _media_id_: The ID of the media to remove a comment from.
+    * _comment_id_: The ID of the comment to remove from the media.
+    * _callback(result, error)_: A callback function.
+
+#### Instajam.media.likes(media_id, callback)
+
+#### Instajam.media.like(media_id, callback)
+
+#### Instajam.media.unlike(media_id, callback)
 
 ### Locations
 
