@@ -41,15 +41,13 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
 
 #### Instajam.user.self(callback)
 
-  Returns basic information about the authenticated user.
-
-  Endpoint: users/self
+  * Returns basic information about the authenticated user.
+  * Endpoint: users/self
 
 #### Instajam.user.feed([options], callback)
 
-  Returns the home feed of the authenticated user.
-
-  Endpoint: /users/self/feed
+  * Returns the home feed of the authenticated user.
+  * Endpoint: /users/self/feed
 
 #### Instajam.liked([options], callback)
 
