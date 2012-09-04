@@ -39,32 +39,45 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
 
 ### Users
 
-####/users/self####
+#### Instajam.user.self(callback)
 
-Returns basic information about the authenticated user.
+  Returns basic information about the authenticated user.
 
-_Instajam.user.self(callback)_
+  Endpoint: users/self
 
-####/users/self/feed####
+#### Instajam.user.feed([options], callback)
 
-Returns the
-_Instajam.user.feed([options], callback)_
+  Returns the home feed of the authenticated user.
 
-####/users/self/media/liked####
+  Endpoint: /users/self/feed
 
-_Instajam.liked([options], callback)_
+#### Instajam.liked([options], callback)
 
-####/users/[user-id]####
+  Returns a list of media recently liked by the authenticated user.
 
-_Instajam.get(user_id, callback)_
+  Endpoint: users/self/media/liked
 
-####/users/[user-id]/media/recent####
+#### Instajam.get(user_id, callback)
 
-_Instajam.getRecent(user_id, [options], callback)_
+  Returns basic information about a user.
 
-####/users/search####
+  Endpoint: users/[user-id]
 
-_Instajam.search(term, [options], callback)_
+#### Instajam.getRecent(user_id, [options], callback)
+
+  Returns images recently uploaded by a user.
+
+  Endpoint: users/[user-id]/media/recent
+
+#### Instajam.search(term, [options], callback)
+
+  Returns a list of user results for a given search term.
+
+  Endpoint: users/search
+
+#### Instajam.lookup(username, callback)
+
+  Returns basic information for the given username.
 
 ### Media
 
