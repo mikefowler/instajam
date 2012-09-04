@@ -37,7 +37,7 @@ Keep in mind, ```client_id``` is optional if you pass in ```access_token```. How
 
 The [official list of Instagram API endpoints](http://instagram.com/developer/endpoints/) has detailed descriptions as well as sample return data, so this documentation will not go into those details. Below you will find the endpoints that Instajam provides and how to call them.
 
-### Users
+### Users and Relationships
 
 #### Instajam.user.self(callback)
 
@@ -46,7 +46,7 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
   * __Arguments__:
     * _callback(result, error)_: A callback function.
 
-#### Instajam.user.feed([options], callback)
+#### Instajam.user.feed(options, callback)
 
   * __Description__: Returns the home feed of the authenticated user.
   * __Endpoint__: [users/self/feed](http://instagram.com/developer/endpoints/users/#get_users_feed)
@@ -141,7 +141,7 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
 #### Instajam.user.setRelationship(user_id, action, callback)
 
   * __Description__: Sets the relationship between the currently authenticated user and the provided user ID.
-  * __Endpoint__: [users/[user-id]/relationship](http://instagram.com/developer/endpoints/users/#post_relationship)
+  * __Endpoint__: [users/[user-id]/relationship](http://instagram.com/developer/endpoints/relationships/#post_relationship)
   * __Arguments__:
     * _user_id_: The user ID to set the relationship for.
     * _action_: The relationship action: 'follow', 'unfollow', 'block', 'unblock', 'approve' or 'deny'
@@ -151,27 +151,46 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
 
 #### Instajam.media.get(media_id, callback)
 
-  * Returns: information for a given media ID
-  * Endpoint: media/[media-id]
+  * __Description__: Returns information for a given media ID
+  * __Endpoint__: [media/[media-id]](http://instagram.com/developer/endpoints/media/#get_media)
+  * __Arguments__:
+    * _media_id_: The ID of the media to fetch information for.
+    * __callback(result, error)__: A callback function.
 
 #### Instajam.media.search(options, callback)
 
-  * Returns: media matching the provided search parameters.
-  * Endpoint: media/search
+  * __Description__: Returns media matching the provided search parameters.
+  * __Endpoint__: [media/search](http://instagram.com/developer/endpoints/media/#get_media_search)
+  * __Arguments__:
+    * _options_: A JSON object of options.
+      - lat (required)
+      - lng (required)
+      - min_timestamp
+      - max_timestamp
+      - distance (in meters. max is 5000)
+    * _callback(result, error)_: A callback function.
 
 #### Instajam.media.popular(callback)
 
-  * Returns: media that is currently popular on Instagram
-  * Endpoint: media/popular
+  * __Description__: Returns media that is currently popular on Instagram.
+  * __Endpoint__: [media/popular](http://instagram.com/developer/endpoints/media/#get_media_popular)
+  * __Arguments__:
+    * _callback(result, error)_: A callback function.
 
 #### Instajam.media.comments(media_id, callback)
 
-  * Returns: a list of comments for a given media ID
-  * Endpoing: media/[media-id]/comments
+  * __Description__: Returns a list of comments for a given media ID.
+  * __Endpoint__: [media/[media-id]/comments](http://instagram.com/developer/endpoints/comments/#get_media_comments)
+  * __Arguments__:
+    * _media_id_: The ID of the media to fetch comments for.
+    * _callback(result, error)_: A callback function.
 
 #### Instajam.media.addComment(media_id, comment, callback)
 
-  * Sets: a new comment for the given media ID
+  * __Description__: Adds a new comment to the given media ID.
+  * __Endpoint__: [media/[media-id]/comments](http://instagram.com/developer/endpoints/comments/#post_media_comments)
+  * __Arguments__:
+  
 
 ### Locations
 
