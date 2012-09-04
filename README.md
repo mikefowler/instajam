@@ -41,17 +41,29 @@ Each of the code samples assumes that you have initialized a variable, INSTAJAM,
 
 ### Users
 
-__/users/self__ Instajam.user.self(callback)
+__/users/self__
 
-__/users/self/feed__ Instajam.user.feed([options], callback)
+_Instajam.user.self(callback)_
 
-__/users/self/media/liked__ Instajam.liked([options], callback)
+__/users/self/feed__
 
-__/users/[user-id]__ Instajam.get(user_id, callback)
+_ Instajam.user.feed([options], callback)_
 
-__/users/[user-id]/media/recent__ Instajam.getRecent(user_id, [options], callback)
+__/users/self/media/liked__
 
-__/users/search__ Instajam.search(term, [options], callback)
+_Instajam.liked([options], callback)_
+
+__/users/[user-id]__
+
+_Instajam.get(user_id, callback)_
+
+__/users/[user-id]/media/recent__
+
+_Instajam.getRecent(user_id, [options], callback)_
+
+__/users/search__
+
+_Instajam.search(term, [options], callback)_
 
 ### Media
 
