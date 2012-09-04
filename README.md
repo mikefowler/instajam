@@ -205,17 +205,56 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
 
 #### Instajam.media.likes(media_id, callback)
 
+  * __Description__: Retrieves 'likes' for a piece of media.
+  * __Endpoint__: [/media/[media-id]/likes](http://instagram.com/developer/endpoints/media/#get_media_likes)
+  * __Arguments__:
+    * _media_id_: The ID of the media to retrieve 'likes' for.
+    * _callback(result, error)_: A callback function.
+
 #### Instajam.media.like(media_id, callback)
 
+  * __Description__: Set a 'like' from a piece of media by the currently authenticated user.
+  * __Endpoint__: [/media/[media-id]/likes](http://instagram.com/developer/endpoints/media/#post_likes)
+  * __Arguments__:
+    * _media_id_: The ID of the media to set a like for.
+    * _callback(result, error)_: A callback function.
+
 #### Instajam.media.unlike(media_id, callback)
+
+  * __Description__: Removes a 'like' from a piece of media by the currently authenticated user.
+  * __Endpoint__: [/media/[media-id]/likes](http://instagram.com/developer/endpoints/media/#delete_likes)
+  * __Arguments__:
+    * _media_id_: The ID of the media to remove a like for.
+    * _callback(result, error)_: A callback function.
 
 ### Tags
 
 #### Instajam.tag.meta(tag_name, callback)
 
+  * __Description__: Requests metadata for a tag name.
+  * __Endpoint__: [/tags/[tag-name]](http://instagram.com/developer/endpoints/tags/#get_tags)
+  * __Arguments__:
+    * _tag_name_: The name of the tag to fetch metadata for.
+    * _callback(result, error)_: A callback function.
+
 #### Instajam.tag.get(tag_name, options, callback)
 
+  * __Description__: Gets media for a tag name.
+  * __Endpoint__: [/tags/[tag-name]/media/recent](http://instagram.com/developer/endpoints/tags/#get_tags_media_recent)
+  * __Arguments__: 
+    * _tag_name_: The name of the tag to fetch media for.
+    * _options_: A JSON object of options.
+      - min_id
+      - max_id
+    * _callback(result, error)_: A callback function.
+
 #### Instajam.tag.search(search_term, callback)
+
+  * __Description__: Searches for a tag name.
+  * __Endpoint__: [/tags/search](http://instagram.com/developer/endpoints/tags/#get_tags_search)
+  * __Arguments__:
+    * _search_term_: The tag name to search for.
+    * _callback(result, error)_: A callback function.
 
 ### Locations
 
