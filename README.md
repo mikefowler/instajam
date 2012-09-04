@@ -39,32 +39,32 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
 
 ### Instajam.user.self(callback)
 
-__Description__: Returns basic information about the authenticated user.
-
-__Endpoint__: users/self
-
-__Arguments__:
-
-  * __callback(result, error)__: A callback function.
+  * __Description__: Returns basic information about the authenticated user.
+  * __Endpoint__: users/self
+  * __Arguments__:
+    * _callback(result, error)_: A callback function.
 
 ### Instajam.user.feed([options], callback)
 
-__Description__: Returns the home feed of the authenticated user.
-
-__Endpoint__: [users/self/feed](http://instagram.com/developer/endpoints/users/#get_users_feed)
-
-__Arguments__:
-
-  * __options__: A JSON object of options.
-    * access_token
-    * count
-    * min_id
-    * max_id
+  * __Description__: Returns the home feed of the authenticated user.
+  * __Endpoint__: [users/self/feed](http://instagram.com/developer/endpoints/users/#get_users_feed)
+  * __Arguments__:
+    * _options_: A JSON object of options.
+      - access_token
+      - count
+      - min_id
+      - max_id
+    * _callback(result, error)_: A callback function. 
 
 #### Instajam.user.liked([options], callback)
 
-  * Returns: a list of media recently liked by the authenticated user.
-  * Endpoint: users/self/media/liked
+  * __Description__: Returns a list of media recently liked by the authenticated user.
+  * __Endpoint__: [users/self/media/liked](http://instagram.com/developer/endpoints/users/#get_users_feed_liked)
+  * __Arguments__:
+    * _options (optional)_: A JSON object of options
+      - count
+      - max_like_id
+    * _callback_: A callback function.
 
 #### Instajam.user.get(user_id, callback)
 
