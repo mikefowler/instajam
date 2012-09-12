@@ -5,6 +5,10 @@ Instajam is a JavaScript wrapper for the Instagram API. You provide the access t
 
 (And Instagram provides the gram. Or the pictures. Or... whatever.)
 
+## Version History
+
+  * 2012/9/10 - Version 1.0, initial release. Supports all GET endpoints (does NOT include adding/removing comments or likes, or setting relationships)
+
 ## Getting Started
 
 To use Instajam, just include it in your page. For now, Instajam also requires jQuery to facilitate JSONP requests.
@@ -44,7 +48,7 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
   * __Description__: Returns basic information about the authenticated user.
   * __Endpoint__: users/self
   * __Arguments__:
-    * _callback(result, error)_: A callback function.
+    * _callback(result)_: A callback function.
 
 #### Instajam.user.feed(options, callback)
 
@@ -56,7 +60,7 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
       - count
       - min_id
       - max_id
-    * _callback(result, error)_: A callback function. 
+    * _callback(result)_: A callback function.
 
 #### Instajam.user.liked(options, callback)
 
@@ -66,7 +70,7 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
     * _options (optional)_: A JSON object of options
       - count
       - max_like_id
-    * _callback(result, error)_: A callback function.
+    * _callback(result)_: A callback function.
 
 #### Instajam.user.get(user_id, callback)
 
@@ -74,7 +78,7 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
   * __Endpoint__: [users/[user-id]](http://instagram.com/developer/endpoints/users/#get_users)
   * __Arguments__:
     * _user_id_: The user ID to fetch information for.
-    * _callback(result, error)_: A callback function.
+    * _callback(result)_: A callback function.
 
 #### Instajam.user.getRecent(user_id, options, callback)
 
@@ -88,7 +92,7 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
       - min_timestamp
       - max_id
       - min_id
-    * _callback(result, error)_: A callback function.
+    * _callback(result)_: A callback function.
 
 #### Instajam.user.search(term, options, callback)
 
@@ -98,14 +102,14 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
     * _term_: The search term string
     * _options_: A JSON object of options
       * count
-    * _callback(result, error)_: A callback function
+    * _callback(result)_: A callback function
 
 #### Instajam.user.lookup(username, callback)
 
   * __Description__: Returns basic information for the given username.
   * __Arguments__:
     * _username_: The username string to look up.
-    * _callback(result, error)_: A callback function.
+    * _callback(result)_: A callback function.
 
 #### Instajam.user.follows(user_id, callback)
 
@@ -113,7 +117,7 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
   * __Endpoint__: [users/[user-id]/follows](http://instagram.com/developer/endpoints/relationships/#get_users_follows)
   * __Arguments__:
     * _user_id_: The user ID to fetch information for.
-    * _callback(result, error)_: A callback function.
+    * _callback(result)_: A callback function.
 
 #### Instajam.user.following(user_id, callback)
 
@@ -121,14 +125,14 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
   * __Endpoint__: [users/[user-id]/followed-by](http://instagram.com/developer/endpoints/relationships/#get_users_followed_by)
   * __Arguments__:
     * _user_id_: The user ID to fetch information for.
-    * _callback(result, error): A callback function.
+    * _callback(result): A callback function.
 
 #### Instajam.user.requests(callback)
 
   * __Description__: Returns a list of pending follow requests for the currently authenticated user.
   * __Endpoint__: [users/self/requested-by](http://instagram.com/developer/endpoints/relationships/#get_incoming_requests)
   * __Arguments__:
-    * _callback(result, error)_: A callback function.
+    * _callback(result)_: A callback function.
 
 #### Instajam.user.getRelationship(user_id, callback)
 
@@ -136,7 +140,7 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
   * __Endpoint__: [users/[user-id]/relationship](http://instagram.com/developer/endpoints/relationships/#get_relationship)
   * __Arguments__:
     * _user_id_: The user ID to fetch relationship information for.
-    * _callback(result, error)
+    * _callback(result)
 
 #### Instajam.user.setRelationship(user_id, action, callback)
 
@@ -145,7 +149,7 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
   * __Arguments__:
     * _user_id_: The user ID to set the relationship for.
     * _action_: The relationship action: 'follow', 'unfollow', 'block', 'unblock', 'approve' or 'deny'
-    * _callback(result, error)_: A callback function.
+    * _callback(result)_: A callback function.
 
 ### Media, Likes and Comments
 
@@ -155,7 +159,7 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
   * __Endpoint__: [media/[media-id]](http://instagram.com/developer/endpoints/media/#get_media)
   * __Arguments__:
     * _media_id_: The ID of the media to fetch information for.
-    * __callback(result, error)__: A callback function.
+    * __callback(result)__: A callback function.
 
 #### Instajam.media.search(options, callback)
 
@@ -168,14 +172,14 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
       - min_timestamp
       - max_timestamp
       - distance (in meters. max is 5000)
-    * _callback(result, error)_: A callback function.
+    * _callback(result)_: A callback function.
 
 #### Instajam.media.popular(callback)
 
   * __Description__: Returns media that is currently popular on Instagram.
   * __Endpoint__: [media/popular](http://instagram.com/developer/endpoints/media/#get_media_popular)
   * __Arguments__:
-    * _callback(result, error)_: A callback function.
+    * _callback(result)_: A callback function.
 
 #### Instajam.media.comments(media_id, callback)
 
@@ -183,7 +187,7 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
   * __Endpoint__: [media/[media-id]/comments](http://instagram.com/developer/endpoints/comments/#get_media_comments)
   * __Arguments__:
     * _media_id_: The ID of the media to fetch comments for.
-    * _callback(result, error)_: A callback function.
+    * _callback(result)_: A callback function.
 
 #### Instajam.media.addComment(media_id, comment, callback)
 
@@ -192,8 +196,8 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
   * __Arguments__:
     * _media_id_: The ID of the media to add a comment to.
     * _comment_: The text content of the comment to add.
-    * _callback(result, error)_: A callback function.
-    
+    * _callback(result)_: A callback function.
+
 #### Instajam.media.removeComment(media_id, comment_id, callback)
 
   * __Description__: Removes a comment from a piece of media.
@@ -201,7 +205,7 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
   * __Arguments__:
     * _media_id_: The ID of the media to remove a comment from.
     * _comment_id_: The ID of the comment to remove from the media.
-    * _callback(result, error)_: A callback function.
+    * _callback(result)_: A callback function.
 
 #### Instajam.media.likes(media_id, callback)
 
@@ -209,7 +213,7 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
   * __Endpoint__: [/media/[media-id]/likes](http://instagram.com/developer/endpoints/media/#get_media_likes)
   * __Arguments__:
     * _media_id_: The ID of the media to retrieve 'likes' for.
-    * _callback(result, error)_: A callback function.
+    * _callback(result)_: A callback function.
 
 #### Instajam.media.like(media_id, callback)
 
@@ -217,7 +221,7 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
   * __Endpoint__: [/media/[media-id]/likes](http://instagram.com/developer/endpoints/media/#post_likes)
   * __Arguments__:
     * _media_id_: The ID of the media to set a like for.
-    * _callback(result, error)_: A callback function.
+    * _callback(result)_: A callback function.
 
 #### Instajam.media.unlike(media_id, callback)
 
@@ -225,7 +229,7 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
   * __Endpoint__: [/media/[media-id]/likes](http://instagram.com/developer/endpoints/media/#delete_likes)
   * __Arguments__:
     * _media_id_: The ID of the media to remove a like for.
-    * _callback(result, error)_: A callback function.
+    * _callback(result)_: A callback function.
 
 ### Tags
 
@@ -235,18 +239,18 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
   * __Endpoint__: [/tags/[tag-name]](http://instagram.com/developer/endpoints/tags/#get_tags)
   * __Arguments__:
     * _tag_name_: The name of the tag to fetch metadata for.
-    * _callback(result, error)_: A callback function.
+    * _callback(result)_: A callback function.
 
 #### Instajam.tag.get(tag_name, options, callback)
 
   * __Description__: Gets media for a tag name.
   * __Endpoint__: [/tags/[tag-name]/media/recent](http://instagram.com/developer/endpoints/tags/#get_tags_media_recent)
-  * __Arguments__: 
+  * __Arguments__:
     * _tag_name_: The name of the tag to fetch media for.
     * _options_: A JSON object of options.
       - min_id
       - max_id
-    * _callback(result, error)_: A callback function.
+    * _callback(result)_: A callback function.
 
 #### Instajam.tag.search(search_term, callback)
 
@@ -254,7 +258,7 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
   * __Endpoint__: [/tags/search](http://instagram.com/developer/endpoints/tags/#get_tags_search)
   * __Arguments__:
     * _search_term_: The tag name to search for.
-    * _callback(result, error)_: A callback function.
+    * _callback(result)_: A callback function.
 
 ### Locations
 
@@ -264,20 +268,20 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
   * __Endpoint__: [/locations/[location-id]](http://instagram.com/developer/endpoints/locations/#get_locations)
   * __Arguments__:
     * _location_id_: The ID of the location to fetch metadata for.
-    * _callback(result, error)_: A callback function.
+    * _callback(result)_: A callback function.
 
 #### Instajam.location.get(location_id, options, callback)
 
   * __Description__: Gets media for a location.
   * __Endpoint__: [/locations/[location-id]/media/recent](http://instagram.com/developer/endpoints/locations/#get_locations_media_recent)
-  * __Arguments__: 
+  * __Arguments__:
     * _location_id_: The ID of the location to fetch media for.
     * _options_: A JSON object of options.
       - max_timestamp
       - min_timestamp
       - min_id
       - max_id
-    * _callback(result, error)_: A callback function.
+    * _callback(result)_: A callback function.
 
 #### Instajam.location.search(options, callback)
 
@@ -289,7 +293,7 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
       - lng
       - distance (in meters, max is 5000)
       - foursquare_v2_id
-    * _callback(result, error)_: A callback function.
+    * _callback(result)_: A callback function.
 
 ### Geographies
 
@@ -302,9 +306,16 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
     * _options_: A JSON object of options.
       - count
       - min_id
-    * _callback(result, error)_: A callback function.
+    * _callback(result)_: A callback function.
 
+## Helper Functions
 
+#### Instajam.nextPage(pagination_url, callback)
+
+  * __Description__: For some requests, Instagram will return a data.pagination key with a URL for the next page of results. This function facilitates making that request.
+  * __Arguments__:
+    * _pagination_url_: The URL of the next page of results to fetch.
+    * _callback(result)_: A callback function.
 
 
 

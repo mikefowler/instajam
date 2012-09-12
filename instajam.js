@@ -21,7 +21,7 @@
      * @param  {Object}   data     JSON object of options
      * @param  {Function} callback A callback function.
      */
-    function _request(method, path, data, callback, chain) {
+    function _request(method, path, data, callback) {
 
       var request;
 
@@ -32,14 +32,19 @@
       data = data || {};
 
       // Send the client ID and access token if they are set.
-      if(options.auth == "oauth" && options.access_token) {
+      if(options.access_token) {
         data.access_token = options.access_token;
       }
       if(options.client_id) {
         data.client_id = options.client_id;
       }
 
-      // Handle PUT and DELETE methods.
+      // Return an error if there isn't an access token or client ID
+      if(!data.client_id && !data.access_token) {
+        return callback(new Error('Instajam requires either an access token or a client ID.'));
+      }
+
+      // Handle all CRUD methods.
       switch(method) {
         case "PUT":
           data._method = "PUT";
@@ -59,26 +64,19 @@
         data: data
       });
 
-      // If the request is part of a chain, return the request object...
-      if(chain && typeof chain === "boolean") {
-        return request;
-      }
-      // ... and otherwise just run the callbacks...
-      else {
+      // Run the callbacks when the deferred
+      // responses come back...
+      request.done(function(data) {
+        if(data.meta.code == 400) {
+          return callback(new Error('Endpoint "' + path + '": ' + data.meta.error_message));
+        } else {
+          return callback(data);
+        }
+      });
 
-        request.done(function(data) {
-          if(data.meta.code == 400) {
-            throw new Error('Endpoint "' + path + '": ' + data.meta.error_message);
-          } else {
-            callback(data, null);
-          }
-        });
-
-        request.fail(function(request, status) {
-          callback(null, { code: request.status });
-        });
-
-      }
+      request.fail(function(request, status) {
+        return callback(new Error('The request failed with status "' + request.status + '"'));
+      });
 
     }
 
@@ -93,8 +91,8 @@
        * @param  {Function} callback A callback function.
        */
       self: function(callback) {
-        _request("GET", "/users/self", null, function(result, error) {
-          callback(result, error);
+        _request("GET", "/users/self", null, function(result) {
+          if(typeof callback === "function") callback(result);
         });
       },
 
@@ -112,8 +110,8 @@
           options = options || {};
         }
 
-        _request("GET", "/users/self/feed", options, function(result, error) {
-          callback(result, error);
+        _request("GET", "/users/self/feed", options, function(result) {
+          if(typeof callback === "function") callback(result);
         });
       },
 
@@ -132,8 +130,8 @@
           options = options || {};
         }
 
-        _request("GET", "/users/self/media/liked", options, function(result, error) {
-          callback(result, error);
+        _request("GET", "/users/self/media/liked", options, function(result) {
+          if(typeof callback === "function") callback(result);
         });
       },
 
@@ -143,8 +141,8 @@
        * @param  {Function} callback A callback function.
        */
       get: function(user_id, callback) {
-        _request("GET", "/users/" + user_id, null, function(result, error) {
-          callback(result, error);
+        _request("GET", "/users/" + user_id, null, function(result) {
+          if(typeof callback === "function") callback(result);
         });
       },
 
@@ -163,8 +161,8 @@
           options = options || {};
         }
 
-        _request("GET", "/users/" + user_id + "/media/recent", options, function(result, error) {
-          callback(result, error);
+        _request("GET", "/users/" + user_id + "/media/recent", options, function(result) {
+          if(typeof callback === "function") callback(result);
         });
       },
 
@@ -178,15 +176,15 @@
 
         if(typeof options === "function") {
           callback = options;
-          options = null;
+          options = {};
         } else {
           options = options || {};
         }
 
         options.q = term;
 
-        _request("GET", "/users/search", options, function(result, error) {
-          callback(result, error);
+        _request("GET", "/users/search", options, function(result) {
+          if(typeof callback === "function") callback(result);
         });
       },
 
@@ -197,8 +195,9 @@
        * @return {[type]}            [description]
        */
       lookup: function(username, callback) {
-        this.search(username, null, function(result, error) {
-          xcallback(result.data[0], error);
+        this.search(username, null, function(result) {
+          if(result.data && result.data.length == 1) result = result.data[0];
+          if(typeof callback === "function") callback(result);
         });
       },
 
@@ -208,8 +207,8 @@
        * @param  {Function} callback A callback function.
        */
       follows: function(user_id, callback) {
-        _request("GET", "/users/" + user_id + "/follows", null, function(result, error) {
-          callback(result, error);
+        _request("GET", "/users/" + user_id + "/follows", null, function(result) {
+          if(typeof callback === "function") callback(result);
         });
       },
 
@@ -219,8 +218,8 @@
        * @param  {Function} callback A callback function.
        */
       following: function(user_id, callback) {
-        _request("GET", "/users/" + user_id + "/followed-by", null, function(result, error) {
-          callback(result, error);
+        _request("GET", "/users/" + user_id + "/followed-by", null, function(result) {
+          if(typeof callback === "function") callback(result);
         });
       },
 
@@ -229,8 +228,8 @@
        * @param  {Function} callback A callback function.
        */
       requests: function(callback) {
-        _request("GET", "/users/self/requested-by", null, function(result, error) {
-          callback(result, error);
+        _request("GET", "/users/self/requested-by", null, function(result) {
+          if(typeof callback === "function") callback(result);
         });
       },
 
@@ -240,28 +239,9 @@
        * @param  {Function} callback A callback function.
        */
       getRelationship: function(user_id, callback) {
-        _request("GET", "/users/" + user_id + "/relationship", null, function(result, error) {
-          callback(result, error);
+        _request("GET", "/users/" + user_id + "/relationship", null, function(result) {
+          if(typeof callback === "function") callback(result);
         });
-      },
-
-      /**
-       * Sets the relationship of the current user to a given user ID
-       * @param {Integer}   user_id  The user ID to set the relationship for.
-       * @param {String}   action   The relationship action to set. Accepts: 'follow', 'unfollow', 'block', 'unblock', 'approve' and 'deny'.
-       * @param {Function} callback [description]
-       */
-      setRelationship: function(user_id, action, callback) {
-        options = options || {};
-        options.action = action;
-
-        if(user_id && action) {
-          _request("POST", "/users/" + user_id + "/relationship", options, function(result, error) {
-            if(typeof callback === "function") callback(result, error);
-          });
-        } else {
-          throw new Error('Endpoint "/users/[user_id]/relationship": user_id and action are required.');
-        }
       }
 
     };
@@ -278,8 +258,8 @@
        * @param  {Function} callback A callback function.
        */
       get: function(media_id, callback) {
-        _request("GET", "/media/" + media_id, null, function(result, error) {
-          callback(result, error);
+        _request("GET", "/media/" + media_id, null, function(result) {
+          if(typeof callback === "function") callback(result);
         });
       },
 
@@ -298,8 +278,8 @@
         }
 
         if(options.lat && options.lng) {
-          _request("GET", "/media/search", options, function(result, error) {
-            callback(result, error);
+          _request("GET", "/media/search", options, function(result) {
+            if(typeof callback === "function") callback(result);
           });
         } else {
           throw new Error('Endpoint "/media/search": "lat" and "lng" options are required.');
@@ -311,8 +291,8 @@
        * @param  {Function} callback A callback function.
        */
       popular: function(callback) {
-        _request("GET", "/media/popular", null, function(result, error) {
-          callback(result, error);
+        _request("GET", "/media/popular", null, function(result) {
+          if(typeof callback === "function") callback(result);
         });
       },
 
@@ -322,35 +302,8 @@
        * @param  {Function} callback A callback function.
        */
       comments: function(media_id, callback) {
-        _request("GET", "/media/" + media_id + "/comments", null, function(result, error) {
-          callback(result, error);
-        });
-      },
-
-      /**
-       * Adds a new comment for a given media ID and comment text.
-       * @param {Integer}   media_id The ID of the media to add a comment for.
-       * @param {String}   comment  The text of the comment to add.
-       * @param {Function} callback A callback function.
-       */
-      addComment: function(media_id, comment, callback) {
-        options = {};
-        options.text = comment;
-
-        _request("POST", "/media/" + media_id + "/comments", options, function(result, error) {
-          callback(result, error);
-        });
-      },
-
-      /**
-       * Removes a given comment ID from a given media ID
-       * @param  {Integer}   media_id   The media ID to remove the comment from.
-       * @param  {Integer}   comment_id The ID of the comment to remove.
-       * @param  {Function} callback   A callback function.
-       */
-      removeComment: function(media_id, comment_id, callback) {
-        _request("DELETE", "/media/" + media_id + "/comments/" + comment_id, null, function(result, error) {
-          callback(result, error);
+        _request("GET", "/media/" + media_id + "/comments", null, function(result) {
+          if(typeof callback === "function") callback(result);
         });
       },
 
@@ -360,30 +313,8 @@
        * @param  {Function} callback A callback function.
        */
       likes: function(media_id, callback) {
-        _request("GET", "/media/" + media_id + "/likes", null, function(result, error) {
-          callback(result, error);
-        });
-      },
-
-      /**
-       * Sets the 'like' flag for a given media ID.
-       * @param {Integer}   media_id The ID of the media to like.
-       * @param {Function} callback A callback function.
-       */
-      like: function(media_id, callback) {
-        _request("POST", "/media/" + media_id + "/likes", null, function(result, error) {
-          callback(result, error);
-        });
-      },
-
-      /**
-       * Unsets the 'like' flag for a given media ID
-       * @param  {Integer}   media_id   The media ID to unset the 'like' from.
-       * @param  {Function} callback   A callback function.
-       */
-      unlike: function(media_id, callback) {
-        _request("DELETE", "/media/" + media_id + "/likes", null, function(result, error) {
-          callback(result, error);
+        _request("GET", "/media/" + media_id + "/likes", null, function(result) {
+          if(typeof callback === "function") callback(result);
         });
       }
 
@@ -401,15 +332,15 @@
        * @param  {Function} callback A callback function.
        */
       meta: function(tag_name, callback) {
-        _request("GET", "/tags/" + tag_name, null, function(result, error) {
-          callback(result, error);
+        _request("GET", "/tags/" + tag_name, null, function(result) {
+          if(typeof callback === "function") callback(result);
         });
       },
 
       /**
        * Gets recent media for a given tag name.
        * @param  {String}   tag_name The tag name to request media for.
-       * @param  {Object}   options  A JSON object of options.
+       * @param  {Object}   options  A JSON object of options. Accepts: 'min_id' and 'max_id'
        * @param  {Function} callback A callback function.
        */
       get: function(tag_name, options, callback) {
@@ -421,8 +352,8 @@
           options = options || {};
         }
 
-        _request("GET", "/tags/" + tag_name + "/media/recent", options, function(result, error) {
-          callback(result, error);
+        _request("GET", "/tags/" + tag_name + "/media/recent", options, function(result) {
+          if(typeof callback === "function") callback(result);
         });
       },
 
@@ -435,8 +366,8 @@
         var options = {};
         options.q = search_term || "";
 
-        _request("GET", "/tags/search", options, function(result, error) {
-          callback(result, error);
+        _request("GET", "/tags/search", options, function(result) {
+          if(typeof callback === "function") callback(result);
         });
       }
 
@@ -454,8 +385,8 @@
        * @param  {Function} callback    A callback function.
        */
       meta: function(location_id, callback) {
-        _request("GET", "/locations/" + location_id, null, function(result, error) {
-          callback(result, error);
+        _request("GET", "/locations/" + location_id, null, function(result) {
+          if(typeof callback === "function") callback(result);
         });
       },
 
@@ -473,8 +404,8 @@
           options = options || {};
         }
 
-        _request("GET", "/locations/" + location_id + "/media/recent", options, function(result, error) {
-          callback(result, error);
+        _request("GET", "/locations/" + location_id + "/media/recent", options, function(result) {
+          if(typeof callback === "function") callback(result);
         });
       },
 
@@ -487,8 +418,8 @@
         options = options || {};
 
         if((options.lat !== null && options.lng !== null) || options.foursquare_v2_id !== null) {
-          _request("GET", "/locations/search", options, function(result, error) {
-            callback(result, error);
+          _request("GET", "/locations/search", options, function(result) {
+            if(typeof callback === "function") callback(result);
           });
         } else {
           throw new Error('Endpoint "/locations/search": Either "lat" and "lng", or "foursquare_v2_id" are required.');
@@ -517,8 +448,8 @@
           options = options || {};
         }
 
-        _request("GET", "/geographies/" + geo_id + "/media/recent", options, function(result, error) {
-          callback(result, error);
+        _request("GET", "/geographies/" + geo_id + "/media/recent", options, function(result) {
+          if(typeof callback === "function") callback(result);
         });
       }
 
@@ -528,13 +459,9 @@
      * Helpers Functions
      */
     this.nextPage = function(url, callback) {
-      _request("GET", url, null, function(result, error) {
-        callback(result, error);
+      _request("GET", url, null, function(result) {
+        if(typeof callback === "function") callback(result);
       });
-    };
-
-    this.chain = function(method, path, options) {
-      return _request(method, path, options, null, true);
     };
 
   };
