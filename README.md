@@ -142,15 +142,6 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
     * _user_id_: The user ID to fetch relationship information for.
     * _callback(result)
 
-#### Instajam.user.setRelationship(user_id, action, callback)
-
-  * __Description__: Sets the relationship between the currently authenticated user and the provided user ID.
-  * __Endpoint__: [users/[user-id]/relationship](http://instagram.com/developer/endpoints/relationships/#post_relationship)
-  * __Arguments__:
-    * _user_id_: The user ID to set the relationship for.
-    * _action_: The relationship action: 'follow', 'unfollow', 'block', 'unblock', 'approve' or 'deny'
-    * _callback(result)_: A callback function.
-
 ### Media, Likes and Comments
 
 #### Instajam.media.get(media_id, callback)
@@ -189,23 +180,7 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
     * _media_id_: The ID of the media to fetch comments for.
     * _callback(result)_: A callback function.
 
-#### Instajam.media.addComment(media_id, comment, callback)
 
-  * __Description__: Adds a comment to a piece of media.
-  * __Endpoint__: [media/[media-id]/comments](http://instagram.com/developer/endpoints/comments/#post_media_comments)
-  * __Arguments__:
-    * _media_id_: The ID of the media to add a comment to.
-    * _comment_: The text content of the comment to add.
-    * _callback(result)_: A callback function.
-
-#### Instajam.media.removeComment(media_id, comment_id, callback)
-
-  * __Description__: Removes a comment from a piece of media.
-  * __Endpoint__: [media/[media-id]/comments](http://instagram.com/developer/endpoints/media/#delete_media_comments)
-  * __Arguments__:
-    * _media_id_: The ID of the media to remove a comment from.
-    * _comment_id_: The ID of the comment to remove from the media.
-    * _callback(result)_: A callback function.
 
 #### Instajam.media.likes(media_id, callback)
 
@@ -213,22 +188,6 @@ The [official list of Instagram API endpoints](http://instagram.com/developer/en
   * __Endpoint__: [/media/[media-id]/likes](http://instagram.com/developer/endpoints/media/#get_media_likes)
   * __Arguments__:
     * _media_id_: The ID of the media to retrieve 'likes' for.
-    * _callback(result)_: A callback function.
-
-#### Instajam.media.like(media_id, callback)
-
-  * __Description__: Set a 'like' from a piece of media by the currently authenticated user.
-  * __Endpoint__: [/media/[media-id]/likes](http://instagram.com/developer/endpoints/media/#post_likes)
-  * __Arguments__:
-    * _media_id_: The ID of the media to set a like for.
-    * _callback(result)_: A callback function.
-
-#### Instajam.media.unlike(media_id, callback)
-
-  * __Description__: Removes a 'like' from a piece of media by the currently authenticated user.
-  * __Endpoint__: [/media/[media-id]/likes](http://instagram.com/developer/endpoints/media/#delete_likes)
-  * __Arguments__:
-    * _media_id_: The ID of the media to remove a like for.
     * _callback(result)_: A callback function.
 
 ### Tags
