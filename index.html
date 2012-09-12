@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Instajam by mikefowler</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Instajam</h1>
+          <h2>Instajam is a JavaScript wrapper for the Instagram API. You provide the access token, we provide the jam.</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/mikefowler/instajam/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/mikefowler/instajam/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/mikefowler/instajam" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>Instajam</h1>
+
+<p>Instajam is a JavaScript wrapper for the Instagram API. You provide the access token, we provide the jam.</p>
+
+<p>(And Instagram provides the gram. Or the pictures. Or... whatever.)</p>
+
+<h2>Version History</h2>
+
+<ul>
+<li>2012/9/10 - Version 1.0, initial release. Supports all GET endpoints (does NOT include adding/removing comments or likes, or setting relationships)</li>
+</ul><h2>Getting Started</h2>
+
+<p>To use Instajam, just include it in your page. For now, Instajam also requires jQuery to facilitate JSONP requests.</p>
+
+<pre><code>&lt;script src="lib/jquery.js"&gt;&lt;/script&gt;
+&lt;script src="lib/instajam.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<h3>Authentication</h3>
+
+<p>Instajam doesn't care how you do OAuth authentication. Want to handle it server-side and just pass the access token in? Cool. Would you rather do client-side authentication and pull your access token from a cookie or localStorage? Legit, brah. Instagram has <a href="http://instagram.com/developer/authentication/">documentation on their developer site</a> to help you out. Regardless of how you do it, initialize Instajam like this:</p>
+
+<pre><code>&lt;script type="text/javascript"&gt;
+  $(function() {
+
+    var INSTAJAM = new Instajam({
+      access_token: 'ACCESS TOKEN',
+      client_id: 'CLIENT ID'
+    });
+
+  });
+&lt;/script&gt;
+</code></pre>
+
+<p>Keep in mind, <code>client_id</code> is optional if you pass in <code>access_token</code>. However, if you just want to do some basic retrieval of media, like getting popular images (see below), then just the <code>client_id</code> will do. Awesome.</p>
+
+<h2>Endpoints</h2>
+
+<p>The <a href="http://instagram.com/developer/endpoints/">official list of Instagram API endpoints</a> has detailed descriptions as well as sample return data, so this documentation will not go into those details. Below you will find the endpoints that Instajam provides and how to call them.</p>
+
+<h3>Users and Relationships</h3>
+
+<h4>Instajam.user.self(callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: Returns basic information about the authenticated user.</li>
+<li>
+<strong>Endpoint</strong>: users/self</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>callback(result)</em>: A callback function.</li>
+</ul>
+</li>
+</ul><h4>Instajam.user.feed(options, callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: Returns the home feed of the authenticated user.</li>
+<li>
+<strong>Endpoint</strong>: <a href="http://instagram.com/developer/endpoints/users/#get_users_feed">users/self/feed</a>
+</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>options</em>: A JSON object of options.
+
+<ul>
+<li>access_token</li>
+<li>count</li>
+<li>min_id</li>
+<li>max_id</li>
+</ul>
+</li>
+<li>
+<em>callback(result)</em>: A callback function.</li>
+</ul>
+</li>
+</ul><h4>Instajam.user.liked(options, callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: Returns a list of media recently liked by the authenticated user.</li>
+<li>
+<strong>Endpoint</strong>: <a href="http://instagram.com/developer/endpoints/users/#get_users_feed_liked">users/self/media/liked</a>
+</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>options (optional)</em>: A JSON object of options
+
+<ul>
+<li>count</li>
+<li>max_like_id</li>
+</ul>
+</li>
+<li>
+<em>callback(result)</em>: A callback function.</li>
+</ul>
+</li>
+</ul><h4>Instajam.user.get(user_id, callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: Returns basic information about a user.</li>
+<li>
+<strong>Endpoint</strong>: <a href="http://instagram.com/developer/endpoints/users/#get_users">users/[user-id]</a>
+</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>user_id</em>: The user ID to fetch information for.</li>
+<li>
+<em>callback(result)</em>: A callback function.</li>
+</ul>
+</li>
+</ul><h4>Instajam.user.getRecent(user_id, options, callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: Returns images recently uploaded by a user.</li>
+<li>
+<strong>Endpoint</strong>: <a href="http://instagram.com/developer/endpoints/users/#get_users_media_recent">users/[user-id]/media/recent</a>
+</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>user_id</em>: The user ID to fetch information for.</li>
+<li>
+<em>options</em>: A JSON object of options
+
+<ul>
+<li>count</li>
+<li>max_timestamp</li>
+<li>min_timestamp</li>
+<li>max_id</li>
+<li>min_id</li>
+</ul>
+</li>
+<li>
+<em>callback(result)</em>: A callback function.</li>
+</ul>
+</li>
+</ul><h4>Instajam.user.search(term, options, callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: Returns a list of user results for a given search term.</li>
+<li>
+<strong>Endpoint</strong>: <a href="http://instagram.com/developer/endpoints/users/#get_users_search">users/search</a>
+</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>term</em>: The search term string</li>
+<li>
+<em>options</em>: A JSON object of options
+
+<ul>
+<li>count</li>
+</ul>
+</li>
+<li>
+<em>callback(result)</em>: A callback function</li>
+</ul>
+</li>
+</ul><h4>Instajam.user.lookup(username, callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: Returns basic information for the given username.</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>username</em>: The username string to look up.</li>
+<li>
+<em>callback(result)</em>: A callback function.</li>
+</ul>
+</li>
+</ul><h4>Instajam.user.follows(user_id, callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: Returns a list of users the currently authenticated user follows.</li>
+<li>
+<strong>Endpoint</strong>: <a href="http://instagram.com/developer/endpoints/relationships/#get_users_follows">users/[user-id]/follows</a>
+</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>user_id</em>: The user ID to fetch information for.</li>
+<li>
+<em>callback(result)</em>: A callback function.</li>
+</ul>
+</li>
+</ul><h4>Instajam.user.following(user_id, callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: Returns a list of users followed by the currently authenticated user.</li>
+<li>
+<strong>Endpoint</strong>: <a href="http://instagram.com/developer/endpoints/relationships/#get_users_followed_by">users/[user-id]/followed-by</a>
+</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>user_id</em>: The user ID to fetch information for.</li>
+<li>_callback(result): A callback function.</li>
+</ul>
+</li>
+</ul><h4>Instajam.user.requests(callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: Returns a list of pending follow requests for the currently authenticated user.</li>
+<li>
+<strong>Endpoint</strong>: <a href="http://instagram.com/developer/endpoints/relationships/#get_incoming_requests">users/self/requested-by</a>
+</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>callback(result)</em>: A callback function.</li>
+</ul>
+</li>
+</ul><h4>Instajam.user.getRelationship(user_id, callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: Returns information about the relationship between the currently authenticated user and the given user ID</li>
+<li>
+<strong>Endpoint</strong>: <a href="http://instagram.com/developer/endpoints/relationships/#get_relationship">users/[user-id]/relationship</a>
+</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>user_id</em>: The user ID to fetch relationship information for.</li>
+<li>_callback(result)</li>
+</ul>
+</li>
+</ul><h3>Media, Likes and Comments</h3>
+
+<h4>Instajam.media.get(media_id, callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: Returns information for a given media ID</li>
+<li>
+<strong>Endpoint</strong>: <a href="http://instagram.com/developer/endpoints/media/#get_media">media/[media-id]</a>
+</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>media_id</em>: The ID of the media to fetch information for.</li>
+<li>
+<strong>callback(result)</strong>: A callback function.</li>
+</ul>
+</li>
+</ul><h4>Instajam.media.search(options, callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: Returns media matching the provided search parameters.</li>
+<li>
+<strong>Endpoint</strong>: <a href="http://instagram.com/developer/endpoints/media/#get_media_search">media/search</a>
+</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>options</em>: A JSON object of options.
+
+<ul>
+<li>lat (required)</li>
+<li>lng (required)</li>
+<li>min_timestamp</li>
+<li>max_timestamp</li>
+<li>distance (in meters. max is 5000)</li>
+</ul>
+</li>
+<li>
+<em>callback(result)</em>: A callback function.</li>
+</ul>
+</li>
+</ul><h4>Instajam.media.popular(callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: Returns media that is currently popular on Instagram.</li>
+<li>
+<strong>Endpoint</strong>: <a href="http://instagram.com/developer/endpoints/media/#get_media_popular">media/popular</a>
+</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>callback(result)</em>: A callback function.</li>
+</ul>
+</li>
+</ul><h4>Instajam.media.comments(media_id, callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: Returns a list of comments for a piece of media.</li>
+<li>
+<strong>Endpoint</strong>: <a href="http://instagram.com/developer/endpoints/comments/#get_media_comments">media/[media-id]/comments</a>
+</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>media_id</em>: The ID of the media to fetch comments for.</li>
+<li>
+<em>callback(result)</em>: A callback function.</li>
+</ul>
+</li>
+</ul><h4>Instajam.media.likes(media_id, callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: Retrieves 'likes' for a piece of media.</li>
+<li>
+<strong>Endpoint</strong>: <a href="http://instagram.com/developer/endpoints/media/#get_media_likes">/media/[media-id]/likes</a>
+</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>media_id</em>: The ID of the media to retrieve 'likes' for.</li>
+<li>
+<em>callback(result)</em>: A callback function.</li>
+</ul>
+</li>
+</ul><h3>Tags</h3>
+
+<h4>Instajam.tag.meta(tag_name, callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: Requests metadata for a tag name.</li>
+<li>
+<strong>Endpoint</strong>: <a href="http://instagram.com/developer/endpoints/tags/#get_tags">/tags/[tag-name]</a>
+</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>tag_name</em>: The name of the tag to fetch metadata for.</li>
+<li>
+<em>callback(result)</em>: A callback function.</li>
+</ul>
+</li>
+</ul><h4>Instajam.tag.get(tag_name, options, callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: Gets media for a tag name.</li>
+<li>
+<strong>Endpoint</strong>: <a href="http://instagram.com/developer/endpoints/tags/#get_tags_media_recent">/tags/[tag-name]/media/recent</a>
+</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>tag_name</em>: The name of the tag to fetch media for.</li>
+<li>
+<em>options</em>: A JSON object of options.
+
+<ul>
+<li>min_id</li>
+<li>max_id</li>
+</ul>
+</li>
+<li>
+<em>callback(result)</em>: A callback function.</li>
+</ul>
+</li>
+</ul><h4>Instajam.tag.search(search_term, callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: Searches for a tag name.</li>
+<li>
+<strong>Endpoint</strong>: <a href="http://instagram.com/developer/endpoints/tags/#get_tags_search">/tags/search</a>
+</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>search_term</em>: The tag name to search for.</li>
+<li>
+<em>callback(result)</em>: A callback function.</li>
+</ul>
+</li>
+</ul><h3>Locations</h3>
+
+<h4>Instajam.location.meta(location_id, callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: Requests metadata for a location.</li>
+<li>
+<strong>Endpoint</strong>: <a href="http://instagram.com/developer/endpoints/locations/#get_locations">/locations/[location-id]</a>
+</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>location_id</em>: The ID of the location to fetch metadata for.</li>
+<li>
+<em>callback(result)</em>: A callback function.</li>
+</ul>
+</li>
+</ul><h4>Instajam.location.get(location_id, options, callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: Gets media for a location.</li>
+<li>
+<strong>Endpoint</strong>: <a href="http://instagram.com/developer/endpoints/locations/#get_locations_media_recent">/locations/[location-id]/media/recent</a>
+</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>location_id</em>: The ID of the location to fetch media for.</li>
+<li>
+<em>options</em>: A JSON object of options.
+
+<ul>
+<li>max_timestamp</li>
+<li>min_timestamp</li>
+<li>min_id</li>
+<li>max_id</li>
+</ul>
+</li>
+<li>
+<em>callback(result)</em>: A callback function.</li>
+</ul>
+</li>
+</ul><h4>Instajam.location.search(options, callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: Searches for locations.
+
+<ul>
+<li>
+<strong>Endpoint</strong>: <a href="http://instagram.com/developer/endpoints/locations/#get_locations_search">/locations/search</a>
+</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>options</em>: A JSON object of options. Either "lat" and "lng", or "foursquare_v2_id" are required.
+
+<ul>
+<li>lat</li>
+<li>lng</li>
+<li>distance (in meters, max is 5000)</li>
+<li>foursquare_v2_id</li>
+</ul>
+</li>
+<li>
+<em>callback(result)</em>: A callback function.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul><h3>Geographies</h3>
+
+<h4>Instajam.geography.get(geography_id, options, callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: Gets recent media from a user-defined geography. In order to fetch media for a geography, your app must have created it.</li>
+<li>
+<strong>Endpoint</strong>: <a href="http://instagram.com/developer/endpoints/geographies/#get_geographies_media_recent">/geographies/[geo-id]/media/recent</a>
+</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>geography_id</em>: The ID of the geography to fetch media for.</li>
+<li>
+<em>options</em>: A JSON object of options.
+
+<ul>
+<li>count</li>
+<li>min_id</li>
+</ul>
+</li>
+<li>
+<em>callback(result)</em>: A callback function.</li>
+</ul>
+</li>
+</ul><h2>Helper Functions</h2>
+
+<h4>Instajam.nextPage(pagination_url, callback)</h4>
+
+<ul>
+<li>
+<strong>Description</strong>: For some requests, Instagram will return a data.pagination key with a URL for the next page of results. This function facilitates making that request.</li>
+<li>
+<strong>Arguments</strong>:
+
+<ul>
+<li>
+<em>pagination_url</em>: The URL of the next page of results to fetch.</li>
+<li>
+<em>callback(result)</em>: A callback function.</li>
+</ul>
+</li>
+</ul>
+        </section>
+
+        <footer>
+          Instajam is maintained by <a href="https://github.com/mikefowler">mikefowler</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+                  <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-10512170-13");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+      </div>
+    </div>
+  </body>
+</html>
