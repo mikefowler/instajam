@@ -22,7 +22,7 @@ To use Instajam, just include it in your page. For now, Instajam also requires j
 
 Instajam doesn't care how you do OAuth authentication. Want to handle it server-side and just pass the access token in? Cool. Would you rather do client-side authentication and pull your access token from a cookie or localStorage? Legit, brah. Instagram has [documentation on their developer site](http://instagram.com/developer/authentication/) to help you out. Regardless of how you do it, initialize Instajam like this:
 
-```javascript
+```html
 <script type="text/javascript">
   $(function() {
 
@@ -43,12 +43,10 @@ Keep in mind, ```client_id``` is optional if you pass in ```access_token```. How
 After inializing, we're all set to request some information from Instagram. To get the authenticated users Instagram feed:
 
 ```javascript
-  INSTAJAM.user.feed(function(feed) {
-  	
-    // The object passed back, 'feed', will contain the data
-    // passed back from the Instagram API.
-    
-  });
+INSTAJAM.user.feed(function(feed) {  	
+  // The object passed back, 'feed', will contain the data
+  // passed back from the Instagram API.
+});
 ```
 
 The full set of endpoints included in Instajam are listed below, along with links to the descriptions of the endpoints in the Instagram developers documentation.
