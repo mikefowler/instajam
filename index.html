@@ -69,6 +69,19 @@
 </code></pre>
 
 <p>Keep in mind, <code>client_id</code> is optional if you pass in <code>access_token</code>. However, if you just want to do some basic retrieval of media, like getting popular images (see below), then just the <code>client_id</code> will do. Awesome.</p>
+          
+<h3>Get Some (Data)</h3>
+
+<p>After inializing, we're all set to request some information from Instagram. To get the authenticated users Instagram feed:</p>
+
+<pre><code>
+INSTAJAM.user.feed(function(feed) {  	
+  // The object passed back, 'feed', will contain the data
+  // passed back from the Instagram API.
+});
+</code></pre>
+
+<p>The full set of endpoints included in Instajam are listed below, along with links to the descriptions of the endpoints in the Instagram developers documentation.</p>
 
 <h2>Endpoints</h2>
 
