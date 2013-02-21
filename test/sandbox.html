@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Instajam</title>
+  <style type="text/css">
+    body {
+      padding: 20px;
+      font-family: 'Georgia', serif;
+      font-size: 120%;
+      line-height: 1.5em;
+    }
+    p {
+      max-width: 30em;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Instajam Sandbox</h1>
+
+  <!-- Sample Calls
+
+  API.user.self(function(data) { 
+    console.log(data); 
+  })
+
+  API.user.feed(function(data) {
+    console.log(data);
+  })
+
+  API.user.liked(function(data) {
+    console.log(data);
+  })
+
+  API.user.get(306837613, function(data) {
+    console.log(data);
+  })
+
+  API.user.getRecent(306837613, function(data) {
+    console.log(data);
+  });
+
+  API.user.search('mike', function(data) {
+    console.log(data);
+  });
+
+  API.user.lookup('michaelrichardfowler', function(data) {
+    console.log(data);
+  });
+
+  -->
+
+  <script src="../lib/instajam.js"></script>
+  <script type="text/javascript">
+      
+    // Cache some DOM elements
+    var $body = document.getElementsByTagName('body')[0];
+
+    // Create an instance of Instajam
+    var API = Instajam.init({
+      client_id: 'e9c4567d05174f47827a022e31aeffd4',
+      redirect_uri: 'http://instajam.dev/test/sandbox.html',
+      scope: ['basic', 'comments', 'relationships', 'likes']
+    });
+
+    if (API.authenticated) {
+      var ok = document.createElement('p');
+      ok.innerHTML = 'Now you are authenticated! You should see \'access_token\' stored in localStorage. Play around in the DevTools console! Instajam has been initialized on the root variable \'API\'.';
+
+      var logout = document.createElement('a');
+      logout.innerHTML = 'Logout.';
+      logout.href = '#';
+      logout.addEventListener('click', function(e) {
+        e.preventDefault();
+        API.logout();
+        window.location.reload();
+      });
+
+      $body.appendChild(ok);
+      $body.appendChild(logout);
+    }
+    else {
+      // Show an authorization link.
+      var link = document.createElement('a');
+      link.href = API.getAuthUrl();
+      link.innerHTML = 'Authenticate.';
+      $body.appendChild(link);
+    }
+
+  </script>
+</body>
+</html>

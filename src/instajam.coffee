@@ -10,16 +10,23 @@ window.Instajam = do ->
   
   init = (options) ->
 
-    options = options ? {}
+    options = options ||= {}
 
     # Throw an error if either the client ID or the 
     # redirect URI isn't provided.
     if not options.client_id or not options.redirect_uri
       throw new InstajamError "Client ID and redirect URI are required."
 
+    # If the app is requesting additional scopes, build a string
+    # to append to the auth URL.
+    if options.scope and typeof options.scope is 'object'
+      @scope = "&scope=" + options.scope.join('+')
+    else if options.scope and typeof options.scope isnt 'object'
+      throw new InstajamError "Scope should be an array of requested scopes"
+
     # Build an authentication URL using constructor
     # parameters.
-    auth_url = "https://instagram.com/oauth/authorize/?client_id=#{options.client_id}&redirect_uri=#{options.redirect_uri}&response_type=token"
+    auth_url = "https://instagram.com/oauth/authorize/?client_id=#{options.client_id}&redirect_uri=#{options.redirect_uri}&response_type=token#{@scope || ''}"
 
     # Try to authenticate the user
     authenticate.call(this)
@@ -58,6 +65,11 @@ window.Instajam = do ->
 
   User.prototype.feed = (options, callback) ->
 
+    # Make the options argument optional
+    if typeof options is 'function'
+      callback = options
+      options = null
+
     # Make the request
     request
       url: "users/self/feed"
@@ -74,6 +86,11 @@ window.Instajam = do ->
 
   User.prototype.liked = (options, callback) ->
 
+    # Make the options argument optional
+    if typeof options is 'function'
+      callback = options
+      options = null
+
     # Make the request
     request
       url: "users/self/media/liked"
@@ -88,6 +105,10 @@ window.Instajam = do ->
   # Get information for a user by ID.
 
   User.prototype.get = (id, callback) ->
+
+    # Fail if ID is not provided
+    if not id
+      throw new InstajamError "A user's ID is required for user.get()"
 
     # Make the request
     request
@@ -104,6 +125,15 @@ window.Instajam = do ->
 
   User.prototype.getRecent = (id, options, callback) ->
 
+    # Fail if ID is not provided
+    if not id
+      throw new InstajamError "A user's ID is required for user.getRecent()"
+
+    # Make the options argument optional
+    if typeof options is 'function'
+      callback = options
+      options = null
+
     # Make the request
     request
       url: "users/#{id}/media/recent"
@@ -118,6 +148,18 @@ window.Instajam = do ->
   # Perform a string search for users.
 
   User.prototype.search = (term, options, callback) ->
+
+    # Fail if a search term isn't provided
+    if not term
+      throw new InstajamError "A search term is required for user.search()"
+
+    # Make the options argument optional
+    if typeof options is 'function'
+      callback = options
+      options = {}
+
+    # Add the search term to the options object
+    options.q = term
 
     # Make the request
     request
@@ -134,8 +176,12 @@ window.Instajam = do ->
 
   User.prototype.lookup = (username, callback) ->
 
+    # Fail if username is not provided
+    if not username
+      throw new InstajamError "A username is required for user.lookup()"
+
     # Make the request
-    User.prototype.search.call(this, username, null, (result) ->
+    User.prototype.search.call(this, username, {}, (result) ->
       if result.data and result.data.length is 1 then result = result.data[0]
       callback(result) if typeof callback is 'function'
     )
@@ -481,7 +527,7 @@ window.Instajam = do ->
   hashParam = (param, remove) ->
 
     # Create a RegExp object for parsing params
-    regex = new RegExp("(?:&|#)" + param + "=([a-z0-9_-]+)", "i")
+    regex = new RegExp("(?:&|#)" + param + "=([a-z0-9._-]+)", "i")
 
     # Look for matches in the windows hash
     matches = window.location.hash.match(regex)
@@ -490,8 +536,9 @@ window.Instajam = do ->
     if matches
 
       # ...then remove the parameter if specified
-      removeRegex = new RegExp("(?:&|#)" + param + "=" + matches[1], "i")
-      window.location.hash = window.location.hash.replace(removeRegex, '')
+      if remove
+        removeRegex = new RegExp("(?:&|#)" + param + "=" + matches[1], "i")
+        window.location.hash = window.location.hash.replace(removeRegex, '')
 
       # ...and return the first matching param
       return matches[1]
@@ -525,19 +572,18 @@ window.Instajam = do ->
   request = (options) ->
 
     # Define the API base URL
-    url_base = "https://api.instagram.com/v1"
+    url_base = "https://api.instagram.com/v1/"
 
     # Generate a unique name for the JSONP request callback
     callbackName = "instajam" + Math.round(new Date().getTime() / 1000)
 
     # If no data parameters are passed in, initialize it as an empty object
-    options.data ? {}
+    options.data ||= {}
 
     # Build a query string using the provided data parameters
-    if options.data? and typeof options.data is 'object'
-      options.data.access_token = localStorage.getItem 'access_token'
-      options.data.callback = callbackName
-      queryString = serializeParams(options.data)
+    options.data.access_token = localStorage.getItem 'access_token'
+    options.data.callback = callbackName
+    queryString = serializeParams(options.data)
 
     # Build the URL for the request and append the query string
     unless options.url
@@ -573,7 +619,7 @@ window.Instajam = do ->
   
   serializeParams = (obj) ->
     str = []
-    for p in obj
+    for p of obj
       str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]))
     return str.join("&")
 
@@ -585,7 +631,7 @@ window.Instajam = do ->
 
   InstajamError = (message) ->
     @name = "InstajamError"
-    @message = message ? ''
+    @message = message ||= ''
   InstajamError.prototype = Error.prototype
 
   # # Public Methods

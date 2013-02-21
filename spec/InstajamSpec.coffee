@@ -14,6 +14,7 @@ describe "Instajam", ->
     API = Instajam.init
       client_id: CLIENT_ID
       redirect_uri: REDIRECT_URI
+      scope: ['basic', 'likes']
 
   ###########################################
   # INITIALIZATION
@@ -44,6 +45,34 @@ describe "Instajam", ->
       })
     .not.toThrow()
 
+  it "should an accept an array of scope permissions", ->
+
+    expect ->
+      Instajam.init({
+        client_id: 'XXX',
+        redirect_uri: 'XXX'
+        scope: 5
+      })
+    .toThrow()
+
+    expect ->
+      Instajam.init({
+        client_id: 'XXX',
+        redirect_uri: 'XXX'
+        scope: 'string'
+      })
+    .toThrow()
+
+    expect ->
+      Instajam.init({
+        client_id: 'XXX',
+        redirect_uri: 'XXX'
+        scope: ['basic', 'likes']
+      })
+    .not.toThrow()
+
+    expect(API.scope).toEqual('&scope=basic+likes')
+
   ###########################################
   # AUTHENTICATION
   ###########################################
@@ -52,4 +81,4 @@ describe "Instajam", ->
 
     auth_url = API.getAuthUrl()
 
-    expect(auth_url).toEqual("https://instagram.com/oauth/authorize/?client_id=#{CLIENT_ID}&redirect_uri=#{REDIRECT_URI}&response_type=token")
+    expect(auth_url).toEqual("https://instagram.com/oauth/authorize/?client_id=#{CLIENT_ID}&redirect_uri=#{REDIRECT_URI}&response_type=token&scope=basic+likes")
