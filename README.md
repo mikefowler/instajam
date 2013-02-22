@@ -29,8 +29,7 @@ Contributions or bugfixes to Instajam are welcome. If you are fixing a bug, plea
 Building Instajam requires Node.js with the coffee-script and docco packages, but after that the development process should work smoothly and stay out of your way.
 
 ```
-sudo npm install -g coffee-script
-sudo npm install -g docco
+sudo npm install -g coffee-script docco
 bundle
 bundle exec guard
 ```

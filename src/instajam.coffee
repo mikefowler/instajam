@@ -360,6 +360,11 @@ window.Instajam = do ->
 
   Tag.prototype.get = (tag, options, callback) ->
 
+    # Make the options argument optional
+    if typeof options is 'function'
+      callback = options
+      options = null
+
     # Make the request
     request
       url: "tags/#{tag}/media/recent"
