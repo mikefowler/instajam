@@ -4,7 +4,7 @@
 
     this.api = Instajam.init({
       clientId: 'e9c4567d05174f47827a022e31aeffd4',
-      redirectUri: 'http://instajam.dev/',
+      redirectUri: 'http://mikefowler.me/instajam/',
       scope: ['basic', 'comments', 'relationships', 'likes']
     });
 
