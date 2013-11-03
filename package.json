@@ -1,0 +1,26 @@
+{
+  "name": "instajam",
+  "version": "2.0.0",
+  "description": "Instajam is a JavaScript wrapper for the Instagram API.",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.2.5",
+    "grunt-contrib-jshint": "~0.7.1",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-docco": "~0.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mikefowler/instajam.git"
+  },
+  "author": "Mike Fowler",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/mikefowler/instajam/blob/master/LICENSE"
+    }
+  ],
+  "readmeFilename": "README.md"
+}

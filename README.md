@@ -6,12 +6,10 @@ Instajam is a JavaScript wrapper for the Instagram API. You provide the access t
 
 ## Version History
   
-  * 2013/02/19 - Version 2.0.
+  * 2013/11/03 - Version 2.0.
     - Now with 100% more version number!
     - **The hard jQuery dependency is GONE.** Native JSONP request method implemented.
-    - Rewritten in Coffeescript and documented with Docco
-    - POST endpoints are implemented
-    - Now includes a Jasmine test suite
+    - Inline documentation via Docco
   * 2012/09/10 - Version 1.0
     - Initial release
     - Supports all GET endpoints (does NOT include adding/removing comments or likes, or setting relationships)
@@ -22,36 +20,38 @@ Documentation for Instajam can be found at the (project's homepage](http://mikef
 
 ## Contributing
 
-Contributions or bugfixes to Instajam are welcome. If you are fixing a bug, please open an issue first with details on how to replicate the bug, and mention the issue number in your pull request.
+Contributions, fixes, or work on a test suite is welcome. If you are fixing a bug, please open an issue first with details on how to replicate the bug, and mention the issue number in your pull request.
 
 ### Developing
 
-Building Instajam requires Node.js with the coffee-script and docco packages, but after that the development process should work smoothly and stay out of your way.
+To work on Instajam you need to set up Grunt and install some Node.js packages. After cloning the repository, run these commands:
 
 ```
-sudo npm install -g coffee-script docco
-bundle
-bundle exec guard
+npm install
+bower install
+grunt watch
 ```
 
-Running Guard performs the following tasks:
+Grunt watches the Instajam source files for changes. When changes are made, Grunt runs JSHint  to validate the code, and, if successful, creates a minified version of the library in the ```dist/``` directory.
 
-  1. Watches src/ Coffeescript and compiles to lib/
-  1. Watches spec/ Coffeescript and compiles to spec/
-  1. Generates documentation in docs/ via Docco when src/ changes.
-  1. Creates minified version of the library on changes to lib/instajam.js
-  1. Runs LiveReload server to reload test page on spec or src changes.
+### License
 
-__Recommendation:__ Install the brilliant [Anvil.app](http://anvilformac.com/) from Riot (and 37 Signals) and set up 'instajam.dev' to point to your local repository. After that, you can access documentation at http://instajam.dev/docs/ and run tests via http://instajam.dev/test.
+Copyright (C) 2013 Mike Fowler, http://mikefowler.me
 
-## License
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-GPLv2 or later
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-Copyright (C) 2013 Mike Fowler
-
-This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

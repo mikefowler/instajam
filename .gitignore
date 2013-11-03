@@ -1,1 +1,3 @@
-.rvmrc
+.ruby-gemset
+.ruby-version
+node_modules
