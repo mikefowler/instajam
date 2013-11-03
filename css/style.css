@@ -1,0 +1,133 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  padding: 0;
+  padding-top: 4rem;
+  margin: 0;
+  font-family: 'Droid Sans', sans-serif;
+  font-size: 100%;
+  background: #f1f1f1;
+  color: #222;
+}
+
+body.has-overlay::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+hr {
+  height: 1px;
+  border: none;
+  background: #ccc;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.masthead {
+  background: #AA38BF;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.masthead__branding {
+  margin: 0;
+  color: white;
+  text-align: center;
+  text-transform: lowercase;
+  line-height: 4rem;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+}
+
+.auth-hero {
+  text-align: center;
+  max-width: 400px;
+  margin: 2em auto;
+}
+
+.code {
+  background: #222;
+  color: white;
+}
+
+.ladda-button[data-color="purple"] {
+  display: inline-block;
+  background: #AA38BF;
+  color: white;
+  border-radius: 2px;
+  text-decoration: none;
+}
+
+.align-right {
+  float: right;
+}
+
+.clear::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.overlay {
+  position: fixed;
+  background: white;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overflow-y: scroll;
+  z-index: 200;
+  opacity: 0;
+  padding: 1em;
+  padding-top: 3em;
+  visibility: hidden;
+}
+
+.overlay::before {
+  content: 'Response';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 2em;
+  padding: 0 1em;
+  line-height: 2em;
+  color: white;
+  background: #AA38BF;
+}
+
+.overlay--visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.overlay pre {
+  background: none;
+  padding: 0;
+}
+
+.footer {
+  text-align: center;
+  padding: 2em 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+@media only screen and (max-width: 600px) {
+  .container {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+}

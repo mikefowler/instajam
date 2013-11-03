@@ -1,0 +1,7 @@
+{
+  "name": "Instajam",
+  "version": "2.0.0",
+  "main": [
+    "./dist/instajam.min.js"
+  ]
+}
