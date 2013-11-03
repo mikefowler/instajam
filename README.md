@@ -16,7 +16,7 @@ Instajam is a JavaScript wrapper for the Instagram API. You provide the access t
 
 ## Documentation
 
-Documentation for Instajam can be found at the (project's homepage](http://mikefowler.me/instajam).
+Documentation for Instajam can be found at the [project's homepage](http://mikefowler.me/instajam).
 
 ## Contributing
 
