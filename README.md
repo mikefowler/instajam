@@ -1,22 +1,34 @@
 # Instajam
 
-Instajam is a JavaScript wrapper for the Instagram API. You provide the access token, we provide the jam.
+Instajam is a JavaScript wrapper for the Instagram API. You provide the access token, we provide the jam. (And Instagram provides the gram. Or the pictures. Or... whatever.)
 
-(And Instagram provides the gram. Or the pictures. Or... whatever.)
+## Basic Usage
 
-## Version History
-  
-  * 2013/11/03 - Version 2.0.
-    - Now with 100% more version number!
-    - **The hard jQuery dependency is GONE.** Native JSONP request method implemented.
-    - Inline documentation via Docco
-  * 2012/09/10 - Version 1.0
-    - Initial release
-    - Supports all GET endpoints (does NOT include adding/removing comments or likes, or setting relationships)
+``` javascript
+// Initialize
+API = Instajam.init({
+    clientId: '<CLIENT ID>',
+    redirectUri: '<REDIRECT URI>',
+    scope: ['basic', 'comments']
+});
+
+// Get the profile of the authenticated user.
+API.user.self(function(response) {
+    console.log('Hey there, ' + response.data.full_name);
+});
+```
 
 ## Documentation
 
-Documentation for Instajam can be found at the [project's homepage](http://mikefowler.me/instajam).
+Full documentation for Instajam can be found on the [project's homepage](http://mikefowler.me/instajam). [Inline documentation of the code](http://mikefowler.me/instajam/docco/instajam.html) (via Docco) is also available.
+
+## Install via Bower
+
+Instajam is available via the [Bower package manager](http://bower.io/):
+
+``` bash
+bower install instajam
+```
 
 ## Contributing
 
