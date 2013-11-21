@@ -60,6 +60,13 @@ hr {
   margin: 2em auto;
 }
 
+.github-ribbon {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 100;
+}
+
 .code {
   background: #222;
   color: white;
