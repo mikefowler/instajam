@@ -1,583 +1,41 @@
-/*! Instajam - v2.0.0 - 2013-11-03
-* http://github.com/mikefowler/instajam/
-* Copyright (c) 2013 Mike Fowler; Licensed MIT */
-(function(Instajam) {
+!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.Instajam=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+'use strict';
 
-  'use strict';
+function Geography (client) {
+	this.client = client;
+}
 
-  // # Initialization
-
-  Instajam.init = function(options) {
-
-    options = options || {};
-
-    // Throw an error if either the client ID or the 
-    // redirect URI isn't provided.
-
-    if (!options.clientId || !options.redirectUri) {
-      throw new InstajamError("Client ID and Redirect URI are required.");
-    }
-
-    // If the app is requesting additional 
-    // scopes, build a string to append to
-    // the auth URL.
-    if (options.scope && typeof options.scope === 'object') {
-      this.scope = '&scope=' + options.scope.join('+');
-    } else {
-      this.scope = '&scope=basic';
-    }
-
-    // Build an authentication URL using
-    // constructor parameters.
-    this.authUrl = 'https://instagram.com/oauth/authorize/?client_id=' + options.clientId + '&redirect_uri=' + options.redirectUri + '&response_type=token' + (this.scope || '');
-
-    // When the library is initialized, verify whether
-    // a user is currently authenticated.
-    this.authenticate();
-
-    return this;
-
-  };
-
-  // # Authentication
-
-  // Attempts to authenticate a user via 
-  // localStorage data or by parsing data 
-  // from the URL hash.
-
-  Instajam.authenticate = function() {
-
-    // First, check if a localStorage key 
-    // exists for the access_token...
-    
-    if (localStorage.getItem('instagram_access_token')) {
+Geography.prototype.media = function(id, options, callback) {
       
-      // ...and if there is, set the
-      // authenticated property to true. 
-      this.authenticated = true;
-    
-    // If there is no localStorage key...
-    
-    } else {
-      
-      // ...then check if there's a match
-      // for access_token in the URL hash.
-      if (hashParam('access_token')) {
-        
-        // If we can parse the access_token from
-        // the URL hash, set the localStorage param...
-        localStorage.setItem('instagram_access_token', hashParam('access_token', true));
-        
-        // ...and set the authenticated property to true
-        this.authenticated = true;
+  // We need at least a Geography ID to work with
+  if (!id) {
+    throw new Error('Instajam: A geography ID is required for Geography.get()');
+  }
 
-      } else {
-        
-        // Otherwise, if there is no localStorage
-        // key and there is nothing to parse from
-        // the hash, set the authenticated 
-        // property to false
-        this.authenticated = false;
+  // The options argument defaults to an empty object
+  options = options || {};
 
-      }
+  // Make a request to the API
+  this.client.request({
+    url: 'geographies/' + id + '/media/recent',
+    data: options,
+    success: callback
+  });
 
-    }
+};
 
-  };
+module.exports = Geography;
 
-  // Effectively de-authenticates the current 
-  // user by removing their access token from 
-  // localStorage and setting the authenticated 
-  // property to false. This does **not** 
-  // revoke your app's permissions on the server.
+},{}],2:[function(_dereq_,module,exports){
+'use strict';
 
-  Instajam.deauthenticate = function() {
-    localStorage.removeItem('instagram_access_token');
-    this.authenticated = false;
-  };
+module.exports = {
 
-  // # Endpoints
-
-  // ## Users
-
-  var User = function() {};
-  var Self = function() {};
-  User.prototype.self = new Self();
-
-  // ### Fetching the authenticated users's profile
-
-  Self.prototype.profile = function(callback) {
-    request({
-      url: 'users/self',
-      success: callback
-    });
-  };
-
-  // ### Fetching the authenticated user's media
-
-  Self.prototype.media = function(options, callback) {
-
-    // Make the options argument optional
-    if (typeof options === 'function') {
-      callback = options;
-      options = null;
-    }
-
-    // Make a request to the API
-    request({
-      url: 'users/self/media/recent',
-      data: options,
-      success: callback
-    });
-
-  };
-
-  // ### Fetching the authenticated user's activity feed
-
-  Self.prototype.feed = function(options, callback) {
-    
-    // Make the options argument optional
-    if (typeof options === 'function') {
-      callback = options;
-      options = null;
-    }
-
-    // Make a request to the API
-    request({
-      url: 'users/self/feed',
-      data: options,
-      success: callback
-    });
-
-  };
-
-  // ### Fetching the authenticated user's favorites.
-
-  Self.prototype.favorites = function(options, callback) {
-
-    // Make the options argument optional
-    if (typeof options === 'function') {
-      callback = options;
-      options = null;
-    }
-
-    // Make a request to the API
-    request({
-      url: 'users/self/media/liked',
-      data: options,
-      success: callback
-    });
-
-  };
-
-  // ### Fetching a list of relationship requests for the currently authenticated user
-
-  User.prototype.requests = function(callback) {
-    
-    // Make a request to the API
-    request({
-      url: 'users/self/requested-by',
-      success: callback
-    });
-
-  };
-
-  // ### Getting a relationship information for the currently authenciated user and a given user ID
-
-  User.prototype.relationshipWith = function(id, callback) {
-    
-    // Make a request to the API
-    request({
-      url: 'users/' + id + '/relationship',
-      success: callback
-    });
-
-  };
-
-  // ### Fetching the profile of a user by ID or username
-
-  User.prototype.get = function(id, callback) {
-    
-    // Require that an ID or username be passed
-    if (!id) {
-      throw new InstajamError('A user\'s ID or username is required for user.get()');
-    }
-
-    if (typeof id === 'number') {
-      
-      // Make a request to the API
-      request({
-        url: 'users/' + id,
-        success: callback
-      });
-    
-    } else if (typeof id === 'string') {
-
-      // Make a request to the API
-      User.prototype.search.call(this, id, {}, function(result) {
-
-        // If the initial user search yields any
-        // results, then just return the first, but
-        // otherwise return nothing.
-        if (result.data && result.data.length === 1) {
-          result = result.data[0];
-        } else {
-          result = false;
-        }
-
-        // Call the initial callback, passing the result
-        if (typeof callback === 'function') {
-          callback(result);
-        }
-
-      });
-
-    }
-  
-  };
-
-  // ### Fetching the media of a user ID or username
-
-  User.prototype.media = function(id, options, callback) {
-
-    // Require that an ID be passed
-    
-    if (!id) {
-      throw new InstajamError('A user\'s ID or username is required for user.media()');
-    }
-
-    // Make the options argument optional
-    
-    if (typeof options === 'function' && !callback) {
-      callback = options;
-      options = null;
-    }
-
-    // If we're looking up the user by ID...
-    
-    if (typeof id === 'number') {
-      
-      // Make a request to that API
-      request({
-        url: 'users/' + id + '/media/recent',
-        data: options,
-        success: callback
-      });
-    
-    }
-
-    // Or rather looking up the user by username...
-
-    else if (typeof id === 'string') {
-
-      // ...then first search for the username...
-      User.prototype.search.call(this, id, {}, function(result) {
-
-        // If the initial user search yields any
-        // results, then just return the first, but
-        // otherwise return nothing.
-        if (result.data && result.data.length > 0) {
-          result = result.data[0];
-        } else {
-          result = false;
-        }
-
-        if (result) {
-
-          // Make a request to that API
-          request({
-            url: 'users/' + result.id + '/media/recent',
-            data: options,
-            success: callback
-          });
-
-        } else {
-
-          if (typeof callback === 'function') {
-            callback(result);
-          }
-
-        }
-
-      });
-
-    }
-
-  };
-
-  // ### Searching for users by username
-
-  User.prototype.search = function(term, options, callback) {
-    
-    // Require that a search term be passed
-    if (!term) {
-      throw new InstajamError('A search term is required for user.search()');
-    }
-
-    // Make the options argument optional
-    if (typeof options === 'function') {
-      callback = options;
-      options = {};
-    }
-
-    // Add the search term to the options object
-    options.q = term;
-
-    // Make a request to the API
-    request({
-      url: 'users/search',
-      data: options,
-      success: callback
-    });
-
-  };
-
-  // ### Fetching a list of users that user [id] follows
-
-  User.prototype.follows = function(id, callback) {
-    
-    // Make a request to the API
-    request({
-      url: 'users/' + id + '/follows',
-      success: callback
-    });
-
-  };
-
-  // ### Fetching a list of followers of user [id]
-
-  User.prototype.following = function(id, callback) {
-    
-    // Make a request to the API
-    request({
-      url: 'users/' + id + '/followed-by',
-      success: callback
-    });
-
-  };
-
-  // ## Media
-
-  var Media = function() {};
-
-  Media.prototype.get = function(id, callback) {
-
-    // Make a request to the API
-    request({
-      url: 'media/' + id,
-      success: callback
-    });
-
-  };
-
-  Media.prototype.search = function(options, callback) {
-
-    options = options || {};
-
-    // Require that a latitude and longitude are
-    // passed in, at a minimum.
-    if (!options.lat || !options.lng) {
-      throw new InstajamError('A latitude AND a longitude are required for media.search()');
-    }
-
-    // Make a request to the API
-    request({
-      url: 'media/search',
-      data: options,
-      success: callback
-    });
-
-  };
-
-  Media.prototype.popular = function(callback) {
-
-    // Make a request to the API
-    request({
-      url: 'media/popular',
-      success: callback
-    });
-
-  };
-
-  Media.prototype.comments = function(id, callback) {
-
-    if (!id) {
-      throw new InstajamError('A media ID is required for media.comments()');
-    }
-
-    // Make a request to the API
-    request({
-      url: 'media/' + id + '/comments',
-      success: callback
-    });
-
-  };
-
-  Media.prototype.likes = function(id, callback) {
-
-    if (!id) {
-      throw new InstajamError('A media ID is required for media.likes()');
-    }
-
-    // Make a request to the API
-    request({
-      url: 'media/' + id + '/likes',
-      success: callback
-    });
-
-  };
-
-  // ## Tags
-
-  var Tag = function() {};
-
-  Tag.prototype.get = function(name, callback) {
-    
-    // We need at least a tag name to get information for
-    if (!name) {
-      throw new InstajamError('A tag name is required for tag.get()');
-    }
-
-    // Make a request to the API
-    request({
-      url: 'tags/' + name,
-      success: callback
-    });
-
-  };
-
-  Tag.prototype.media = function(name, options, callback) {
-      
-    // We need at least a tag name to work with
-    if (!name) {
-      throw new InstajamError('A tag name is required for tag.media()');
-    }
-
-    // Make the options argument optional
-    if (typeof options === 'function' && !callback) {
-      callback = options;
-      options = {};
-    }
-
-    // Make a request to the API
-    request({
-      url: 'tags/' + name + '/media/recent',
-      data: options,
-      success: callback
-    });
-
-  };
-
-  Tag.prototype.search = function(term, callback) {
-    
-    // We need at least a tag string to search for
-    if (!term) {
-      throw new InstajamError('A tag name is required for tag.search()');
-    }
-
-    var options = {
-      q: term
-    };
-
-    // Make a request to the API
-    request({
-      url: '/tags/search',
-      data: options,
-      success: callback
-    });
-
-  };
-
-  // ## Locations
-
-  var Location = function() {};
-
-  Location.prototype.get = function(id, callback) {
-    
-    // We need at least a location ID to work with
-    if (!id) {
-      throw new InstajamError('An ID is required for location.get()');
-    }
-
-    // Make a request to the API
-    request({
-      url: 'locations/' + id,
-      success: callback
-    });
-
-  };
-
-  Location.prototype.media = function(id, options, callback) {
-    
-    // We need at least a location ID to work with
-    if (!id) {
-      throw new InstajamError('An ID is required for location.get()');
-    }
-
-    // Make the options argument optional
-    if (typeof options === 'function' && !callback) {
-      callback = options;
-      options = {};
-    }
-
-    // Make a request to the API
-    request({
-      url: 'locations/' + id + '/media/recent',
-      success: callback
-    });
-
-  };
-
-  Location.prototype.search = function(options, callback) {
-  
-    options = options || {};
-
-    // We need at LEAST a lat/lng pair, or a Foursquare ID to work with
-    if ( (!options.lat || !options.lng) && !options.foursquare_v2_id) {
-      throw new InstajamError('A latitude and longitude OR a Foursquare place ID is required for location.search()');
-    }
-
-    // Make a request to the API
-    request({
-      url: 'locations/search',
-      data: options,
-      success: callback
-    });
-
-  };
-
-  // ## Geographies
-
-  var Geography = function() {};
-
-  Geography.prototype.media = function(id, options, callback) {
-      
-    // We need at least a Geography ID to work with
-    if (!id) {
-      throw new InstajamError('A Geography ID is required for geography.get()');
-    }
-
-    // The options argument defaults to an empty object
-    options = options || {};
-
-    // Make a request to the API
-    request({
-      url: 'geographies/' + id + '/media/recent',
-      data: options,
-      success: callback
-    });
-
-  };
-
-  // # Helpers
-
-  // Returns the client-specific authentication URL that is created upon initialization.
-
-  // Parses a given parameter from the browsers hash. 
+	// Parses a given parameter from the browsers hash. 
   // Optionally, the parameter can be removed from 
   // the URL upon successful matching.
 
-  function hashParam (param, remove) {
+ 	hashParam: function (param, remove) {
 
     // Create a RegExp object for parsing params
     var regex = new RegExp("(?:&|#)" + param + "=([a-z0-9._-]+)", "i");
@@ -602,50 +60,12 @@
     // Otherwise return false if no matching params are found
     return false;
 
-  }
-
-  // Makes JSONP requests to the Instagram API
-
-  function request (options) {
-
-    var urlBase = 'https://api.instagram.com/v1/',
-        callbackName = 'instajam' + Math.round(new Date().getTime() / 1000) + Math.floor(Math.random() * 100);
-
-    options = options || {};
-    options.data = options.data || {};
-    options.data.access_token = localStorage.getItem('instagram_access_token');
-    options.data.callback = callbackName;
-    
-    var queryString = serializeParams(options.data);
-
-    if (options.url) {
-      options.url = urlBase + options.url + '?' + queryString;
-
-      window[callbackName] = function(data) {
-          
-        if (typeof options.success === 'function') {
-          options.success(data);
-        }
-        
-        script.parentNode.removeChild(script);
-        delete window[callbackName];
-      };
-
-      var script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = options.url;
-      document.getElementsByTagName('body')[0].appendChild(script);
-
-    } else {
-      throw new InstajamError("Instajam:: Missing request URL");
-    }
-
-  }
+  },
 
   // Given a JavaScript object, return a 
   // string suitable for passing in a URL
 
-  function serializeParams (obj) {
+  serializeParams: function (obj) {
     var str = [];
     for (var p in obj) {
       str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
@@ -653,22 +73,670 @@
     return str.join('&');
   }
 
-  // Define a custom error object
+};
 
-  function InstajamError (message) {
-    this.name = "InstajamError";
-    this.message = message || '';
+},{}],3:[function(_dereq_,module,exports){
+'use strict';
+
+// -----------------------------------------------------------------------------
+// Requirements
+// -----------------------------------------------------------------------------
+
+var helpers = _dereq_('./helpers.js');
+
+var Self = _dereq_('./self.js');
+var User = _dereq_('./user.js');
+var Media = _dereq_('./media.js');
+var Tag = _dereq_('./tag.js');
+var Location = _dereq_('./location.js');
+var Geography = _dereq_('./geography.js');
+
+// -----------------------------------------------------------------------------
+// Public Class
+// -----------------------------------------------------------------------------
+
+function Instajam (options) {
+
+	options = options || {};
+
+	// If a client ID isn't provided, immediately throw an error.
+  if (!options.clientID) {
+  	throw new Error('Instajam: A client ID is required.');
   }
 
-  InstajamError.prototype = Error.prototype;
+	// Before we go ahead and initialize everything, see if
+	// we just need to redirect with the returned access token
+	this.attemptRedirect();
 
-  // Return new instances of the endpoint 
-  // helpers as top-level keys
+	// Set default options, and attach them to the instance
+ 	options.scope = options.scope || ['basic'];
+ 	options.key = options.key || 'instajam_access_token';
+ 	this.options = options;
 
-  Instajam.user = new User();
-  Instajam.media = new Media();
-  Instajam.tag = new Tag();
-  Instajam.location = new Location();
-  // Instajam.geography = new Geography();
+  // Create child classes for each endpoint resource
+  this.self = new Self(this);
+  this.user = new User(this);
+  this.media = new Media(this);
+  this.tag = new Tag(this);
+  this.location = new Location(this);
+  this.geography = new Geography(this);
 
-}(window.Instajam = window.Instajam || {}));
+  // On initialize, try to get an access token from localStorage.
+  // If one is found, then authenticate with that token
+  var token = window.localStorage.getItem(this.options.key);
+
+  if (token) {
+  	this.authenticate(token);
+  }
+
+}
+
+// Check for an access token in the URL. If one is present, and this
+// window is a popup with a reference to our Instajam instance
+// then pass back the access token and close the popup.
+
+Instajam.prototype.attemptRedirect = function () {
+	var token = helpers.hashParam('access_token');
+	
+	if (token && window.opener && window._instajam) {
+		window._instajam.authenticate(token);
+		return window.close();
+	}
+};
+
+// Returns a URL to the Instagram OAuth authorization page.
+
+Instajam.prototype.getAuthURL = function () {
+
+	var authURL = 'https://instagram.com/oauth/authorize';
+	var params = {};
+
+	if (!this.options.redirectURI) {
+		throw new Error('Instajam: A redirect URI is required for authentication.');
+	}
+
+	params['client_id'] = this.options.clientID;
+	params['redirect_uri'] = this.options.redirectURI;
+	params['response_type'] = 'token';
+	params['scope'] = this.options.scope.join('+');
+
+	return authURL + '?' + helpers.serializeParams(params);
+};
+
+Instajam.prototype.authenticate = function (tokenOrOptions) {
+
+	var options;
+	var token = typeof tokenOrOptions === 'string' ? tokenOrOptions : false;
+	
+	if (token) {
+		
+		window.localStorage.setItem(this.options.key, token);
+		this.options.accessToken = token;
+	
+	} else {
+		
+		options = tokenOrOptions;
+
+		if (options.popup) {
+			var popup = window.open(this.getAuthURL(), '', 'width=600,height=400');
+			popup._instajam = this;
+		} else {
+			window.location = this.getAuthURL();
+		}
+
+	}
+
+};
+
+Instajam.prototype.isAuthenticated = function () {
+	return !!this.options.accessToken;
+};
+
+Instajam.prototype.logout = function () {
+	window.localStorage.removeItem(this.options.key);
+};
+
+Instajam.prototype.request = function (options) {
+
+	var urlBase = 'https://api.instagram.com/v1/';
+  var callbackName = 'instajam' + Math.round(new Date().getTime() / 1000) + Math.floor(Math.random() * 100);
+
+  options = options || {};
+  options.data = options.data || {};
+  options.data['client_id'] = this.options.clientID;
+  options.data.callback = callbackName;
+
+  if (this.options.accessToken) {
+  	options.data['access_token'] = this.options.accessToken;
+  }
+  
+  var queryString = helpers.serializeParams(options.data);
+
+  if (options.url) {
+    options.url = urlBase + options.url + '?' + queryString;
+
+    window[callbackName] = function(data) {
+        
+      if (typeof options.success === 'function') {
+        options.success(data);
+      }
+      
+      script.parentNode.removeChild(script);
+      delete window[callbackName];
+    };
+
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = options.url;
+    document.getElementsByTagName('body')[0].appendChild(script);
+
+  } else {
+    throw new Error('Instajam: Method "request" needs a URL.');
+  }
+
+};
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
+
+module.exports = Instajam;
+
+},{"./geography.js":1,"./helpers.js":2,"./location.js":4,"./media.js":5,"./self.js":6,"./tag.js":7,"./user.js":8}],4:[function(_dereq_,module,exports){
+'use strict';
+
+function Location (client) {
+	this.client = client;
+}
+
+Location.prototype.get = function(id, callback) {
+    
+  // We need at least a location ID to work with
+  if (!id) {
+    throw new Error('Instajam: An ID is required for Location.get()');
+  }
+
+  // Make a request to the API
+  this.client.request({
+    url: 'locations/' + id,
+    success: callback
+  });
+
+};
+
+Location.prototype.media = function(id, options, callback) {
+  
+  // We need at least a location ID to work with
+  if (!id) {
+    throw new Error('Instajam: An ID is required for Location.get()');
+  }
+
+  // Make the options argument optional
+  if (typeof options === 'function' && !callback) {
+    callback = options;
+    options = {};
+  }
+
+  // Make a request to the API
+  this.client.request({
+    url: 'locations/' + id + '/media/recent',
+    success: callback
+  });
+
+};
+
+Location.prototype.search = function(options, callback) {
+
+  options = options || {};
+
+  // We need at LEAST a lat/lng pair, or a Foursquare ID to work with
+  if ( (!options.lat || !options.lng) && !options.foursquare_v2_id) {
+    throw new Error('Instajam: A latitude and longitude OR a Foursquare place ID is required for Location.search()');
+  }
+
+  // Make a request to the API
+  this.client.request({
+    url: 'locations/search',
+    data: options,
+    success: callback
+  });
+
+};
+
+module.exports = Location;
+
+},{}],5:[function(_dereq_,module,exports){
+'use strict';
+
+function Media (client) {
+	this.client = client;
+}
+
+Media.prototype.get = function(id, callback) {
+
+  // Make a request to the API
+  this.client.request({
+    url: 'media/' + id,
+    success: callback
+  });
+
+};
+
+Media.prototype.search = function(options, callback) {
+
+  options = options || {};
+
+  // Require that a latitude and longitude are
+  // passed in, at a minimum.
+  if (!options.lat || !options.lng) {
+    throw new Error('Instajam: A latitude AND a longitude are required for Media.search()');
+  }
+
+  // Make a request to the API
+  this.client.request({
+    url: 'media/search',
+    data: options,
+    success: callback
+  });
+
+};
+
+Media.prototype.popular = function(callback) {
+
+  // Make a request to the API
+  this.client.request({
+    url: 'media/popular',
+    success: callback
+  });
+
+};
+
+Media.prototype.comments = function(id, callback) {
+
+  if (!id) {
+    throw new Error('Instajam: A media ID is required for Media.comments()');
+  }
+
+  // Make a request to the API
+  this.client.request({
+    url: 'media/' + id + '/comments',
+    success: callback
+  });
+
+};
+
+Media.prototype.likes = function(id, callback) {
+
+  if (!id) {
+    throw new Error('Instajam: A media ID is required for Media.likes()');
+  }
+
+  // Make a request to the API
+  this.client.request({
+    url: 'media/' + id + '/likes',
+    success: callback
+  });
+
+};
+
+module.exports = Media;
+
+},{}],6:[function(_dereq_,module,exports){
+'use strict';
+
+// -----------------------------------------------------------------------------
+// Public Class
+// -----------------------------------------------------------------------------
+
+function Self (client) {
+	this.client = client;
+}
+
+// ### Fetching the authenticated users's profile
+
+Self.prototype.profile = function (callback) {
+	this.client.request({
+    url: 'users/self',
+    success: callback
+  });
+};
+
+// ### Fetching the authenticated user's media
+
+Self.prototype.media = function (options, callback) {
+
+	// Make the options argument optional
+  if (typeof options === 'function') {
+    callback = options;
+    options = null;
+  }
+
+  // Make a request to the API
+  this.client.request({
+    url: 'users/self/media/recent',
+    data: options,
+    success: callback
+  });
+
+};
+
+// ### Fetching the authenticated user's activity feed
+
+Self.prototype.feed = function (options, callback) {
+
+	// Make the options argument optional
+  if (typeof options === 'function') {
+    callback = options;
+    options = null;
+  }
+
+  // Make a request to the API
+  this.client.request({
+    url: 'users/self/feed',
+    data: options,
+    success: callback
+  });
+
+};
+
+// ### Fetching the authenticated user's favorites.
+
+Self.prototype.favorites = function (options, callback) {
+
+	// Make the options argument optional
+  if (typeof options === 'function') {
+    callback = options;
+    options = null;
+  }
+
+  // Make a request to the API
+  this.client.request({
+    url: 'users/self/media/liked',
+    data: options,
+    success: callback
+  });
+
+};
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
+
+module.exports = Self;
+
+},{}],7:[function(_dereq_,module,exports){
+'use strict';
+
+// -----------------------------------------------------------------------------
+// Public Class
+// -----------------------------------------------------------------------------
+
+function Tag (client) {
+	this.client = client;
+}
+
+Tag.prototype.get = function(name, callback) {
+    
+  // We need at least a tag name to get information for
+  if (!name) {
+    throw new Error('Instajam: A tag name is required for Tag.get()');
+  }
+
+  // Make a request to the API
+  this.client.request({
+    url: 'tags/' + name,
+    success: callback
+  });
+
+};
+
+Tag.prototype.media = function(name, options, callback) {
+    
+  // We need at least a tag name to work with
+  if (!name) {
+    throw new Error('Instajam: A tag name is required for Tag.media()');
+  }
+
+  // Make the options argument optional
+  if (typeof options === 'function' && !callback) {
+    callback = options;
+    options = {};
+  }
+
+  // Make a request to the API
+  this.client.request({
+    url: 'tags/' + name + '/media/recent',
+    data: options,
+    success: callback
+  });
+
+};
+
+Tag.prototype.search = function(term, callback) {
+  
+  // We need at least a tag string to search for
+  if (!term) {
+    throw new Error('Instajam: A tag name is required for Tag.search()');
+  }
+
+  var options = {
+    q: term
+  };
+
+  // Make a request to the API
+  this.client.request({
+    url: '/tags/search',
+    data: options,
+    success: callback
+  });
+
+};
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
+
+module.exports = Tag;
+
+},{}],8:[function(_dereq_,module,exports){
+'use strict';
+
+// -----------------------------------------------------------------------------
+// Public Class
+// -----------------------------------------------------------------------------
+
+function User (client) {
+	this.client = client;
+}
+
+// ### Fetching a list of relationship requests for the currently authenticated user
+
+User.prototype.requests = function(callback) {
+  
+  // Make a request to the API
+  this.client.request({
+    url: 'users/self/requested-by',
+    success: callback
+  });
+
+};
+
+// ### Getting a relationship information for the currently authenciated user and a given user ID
+
+User.prototype.relationshipWith = function(id, callback) {
+  
+  // Make a request to the API
+  this.client.request({
+    url: 'users/' + id + '/relationship',
+    success: callback
+  });
+
+};
+
+// ### Fetching the profile of a user by ID or username
+
+User.prototype.get = function(id, callback) {
+  
+  // Require that an ID or username be passed
+  if (!id) {
+    throw new Error('Instajam: A user\'s ID or username is required for User.get()');
+  }
+
+  if (typeof id === 'number') {
+    
+    // Make a request to the API
+    this.client.request({
+      url: 'users/' + id,
+      success: callback
+    });
+  
+  } else if (typeof id === 'string') {
+
+    // Make a request to the API
+    this.search(id, function(result) {
+
+      // If the initial user search yields any
+      // results, then just return the first, but
+      // otherwise return nothing.
+      if (result.data && result.data.length === 1) {
+        result = result.data[0];
+      } else {
+        result = false;
+      }
+
+      // Call the initial callback, passing the result
+      if (typeof callback === 'function') {
+        callback(result);
+      }
+
+    });
+
+  }
+
+};
+
+// ### Fetching the media of a user ID or username
+
+User.prototype.media = function(id, options, callback) {
+
+  // Require that an ID be passed
+  
+  if (!id) {
+    throw new Error('Instajam: A user\'s ID or username is required for User.media()');
+  }
+
+  // Make the options argument optional
+  
+  if (typeof options === 'function' && !callback) {
+    callback = options;
+    options = null;
+  }
+
+  // If we're looking up the user by ID...
+  
+  if (typeof id === 'number') {
+    
+    // Make a request to that API
+    this.client.request({
+      url: 'users/' + id + '/media/recent',
+      data: options,
+      success: callback
+    });
+  
+  }
+
+  // Or rather looking up the user by username...
+
+  else if (typeof id === 'string') {
+
+    // ...then first search for the username...
+   this.search(id, function(result) {
+
+      // If the initial user search yields any
+      // results, then just return the first, but
+      // otherwise return nothing.
+      if (result.data && result.data.length > 0) {
+        result = result.data[0];
+      } else {
+        result = false;
+      }
+
+      if (result) {
+
+        // Make a request to that API
+        this.client.request({
+          url: 'users/' + result.id + '/media/recent',
+          data: options,
+          success: callback
+        });
+
+      } else {
+
+        if (typeof callback === 'function') {
+          callback(result);
+        }
+
+      }
+
+    });
+
+  }
+
+};
+
+// ### Searching for users by username
+
+User.prototype.search = function(term, options, callback) {
+  
+  // Require that a search term be passed
+  if (!term) {
+    throw new Error('Instajam: A search term is required for User.search()');
+  }
+
+  // Make the options argument optional
+  if (typeof options === 'function') {
+    callback = options;
+    options = {};
+  }
+
+  // Add the search term to the options object
+  options.q = term;
+
+  // Make a request to the API
+  this.client.request({
+    url: 'users/search',
+    data: options,
+    success: callback
+  });
+
+};
+
+// ### Fetching a list of users that user [id] follows
+
+User.prototype.follows = function(id, callback) {
+  
+  // Make a request to the API
+  this.client.request({
+    url: 'users/' + id + '/follows',
+    success: callback
+  });
+
+};
+
+// ### Fetching a list of followers of user [id]
+
+User.prototype.following = function(id, callback) {
+  
+  // Make a request to the API
+  this.client.request({
+    url: 'users/' + id + '/followed-by',
+    success: callback
+  });
+
+};
+
+module.exports = User;
+
+},{}]},{},[3])
+(3)
+});

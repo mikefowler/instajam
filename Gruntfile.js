@@ -1,98 +1,65 @@
-/*global module:false*/
 module.exports = function(grunt) {
 
-  // Project configuration.
+  'use strict';
+
+  require('load-grunt-tasks')(grunt);
+  require('time-grunt')(grunt);
+
   grunt.initConfig({
-    // Metadata.
-    meta: {
-      version: '2.0.0'
-    },
-    banner: '/*! Instajam - v<%= meta.version %> - ' +
-      '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-      '* http://github.com/mikefowler/instajam/\n' +
-      '* Copyright (c) <%= grunt.template.today("yyyy") %> ' +
-      'Mike Fowler; Licensed MIT */\n',
-    // Task configuration.
-    concat: {
+
+    browserify: {
       options: {
-        banner: '<%= banner %>',
-        stripBanners: true
+        bundleOptions: {
+          standalone: 'Instajam'
+        }
       },
       dist: {
-        src: ['src/instajam.js'],
+        src: 'src/instajam.js',
         dest: 'dist/instajam.js'
       }
     },
-    uglify: {
+
+    karma: {
       options: {
-        banner: '<%= banner %>'
+        basePath: '.',
+        colors: true,
+        port: 9876,
+        runnerPort: 9100,
+        reporters: ['progress'],
+        frameworks: ['mocha', 'sinon-chai', 'browserify'],
+        logLevel: 'ERROR',
+        preprocessors: {
+          'test/{,**/}*Spec.js': ['browserify']
+        },
+        files: [
+          'test/{,**/}*Helper.js',
+          'test/{,**/}*Spec.js'
+        ],
       },
-      dist: {
-        src: '<%= concat.dist.dest %>',
-        dest: 'dist/instajam.min.js'
-      }
-    },
-    jshint: {
-      all: [
-        'Gruntfile.js',
-        'src/instajam.js',
-        'spec/**/*.js'
-      ],
-      options: {
-        jshintrc: '.jshintrc'
+      unit: {
+        background: true,
+        browsers: ['PhantomJS', 'Chrome']
       },
-      gruntfile: {
-        src: 'Gruntfile.js'
+      continuous: {
+        singleRun: true,
+        browsers: ['PhantomJS']
       }
     },
-    docco: {
-      docs: {
-        src: ['src/instajam.js'],
-        options: {
-          output: 'docco/'
-        }
-      }
-    },
+
     watch: {
-      gruntfile: {
-        files: '<%= jshint.gruntfile.src %>',
-        tasks: ['jshint:gruntfile']
+      scripts: {
+        files: ['src/{,**/}*.js'],
+        tasks: ['browserify']
       },
-      src: {
-        files: [
-          'src/instajam.js',
-          'spec/**/*.js'
-        ],
-        tasks: ['test', 'build']
-      },
-      docs: {
-        files: [
-          'docs/**/*.html',
-          'docs/**/*.css',
-          'docs/**/*.js'
-        ],
-        options: {
-          livereload: true
-        }
+      test: {
+        files: ['src/{,**/}*.js', 'test/{,**/}*Spec.js'],
+        tasks: ['karma:unit:run']
       }
     }
+
   });
 
-  // These plugins provide necessary tasks.
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-docco');
-
-  // The default task just runs 'watch' for development
-  grunt.registerTask('default', ['test', 'watch']);
-
-  // Running build will test the code, then handle concatination,
-  // minification, copying new files, and then building documentation 
-  grunt.registerTask('build', ['concat', 'uglify', 'docco']);
-
-  // Tests the library by validating with JSHint
-  grunt.registerTask('test', ['jshint']);
-
+  grunt.registerTask('test', ['karma']);
+  grunt.registerTask('default', ['browserify', 'karma:unit', 'watch']);
+  
 };
