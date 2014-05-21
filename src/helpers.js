@@ -42,6 +42,45 @@ module.exports = {
       str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
     }
     return str.join('&');
+  },
+
+  // Opens a popup window at the provided URL. Optionally provide
+  // a string of options to pass into window.open
+  
+  openWindow: function (url, options) {
+    options = options || 'width=600,height=400';
+    return window.open(url, '', options);
+  },
+
+  // Set the location of the current browser window to the provided URL
+  
+  setLocation: function (url) {
+    window.location = url;
+  },
+
+  // Makes a JSONP request, given an object of options
+  
+  jsonp: function (options) {
+    var script;
+
+    if (!options.url || !options.data.callback) {
+      throw new Error('A URL and callback method name are required to perform a JSONP request');
+    }
+
+    options = options || {};
+
+    window[options.data.callback] = function(data) {
+      if (typeof options.success === 'function') {
+        options.success(data);
+      }
+      script.parentNode.removeChild(script);
+      delete window[options.data.callback];
+    };
+
+    script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = options.url;
+    document.getElementsByTagName('body')[0].appendChild(script);
   }
 
 };

@@ -5,13 +5,14 @@ var Tag = require('../src/tag.js');
 var Media = require('../src/media.js');
 var Geography = require('../src/geography.js');
 var Location = require('../src/location.js');
+var helpers = require('../src/helpers.js');
 
-describe('Instajam', function () {
+describe('Instajam:', function () {
 
 	var clientID = 'e9c4567d05174f47827a022e31aeffd4';
 	var redirectURI = 'http://my.app.com';
 
-	describe('Initialize', function () {
+	describe('initializing', function () {
 
 		beforeEach(function () {
 			this.client = new Instajam({
@@ -68,7 +69,7 @@ describe('Instajam', function () {
 
 	});
 
-	describe('Initialize with options', function () {
+	describe('initializing with options', function () {
 
 		var localStorageKey = 'test-key';
 
@@ -84,25 +85,31 @@ describe('Instajam', function () {
 			expect(this.client.options.key).to.equal(localStorageKey);
 		});
 
+		afterEach(function () {
+			this.client = null;
+			delete this.client;
+		});
+
 	});
 
-	describe('Authentication', function () {
+	describe('authenticating', function () {
 
 		var oauthURL = 'https://instagram.com/oauth/authorize';
 
 		beforeEach(function () {
 			this.client = new Instajam({
-				clientID: clientID
-			})
+				clientID: clientID,
+				redirectURI: redirectURI
+			});
 		});
 
 		it('should require a redirect URI in order to generate an authentication URL', function () {
 			var getAuthURL = this.client.getAuthURL.bind(this.client);
+			delete this.client.options.redirectURI;
 			expect(getAuthURL).to.throw('redirect URI is required');
 		});
 
 		it('should return an authentication URL', function () {
-			this.client.options.redirectURI = redirectURI;
 			var url = this.client.getAuthURL();
 
 			expect(url).to.contain(oauthURL);
@@ -110,6 +117,57 @@ describe('Instajam', function () {
 			expect(url).to.contain('redirect_uri=' + encodeURIComponent(redirectURI));
 			expect(url).to.contain('response_type=token');
 			expect(url).to.contain('scope=basic');
+		});
+
+		it('should authenticate with an access token', function () {
+			var key = this.client.options.key;
+
+			expect(localStorage.getItem(key)).to.not.exist;
+			this.client.authenticate('xxx');
+			expect(this.client.options.accessToken).to.equal('xxx');
+			expect(localStorage.getItem(key)).to.equal('xxx');
+		});
+
+		it('should authenticate by redirecting the browser to Instagram', function () {
+			var stub = sinon.stub(helpers, 'setLocation');
+			var url = this.client.getAuthURL();
+			
+			this.client.authenticate();
+			
+			expect(stub).to.have.been.calledWith(url);
+			stub.restore();
+		});
+
+		it('should authenticate by opening Instagram in a popup', function () {
+			var stub = sinon.stub(helpers, 'openWindow').returns({});
+			var url = this.client.getAuthURL();
+
+			var popup = this.client.authenticate({ popup: true });
+
+			expect(stub).to.have.been.calledWith(url);
+			expect(popup._instajam).to.exist;
+			stub.restore();
+		});
+
+		it('should indicate whether a user has been authenticated', function () {
+			expect(this.client.isAuthenticated()).to.be.false;
+			this.client.authenticate('xxx');
+			expect(this.client.isAuthenticated()).to.be.true;
+		});
+
+		it('should log a user out by removing their access token from localStorage', function () {
+			var key = this.client.options.key;
+
+			this.client.authenticate('xxx');
+			expect(localStorage.getItem(key)).to.equal('xxx');
+			this.client.logout();
+			expect(localStorage.getItem(key)).to.not.exist;
+		});
+
+		afterEach(function () {
+			this.client.logout();
+			this.client = null;
+			delete this.client;
 		});
 
 	});

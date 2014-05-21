@@ -26,14 +26,14 @@ function Instajam (options) {
   	throw new Error('Instajam: A client ID is required.');
   }
 
-	// Before we go ahead and initialize everything, see if
-	// we just need to redirect with the returned access token
-	this.attemptRedirect();
-
 	// Set default options, and attach them to the instance
  	options.scope = options.scope || ['basic'];
  	options.key = options.key || 'instajam_access_token';
  	this.options = options;
+
+ 	// Before we go ahead and initialize the rest, see if
+	// we just need to redirect with the returned access token
+	this.checkForAccessToken();
 
   // Create child classes for each endpoint resource
   this.self = new Self(this);
@@ -43,26 +43,28 @@ function Instajam (options) {
   this.location = new Location(this);
   this.geography = new Geography(this);
 
-  // On initialize, try to get an access token from localStorage.
-  // If one is found, then authenticate with that token
-  var token = window.localStorage.getItem(this.options.key);
-
-  if (token) {
-  	this.authenticate(token);
-  }
-
 }
 
 // Check for an access token in the URL. If one is present, and this
 // window is a popup with a reference to our Instajam instance
 // then pass back the access token and close the popup.
 
-Instajam.prototype.attemptRedirect = function () {
-	var token = helpers.hashParam('access_token');
+Instajam.prototype.checkForAccessToken = function () {
+	var token = helpers.hashParam('access_token', true);
 	
-	if (token && window.opener && window._instajam) {
-		window._instajam.authenticate(token);
-		return window.close();
+	if (token) {
+		if (window.opener && window._instajam) {
+			window._instajam.authenticate(token);
+			return window.close();
+		} else {
+			this.authenticate(token);
+		}
+	} else {
+		token = window.localStorage.getItem(this.options.key);
+
+		if (token) {
+			this.authenticate(token);
+		}
 	}
 };
 
@@ -88,6 +90,7 @@ Instajam.prototype.getAuthURL = function () {
 Instajam.prototype.authenticate = function (tokenOrOptions) {
 
 	var options;
+	var url;
 	var token = typeof tokenOrOptions === 'string' ? tokenOrOptions : false;
 	
 	if (token) {
@@ -97,13 +100,15 @@ Instajam.prototype.authenticate = function (tokenOrOptions) {
 	
 	} else {
 		
-		options = tokenOrOptions;
+		options = tokenOrOptions || {};
+		url = this.getAuthURL();
 
 		if (options.popup) {
-			var popup = window.open(this.getAuthURL(), '', 'width=600,height=400');
+			var popup = helpers.openWindow(url);
 			popup._instajam = this;
+			return popup;
 		} else {
-			window.location = this.getAuthURL();
+			helpers.setLocation(url);
 		}
 
 	}
@@ -115,6 +120,7 @@ Instajam.prototype.isAuthenticated = function () {
 };
 
 Instajam.prototype.logout = function () {
+	this.options.accessToken = null;
 	window.localStorage.removeItem(this.options.key);
 };
 
@@ -134,27 +140,13 @@ Instajam.prototype.request = function (options) {
   
   var queryString = helpers.serializeParams(options.data);
 
-  if (options.url) {
-    options.url = urlBase + options.url + '?' + queryString;
-
-    window[callbackName] = function(data) {
-        
-      if (typeof options.success === 'function') {
-        options.success(data);
-      }
-      
-      script.parentNode.removeChild(script);
-      delete window[callbackName];
-    };
-
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = options.url;
-    document.getElementsByTagName('body')[0].appendChild(script);
-
-  } else {
-    throw new Error('Instajam: Method "request" needs a URL.');
+  if (!options.url) {
+  	throw new Error('Instajam: Method "request" needs a URL.');
   }
+  
+  options.url = urlBase + options.url + '?' + queryString;
+
+  helpers.jsonp(options);
 
 };
 

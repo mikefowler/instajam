@@ -74,6 +74,30 @@ Self.prototype.favorites = function (options, callback) {
 
 };
 
+// ### Fetching a list of relationship requests for the currently authenticated user
+
+Self.prototype.requests = function(callback) {
+  
+  // Make a request to the API
+  this.client.request({
+    url: 'users/self/requested-by',
+    success: callback
+  });
+
+};
+
+// ### Getting a relationship information for the currently authenciated user and a given user ID
+
+Self.prototype.relationshipWith = function(id, callback) {
+  
+  // Make a request to the API
+  this.client.request({
+    url: 'users/' + id + '/relationship',
+    success: callback
+  });
+
+};
+
 // -----------------------------------------------------------------------------
 // Exports
 // -----------------------------------------------------------------------------

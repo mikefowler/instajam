@@ -8,30 +8,6 @@ function User (client) {
 	this.client = client;
 }
 
-// ### Fetching a list of relationship requests for the currently authenticated user
-
-User.prototype.requests = function(callback) {
-  
-  // Make a request to the API
-  this.client.request({
-    url: 'users/self/requested-by',
-    success: callback
-  });
-
-};
-
-// ### Getting a relationship information for the currently authenciated user and a given user ID
-
-User.prototype.relationshipWith = function(id, callback) {
-  
-  // Make a request to the API
-  this.client.request({
-    url: 'users/' + id + '/relationship',
-    success: callback
-  });
-
-};
-
 // ### Fetching the profile of a user by ID or username
 
 User.prototype.get = function(id, callback) {
