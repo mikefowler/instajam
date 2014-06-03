@@ -13,7 +13,7 @@ API = Instajam.init({
 });
 
 // Get the profile of the authenticated user.
-API.user.self(function(response) {
+API.user.self.profile(function(response) {
     console.log('Hey there, ' + response.data.full_name);
 });
 ```
