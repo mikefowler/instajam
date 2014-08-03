@@ -1,17 +1,19 @@
 'use strict';
 
+var instajam;
+
 // -----------------------------------------------------------------------------
 // Public Class
 // -----------------------------------------------------------------------------
 
 function Self (client) {
-	this.client = client;
+	instajam = client;
 }
 
 // ### Fetching the authenticated users's profile
 
 Self.prototype.profile = function (callback) {
-	this.client.request({
+	instajam.request({
     url: 'users/self',
     success: callback
   });
@@ -28,7 +30,7 @@ Self.prototype.media = function (options, callback) {
   }
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'users/self/media/recent',
     data: options,
     success: callback
@@ -47,7 +49,7 @@ Self.prototype.feed = function (options, callback) {
   }
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'users/self/feed',
     data: options,
     success: callback
@@ -66,7 +68,7 @@ Self.prototype.favorites = function (options, callback) {
   }
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'users/self/media/liked',
     data: options,
     success: callback
@@ -79,7 +81,7 @@ Self.prototype.favorites = function (options, callback) {
 Self.prototype.requests = function(callback) {
   
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'users/self/requested-by',
     success: callback
   });
@@ -91,7 +93,7 @@ Self.prototype.requests = function(callback) {
 Self.prototype.relationshipWith = function(id, callback) {
   
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'users/' + id + '/relationship',
     success: callback
   });

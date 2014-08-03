@@ -1,13 +1,15 @@
 'use strict';
 
+var instajam;
+
 function Media (client) {
-	this.client = client;
+	instajam = client;
 }
 
 Media.prototype.get = function(id, callback) {
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'media/' + id,
     success: callback
   });
@@ -25,7 +27,7 @@ Media.prototype.search = function(options, callback) {
   }
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'media/search',
     data: options,
     success: callback
@@ -36,7 +38,7 @@ Media.prototype.search = function(options, callback) {
 Media.prototype.popular = function(callback) {
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'media/popular',
     success: callback
   });
@@ -50,7 +52,7 @@ Media.prototype.comments = function(id, callback) {
   }
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'media/' + id + '/comments',
     success: callback
   });
@@ -64,7 +66,7 @@ Media.prototype.likes = function(id, callback) {
   }
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'media/' + id + '/likes',
     success: callback
   });

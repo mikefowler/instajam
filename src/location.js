@@ -1,7 +1,9 @@
 'use strict';
 
+var instajam;
+
 function Location (client) {
-	this.client = client;
+	instajam = client;
 }
 
 Location.prototype.get = function(id, callback) {
@@ -12,7 +14,7 @@ Location.prototype.get = function(id, callback) {
   }
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'locations/' + id,
     success: callback
   });
@@ -33,7 +35,7 @@ Location.prototype.media = function(id, options, callback) {
   }
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'locations/' + id + '/media/recent',
     success: callback
   });
@@ -50,7 +52,7 @@ Location.prototype.search = function(options, callback) {
   }
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'locations/search',
     data: options,
     success: callback

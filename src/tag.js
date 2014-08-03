@@ -1,11 +1,13 @@
 'use strict';
 
+var instajam;
+
 // -----------------------------------------------------------------------------
 // Public Class
 // -----------------------------------------------------------------------------
 
 function Tag (client) {
-	this.client = client;
+	instajam = client;
 }
 
 Tag.prototype.get = function(name, callback) {
@@ -16,7 +18,7 @@ Tag.prototype.get = function(name, callback) {
   }
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'tags/' + name,
     success: callback
   });
@@ -37,7 +39,7 @@ Tag.prototype.media = function(name, options, callback) {
   }
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'tags/' + name + '/media/recent',
     data: options,
     success: callback
@@ -57,7 +59,7 @@ Tag.prototype.search = function(term, callback) {
   };
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: '/tags/search',
     data: options,
     success: callback

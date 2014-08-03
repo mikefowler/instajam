@@ -129,8 +129,8 @@ Instajam.prototype.request = function (options) {
 	var urlBase = 'https://api.instagram.com/v1/';
   var callbackName = 'instajam' + Math.round(new Date().getTime() / 1000) + Math.floor(Math.random() * 100);
 
-  options = options || {};
-  options.data = options.data || {};
+  options || (options = {});
+  options.data || (options.data = {});
   options.data['client_id'] = this.options.clientID;
   options.data.callback = callbackName;
 

@@ -1,11 +1,13 @@
 'use strict';
 
+var instajam;
+
 // -----------------------------------------------------------------------------
 // Public Class
 // -----------------------------------------------------------------------------
 
 function User (client) {
-	this.client = client;
+	instajam = client;
 }
 
 // ### Fetching the profile of a user by ID or username
@@ -20,7 +22,7 @@ User.prototype.get = function(id, callback) {
   if (typeof id === 'number') {
     
     // Make a request to the API
-    this.client.request({
+    instajam.request({
       url: 'users/' + id,
       success: callback
     });
@@ -72,7 +74,7 @@ User.prototype.media = function(id, options, callback) {
   if (typeof id === 'number') {
     
     // Make a request to that API
-    this.client.request({
+    instajam.request({
       url: 'users/' + id + '/media/recent',
       data: options,
       success: callback
@@ -99,7 +101,7 @@ User.prototype.media = function(id, options, callback) {
       if (result) {
 
         // Make a request to that API
-        this.client.request({
+        instajam.request({
           url: 'users/' + result.id + '/media/recent',
           data: options,
           success: callback
@@ -138,7 +140,7 @@ User.prototype.search = function(term, options, callback) {
   options.q = term;
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'users/search',
     data: options,
     success: callback
@@ -151,7 +153,7 @@ User.prototype.search = function(term, options, callback) {
 User.prototype.follows = function(id, callback) {
   
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'users/' + id + '/follows',
     success: callback
   });
@@ -163,7 +165,7 @@ User.prototype.follows = function(id, callback) {
 User.prototype.following = function(id, callback) {
   
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'users/' + id + '/followed-by',
     success: callback
   });

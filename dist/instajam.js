@@ -1,8 +1,10 @@
 !function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.Instajam=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 'use strict';
 
+var instajam;
+
 function Geography (client) {
-	this.client = client;
+	instajam = client;
 }
 
 Geography.prototype.media = function(id, options, callback) {
@@ -16,7 +18,7 @@ Geography.prototype.media = function(id, options, callback) {
   options = options || {};
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'geographies/' + id + '/media/recent',
     data: options,
     success: callback
@@ -246,8 +248,8 @@ Instajam.prototype.request = function (options) {
 	var urlBase = 'https://api.instagram.com/v1/';
   var callbackName = 'instajam' + Math.round(new Date().getTime() / 1000) + Math.floor(Math.random() * 100);
 
-  options = options || {};
-  options.data = options.data || {};
+  options || (options = {});
+  options.data || (options.data = {});
   options.data['client_id'] = this.options.clientID;
   options.data.callback = callbackName;
 
@@ -276,8 +278,10 @@ module.exports = Instajam;
 },{"./geography.js":1,"./helpers.js":2,"./location.js":4,"./media.js":5,"./self.js":6,"./tag.js":7,"./user.js":8}],4:[function(_dereq_,module,exports){
 'use strict';
 
+var instajam;
+
 function Location (client) {
-	this.client = client;
+	instajam = client;
 }
 
 Location.prototype.get = function(id, callback) {
@@ -288,7 +292,7 @@ Location.prototype.get = function(id, callback) {
   }
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'locations/' + id,
     success: callback
   });
@@ -309,7 +313,7 @@ Location.prototype.media = function(id, options, callback) {
   }
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'locations/' + id + '/media/recent',
     success: callback
   });
@@ -326,7 +330,7 @@ Location.prototype.search = function(options, callback) {
   }
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'locations/search',
     data: options,
     success: callback
@@ -339,14 +343,16 @@ module.exports = Location;
 },{}],5:[function(_dereq_,module,exports){
 'use strict';
 
+var instajam;
+
 function Media (client) {
-	this.client = client;
+	instajam = client;
 }
 
 Media.prototype.get = function(id, callback) {
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'media/' + id,
     success: callback
   });
@@ -364,7 +370,7 @@ Media.prototype.search = function(options, callback) {
   }
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'media/search',
     data: options,
     success: callback
@@ -375,7 +381,7 @@ Media.prototype.search = function(options, callback) {
 Media.prototype.popular = function(callback) {
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'media/popular',
     success: callback
   });
@@ -389,7 +395,7 @@ Media.prototype.comments = function(id, callback) {
   }
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'media/' + id + '/comments',
     success: callback
   });
@@ -403,7 +409,7 @@ Media.prototype.likes = function(id, callback) {
   }
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'media/' + id + '/likes',
     success: callback
   });
@@ -415,18 +421,20 @@ module.exports = Media;
 },{}],6:[function(_dereq_,module,exports){
 'use strict';
 
+var instajam;
+
 // -----------------------------------------------------------------------------
 // Public Class
 // -----------------------------------------------------------------------------
 
 function Self (client) {
-	this.client = client;
+	instajam = client;
 }
 
 // ### Fetching the authenticated users's profile
 
 Self.prototype.profile = function (callback) {
-	this.client.request({
+	instajam.request({
     url: 'users/self',
     success: callback
   });
@@ -443,7 +451,7 @@ Self.prototype.media = function (options, callback) {
   }
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'users/self/media/recent',
     data: options,
     success: callback
@@ -462,7 +470,7 @@ Self.prototype.feed = function (options, callback) {
   }
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'users/self/feed',
     data: options,
     success: callback
@@ -481,7 +489,7 @@ Self.prototype.favorites = function (options, callback) {
   }
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'users/self/media/liked',
     data: options,
     success: callback
@@ -494,7 +502,7 @@ Self.prototype.favorites = function (options, callback) {
 Self.prototype.requests = function(callback) {
   
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'users/self/requested-by',
     success: callback
   });
@@ -506,7 +514,7 @@ Self.prototype.requests = function(callback) {
 Self.prototype.relationshipWith = function(id, callback) {
   
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'users/' + id + '/relationship',
     success: callback
   });
@@ -522,12 +530,14 @@ module.exports = Self;
 },{}],7:[function(_dereq_,module,exports){
 'use strict';
 
+var instajam;
+
 // -----------------------------------------------------------------------------
 // Public Class
 // -----------------------------------------------------------------------------
 
 function Tag (client) {
-	this.client = client;
+	instajam = client;
 }
 
 Tag.prototype.get = function(name, callback) {
@@ -538,7 +548,7 @@ Tag.prototype.get = function(name, callback) {
   }
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'tags/' + name,
     success: callback
   });
@@ -559,7 +569,7 @@ Tag.prototype.media = function(name, options, callback) {
   }
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'tags/' + name + '/media/recent',
     data: options,
     success: callback
@@ -579,7 +589,7 @@ Tag.prototype.search = function(term, callback) {
   };
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: '/tags/search',
     data: options,
     success: callback
@@ -596,12 +606,14 @@ module.exports = Tag;
 },{}],8:[function(_dereq_,module,exports){
 'use strict';
 
+var instajam;
+
 // -----------------------------------------------------------------------------
 // Public Class
 // -----------------------------------------------------------------------------
 
 function User (client) {
-	this.client = client;
+	instajam = client;
 }
 
 // ### Fetching the profile of a user by ID or username
@@ -616,7 +628,7 @@ User.prototype.get = function(id, callback) {
   if (typeof id === 'number') {
     
     // Make a request to the API
-    this.client.request({
+    instajam.request({
       url: 'users/' + id,
       success: callback
     });
@@ -668,7 +680,7 @@ User.prototype.media = function(id, options, callback) {
   if (typeof id === 'number') {
     
     // Make a request to that API
-    this.client.request({
+    instajam.request({
       url: 'users/' + id + '/media/recent',
       data: options,
       success: callback
@@ -695,7 +707,7 @@ User.prototype.media = function(id, options, callback) {
       if (result) {
 
         // Make a request to that API
-        this.client.request({
+        instajam.request({
           url: 'users/' + result.id + '/media/recent',
           data: options,
           success: callback
@@ -734,7 +746,7 @@ User.prototype.search = function(term, options, callback) {
   options.q = term;
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'users/search',
     data: options,
     success: callback
@@ -747,7 +759,7 @@ User.prototype.search = function(term, options, callback) {
 User.prototype.follows = function(id, callback) {
   
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'users/' + id + '/follows',
     success: callback
   });
@@ -759,7 +771,7 @@ User.prototype.follows = function(id, callback) {
 User.prototype.following = function(id, callback) {
   
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'users/' + id + '/followed-by',
     success: callback
   });

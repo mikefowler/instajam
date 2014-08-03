@@ -34,9 +34,21 @@ describe('Instajam#User', function () {
 		expect(this.stub.lastCall.args[0].url).to.contain('/users/' + userID + '/media/recent');
 	});
 
-	xit('can get a user\'s media by username', function () {
+	it('can get a user\'s media by username', function () {
+		var searchSpy, searchResponse;
+
+		searchResponse = {
+			data: [{
+				id: 42
+			}]
+		};
+		
+		searchSpy = sinon.stub(this.client.user, 'search');
+		
 		this.client.user.media(username);
-		expect(this.stub).to.have.been.calledTwice;
+		expect(searchSpy).to.have.been.calledOnce;
+		searchSpy.lastCall.args[1].call(this.client, searchResponse);
+		expect(this.stub).to.have.been.calledOnce;
 	});
 
 	afterEach(function () {

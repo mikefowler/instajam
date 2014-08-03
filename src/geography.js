@@ -1,7 +1,9 @@
 'use strict';
 
+var instajam;
+
 function Geography (client) {
-	this.client = client;
+	instajam = client;
 }
 
 Geography.prototype.media = function(id, options, callback) {
@@ -15,7 +17,7 @@ Geography.prototype.media = function(id, options, callback) {
   options = options || {};
 
   // Make a request to the API
-  this.client.request({
+  instajam.request({
     url: 'geographies/' + id + '/media/recent',
     data: options,
     success: callback

@@ -19,6 +19,14 @@ module.exports = function(grunt) {
       }
     },
 
+    connect: {
+      server: {
+        options: {
+          port: 7800
+        }
+      }
+    },
+
     karma: {
       options: {
         basePath: '.',
@@ -60,6 +68,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('test', ['karma']);
-  grunt.registerTask('default', ['browserify', 'karma:unit', 'watch']);
+  grunt.registerTask('serve', ['connect']);
+  grunt.registerTask('default', ['browserify', 'karma:unit', 'serve', 'watch']);
   
 };
