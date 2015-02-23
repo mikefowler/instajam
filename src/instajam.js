@@ -15,7 +15,7 @@
       throw new InstajamError("Client ID and Redirect URI are required.");
     }
 
-    // If the app is requesting additional 
+    // If the app is requesting additional p
     // scopes, build a string to append to
     // the auth URL.
     if (options.scope && typeof options.scope === 'object') {
@@ -213,11 +213,19 @@
       // Make a request to the API
       User.prototype.search.call(this, id, {}, function(result) {
 
-        // If the initial user search yields any
-        // results, then just return the first, but
+        // Go through the results and check for
+        // a perfect match, then query again with that user's ID
         // otherwise return nothing.
-        if (result.data && result.data.length === 1) {
-          result = result.data[0];
+        if (result.data) {    
+            var userIds = result.data;
+            result = false;
+
+            for (var i = 0; i < userIds.length; i++) {
+                if (userIds[i].username === id) {
+                    User.prototype.get(parseInt(userIds[i].id, 10), callback);
+                    return;
+                }
+            }
         } else {
           result = false;
         }
