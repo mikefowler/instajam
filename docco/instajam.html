@@ -30,9 +30,11 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>(<span class="function"><span class="keyword">function</span><span class="params">(Instajam)</span> {</span>
+            <div class="content"><div class='highlight'><pre>(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(root, factory)</span> </span>{
+<span class="hljs-pi">
+  'use strict'</span>;
 
-  <span class="string">'use strict'</span>;</pre></div></div>
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> define === <span class="hljs-string">'function'</span> &amp;&amp; define.amd) {</pre></div></div>
             
         </li>
         
@@ -43,13 +45,14 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <h1 id="initialization">Initialization</h1>
+              <p>AMD</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  Instajam.init = <span class="function"><span class="keyword">function</span><span class="params">(options)</span> {</span>
-
-    options = options || {};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    define([<span class="hljs-string">'instajam'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(exports)</span> </span>{
+      factory((root.Instajam = exports));
+    });
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> exports === <span class="hljs-string">'object'</span>) {</pre></div></div>
             
         </li>
         
@@ -60,14 +63,12 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>Throw an error if either the client ID or the 
-redirect URI isn&#39;t provided.</p>
+              <p>CommonJS</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (!options.clientId || !options.redirectUri) {
-      <span class="keyword">throw</span> <span class="keyword">new</span> InstajamError(<span class="string">"Client ID and Redirect URI are required."</span>);
-    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    factory(exports);
+  } <span class="hljs-keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -78,17 +79,18 @@ redirect URI isn&#39;t provided.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>If the app is requesting additional 
-scopes, build a string to append to
-the auth URL.</p>
+              <p>Browser globals</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (options.scope &amp;&amp; <span class="keyword">typeof</span> options.scope === <span class="string">'object'</span>) {
-      <span class="keyword">this</span>.scope = <span class="string">'&amp;scope='</span> + options.scope.join(<span class="string">'+'</span>);
-    } <span class="keyword">else</span> {
-      <span class="keyword">this</span>.scope = <span class="string">'&amp;scope=basic'</span>;
-    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    factory((root.Instajam = {}));
+  }
+
+}(<span class="hljs-keyword">this</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(exports)</span> </span>{
+<span class="hljs-pi">
+  'use strict'</span>;
+
+  <span class="hljs-keyword">var</span> Instajam = {};</pre></div></div>
             
         </li>
         
@@ -99,12 +101,14 @@ the auth URL.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>Build an authentication URL using
-constructor parameters.</p>
+              <h1 id="initialization">Initialization</h1>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">this</span>.authUrl = <span class="string">'https://instagram.com/oauth/authorize/?client_id='</span> + options.clientId + <span class="string">'&amp;redirect_uri='</span> + options.redirectUri + <span class="string">'&amp;response_type=token'</span> + (<span class="keyword">this</span>.scope || <span class="string">''</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+  Instajam.init = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> </span>{
+
+    options = options || {};</pre></div></div>
             
         </li>
         
@@ -115,16 +119,15 @@ constructor parameters.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>When the library is initialized, verify whether
-a user is currently authenticated.</p>
+              <p>Throw an error if either the client ID or the
+redirect URI isn’t provided.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">this</span>.authenticate();
-
-    <span class="keyword">return</span> <span class="keyword">this</span>;
-
-  };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+    <span class="hljs-keyword">if</span> (!options.clientId || !options.redirectUri) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">"Client ID and Redirect URI are required."</span>);
+    }</pre></div></div>
             
         </li>
         
@@ -135,14 +138,17 @@ a user is currently authenticated.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <h1 id="authentication">Authentication</h1>
-<p>Attempts to authenticate a user via 
-localStorage data or by parsing data 
-from the URL hash.</p>
+              <p>If the app is requesting additional p
+scopes, build a string to append to
+the auth URL.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  Instajam.authenticate = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (options.scope &amp;&amp; <span class="hljs-keyword">typeof</span> options.scope === <span class="hljs-string">'object'</span>) {
+      <span class="hljs-keyword">this</span>.scope = <span class="hljs-string">'&amp;scope='</span> + options.scope.join(<span class="hljs-string">'+'</span>);
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">this</span>.scope = <span class="hljs-string">'&amp;scope=basic'</span>;
+    }</pre></div></div>
             
         </li>
         
@@ -153,13 +159,12 @@ from the URL hash.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>First, check if a localStorage key 
-exists for the access_token...</p>
+              <p>Build an authentication URL using
+constructor parameters.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    
-    <span class="keyword">if</span> (localStorage.getItem(<span class="string">'instagram_access_token'</span>)) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.authUrl = <span class="hljs-string">'https://instagram.com/oauth/authorize/?client_id='</span> + options.clientId + <span class="hljs-string">'&amp;redirect_uri='</span> + options.redirectUri + <span class="hljs-string">'&amp;response_type=token'</span> + (<span class="hljs-keyword">this</span>.scope || <span class="hljs-string">''</span>);</pre></div></div>
             
         </li>
         
@@ -170,12 +175,16 @@ exists for the access_token...</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>...and if there is, set the
-authenticated property to true. </p>
+              <p>When the library is initialized, verify whether
+a user is currently authenticated.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="keyword">this</span>.authenticated = <span class="literal">true</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.authenticate();
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+
+  };</pre></div></div>
             
         </li>
         
@@ -186,12 +195,9 @@ authenticated property to true. </p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>If there is no localStorage key...</p>
+              <h1 id="authentication">Authentication</h1>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>    
-    } <span class="keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -202,12 +208,14 @@ authenticated property to true. </p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>...then check if there&#39;s a match
-for access_token in the URL hash.</p>
+              <p>Attempts to authenticate a user via
+localStorage data or by parsing data
+from the URL hash.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="keyword">if</span> (hashParam(<span class="string">'access_token'</span>)) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+  Instajam.authenticate = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -218,12 +226,13 @@ for access_token in the URL hash.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>If we can parse the access_token from
-the URL hash, set the localStorage param...</p>
+              <p>First, check if a localStorage key
+exists for the access_token…</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        localStorage.setItem(<span class="string">'instagram_access_token'</span>, hashParam(<span class="string">'access_token'</span>, <span class="literal">true</span>));</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+    <span class="hljs-keyword">if</span> (localStorage.getItem(<span class="hljs-string">'instagram_access_token'</span>)) {</pre></div></div>
             
         </li>
         
@@ -234,13 +243,12 @@ the URL hash, set the localStorage param...</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p>...and set the authenticated property to true</p>
+              <p>…and if there is, set the
+authenticated property to true.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">this</span>.authenticated = <span class="literal">true</span>;
-
-      } <span class="keyword">else</span> {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">this</span>.authenticated = <span class="hljs-literal">true</span>;</pre></div></div>
             
         </li>
         
@@ -251,20 +259,12 @@ the URL hash, set the localStorage param...</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
-              <p>Otherwise, if there is no localStorage
-key and there is nothing to parse from
-the hash, set the authenticated 
-property to false</p>
+              <p>If there is no localStorage key…</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">this</span>.authenticated = <span class="literal">false</span>;
-
-      }
-
-    }
-
-  };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+    } <span class="hljs-keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -275,18 +275,12 @@ property to false</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
-              <p>Effectively de-authenticates the current 
-user by removing their access token from 
-localStorage and setting the authenticated 
-property to false. This does <strong>not</strong> 
-revoke your app&#39;s permissions on the server.</p>
+              <p>…then check if there’s a match
+for access_token in the URL hash.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  Instajam.deauthenticate = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
-    localStorage.removeItem(<span class="string">'instagram_access_token'</span>);
-    <span class="keyword">this</span>.authenticated = <span class="literal">false</span>;
-  };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> (hashParam(<span class="hljs-string">'access_token'</span>)) {</pre></div></div>
             
         </li>
         
@@ -297,14 +291,12 @@ revoke your app&#39;s permissions on the server.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
-              <h1 id="endpoints">Endpoints</h1>
-<h2 id="users">Users</h2>
+              <p>If we can parse the access_token from
+the URL hash, set the localStorage param…</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="keyword">var</span> User = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>};
-  <span class="keyword">var</span> Self = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>};
-  User.prototype.self = <span class="keyword">new</span> Self();</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        localStorage.setItem(<span class="hljs-string">'instagram_access_token'</span>, hashParam(<span class="hljs-string">'access_token'</span>, <span class="hljs-literal">true</span>));</pre></div></div>
             
         </li>
         
@@ -315,16 +307,13 @@ revoke your app&#39;s permissions on the server.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
-              <h3 id="fetching-the-authenticated-users-s-profile">Fetching the authenticated users&#39;s profile</h3>
+              <p>…and set the authenticated property to true</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  Self.prototype.profile = <span class="function"><span class="keyword">function</span><span class="params">(callback)</span> {</span>
-    request({
-      url: <span class="string">'users/self'</span>,
-      success: callback
-    });
-  };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">this</span>.authenticated = <span class="hljs-literal">true</span>;
+
+      } <span class="hljs-keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -335,11 +324,20 @@ revoke your app&#39;s permissions on the server.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
-              <h3 id="fetching-the-authenticated-user-s-media">Fetching the authenticated user&#39;s media</h3>
+              <p>Otherwise, if there is no localStorage
+key and there is nothing to parse from
+the hash, set the authenticated
+property to false</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  Self.prototype.media = <span class="function"><span class="keyword">function</span><span class="params">(options, callback)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">this</span>.authenticated = <span class="hljs-literal">false</span>;
+
+      }
+
+    }
+
+  };</pre></div></div>
             
         </li>
         
@@ -350,14 +348,19 @@ revoke your app&#39;s permissions on the server.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
-              <p>Make the options argument optional</p>
+              <p>Effectively de-authenticates the current
+user by removing their access token from
+localStorage and setting the authenticated
+property to false. This does <strong>not</strong>
+revoke your app’s permissions on the server.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (<span class="keyword">typeof</span> options === <span class="string">'function'</span>) {
-      callback = options;
-      options = <span class="literal">null</span>;
-    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+  Instajam.deauthenticate = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    localStorage.removeItem(<span class="hljs-string">'instagram_access_token'</span>);
+    <span class="hljs-keyword">this</span>.authenticated = <span class="hljs-literal">false</span>;
+  };</pre></div></div>
             
         </li>
         
@@ -368,17 +371,9 @@ revoke your app&#39;s permissions on the server.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
-              <p>Make a request to the API</p>
+              <h1 id="endpoints">Endpoints</h1>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="string">'users/self/media/recent'</span>,
-      data: options,
-      success: callback
-    });
-
-  };</pre></div></div>
             
         </li>
         
@@ -389,11 +384,14 @@ revoke your app&#39;s permissions on the server.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
-              <h3 id="fetching-the-authenticated-user-s-activity-feed">Fetching the authenticated user&#39;s activity feed</h3>
+              <h2 id="users">Users</h2>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  Self.prototype.feed = <span class="function"><span class="keyword">function</span><span class="params">(options, callback)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+  <span class="hljs-keyword">var</span> User = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{};
+  <span class="hljs-keyword">var</span> Self = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{};
+  User.prototype.self = <span class="hljs-keyword">new</span> Self();</pre></div></div>
             
         </li>
         
@@ -404,14 +402,17 @@ revoke your app&#39;s permissions on the server.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
-              <p>Make the options argument optional</p>
+              <h3 id="fetching-the-authenticated-users-s-profile">Fetching the authenticated users’s profile</h3>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (<span class="keyword">typeof</span> options === <span class="string">'function'</span>) {
-      callback = options;
-      options = <span class="literal">null</span>;
-    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+  Self.prototype.profile = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(callback)</span> </span>{
+    request({
+      url: <span class="hljs-string">'users/self'</span>,
+      success: callback
+    });
+  };</pre></div></div>
             
         </li>
         
@@ -422,17 +423,12 @@ revoke your app&#39;s permissions on the server.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
-              <p>Make a request to the API</p>
+              <h3 id="fetching-the-authenticated-user-s-media">Fetching the authenticated user’s media</h3>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="string">'users/self/feed'</span>,
-      data: options,
-      success: callback
-    });
-
-  };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+  Self.prototype.media = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options, callback)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -443,11 +439,14 @@ revoke your app&#39;s permissions on the server.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
-              <h3 id="fetching-the-authenticated-user-s-favorites-">Fetching the authenticated user&#39;s favorites.</h3>
+              <p>Make the options argument optional</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  Self.prototype.favorites = <span class="function"><span class="keyword">function</span><span class="params">(options, callback)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options === <span class="hljs-string">'function'</span>) {
+      callback = options;
+      options = <span class="hljs-literal">null</span>;
+    }</pre></div></div>
             
         </li>
         
@@ -458,14 +457,17 @@ revoke your app&#39;s permissions on the server.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
-              <p>Make the options argument optional</p>
+              <p>Make a request to the API</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (<span class="keyword">typeof</span> options === <span class="string">'function'</span>) {
-      callback = options;
-      options = <span class="literal">null</span>;
-    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    request({
+      url: <span class="hljs-string">'users/self/media/recent'</span>,
+      data: options,
+      success: callback
+    });
+
+  };</pre></div></div>
             
         </li>
         
@@ -476,17 +478,12 @@ revoke your app&#39;s permissions on the server.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
-              <p>Make a request to the API</p>
+              <h3 id="fetching-the-authenticated-user-s-activity-feed">Fetching the authenticated user’s activity feed</h3>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="string">'users/self/media/liked'</span>,
-      data: options,
-      success: callback
-    });
-
-  };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+  Self.prototype.feed = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options, callback)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -497,11 +494,14 @@ revoke your app&#39;s permissions on the server.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
-              <h3 id="fetching-a-list-of-relationship-requests-for-the-currently-authenticated-user">Fetching a list of relationship requests for the currently authenticated user</h3>
+              <p>Make the options argument optional</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  User.prototype.requests = <span class="function"><span class="keyword">function</span><span class="params">(callback)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options === <span class="hljs-string">'function'</span>) {
+      callback = options;
+      options = <span class="hljs-literal">null</span>;
+    }</pre></div></div>
             
         </li>
         
@@ -517,7 +517,8 @@ revoke your app&#39;s permissions on the server.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="string">'users/self/requested-by'</span>,
+      url: <span class="hljs-string">'users/self/feed'</span>,
+      data: options,
       success: callback
     });
 
@@ -532,11 +533,12 @@ revoke your app&#39;s permissions on the server.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
-              <h3 id="getting-a-relationship-information-for-the-currently-authenciated-user-and-a-given-user-id">Getting a relationship information for the currently authenciated user and a given user ID</h3>
+              <h3 id="fetching-the-authenticated-user-s-favorites-">Fetching the authenticated user’s favorites.</h3>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  User.prototype.relationshipWith = <span class="function"><span class="keyword">function</span><span class="params">(id, callback)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+  Self.prototype.favorites = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options, callback)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -547,16 +549,14 @@ revoke your app&#39;s permissions on the server.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
-              <p>Make a request to the API</p>
+              <p>Make the options argument optional</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="string">'users/'</span> + id + <span class="string">'/relationship'</span>,
-      success: callback
-    });
-
-  };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options === <span class="hljs-string">'function'</span>) {
+      callback = options;
+      options = <span class="hljs-literal">null</span>;
+    }</pre></div></div>
             
         </li>
         
@@ -567,11 +567,17 @@ revoke your app&#39;s permissions on the server.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
-              <h3 id="fetching-the-profile-of-a-user-by-id-or-username">Fetching the profile of a user by ID or username</h3>
+              <p>Make a request to the API</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  User.prototype.get = <span class="function"><span class="keyword">function</span><span class="params">(id, callback)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>    request({
+      url: <span class="hljs-string">'users/self/media/liked'</span>,
+      data: options,
+      success: callback
+    });
+
+  };</pre></div></div>
             
         </li>
         
@@ -582,15 +588,12 @@ revoke your app&#39;s permissions on the server.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
-              <p>Require that an ID or username be passed</p>
+              <h3 id="fetching-a-list-of-relationship-requests-for-the-currently-authenticated-user">Fetching a list of relationship requests for the currently authenticated user</h3>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (!id) {
-      <span class="keyword">throw</span> <span class="keyword">new</span> InstajamError(<span class="string">'A user\'s ID or username is required for user.get()'</span>);
-    }
-
-    <span class="keyword">if</span> (<span class="keyword">typeof</span> id === <span class="string">'number'</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+  User.prototype.requests = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(callback)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -605,12 +608,12 @@ revoke your app&#39;s permissions on the server.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      request({
-        url: <span class="string">'users/'</span> + id,
-        success: callback
-      });
-    
-    } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> id === <span class="string">'string'</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    request({
+      url: <span class="hljs-string">'users/self/requested-by'</span>,
+      success: callback
+    });
+
+  };</pre></div></div>
             
         </li>
         
@@ -621,11 +624,12 @@ revoke your app&#39;s permissions on the server.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
-              <p>Make a request to the API</p>
+              <h3 id="getting-a-relationship-information-for-the-currently-authenciated-user-and-a-given-user-id">Getting a relationship information for the currently authenciated user and a given user ID</h3>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      User.prototype.search.call(<span class="keyword">this</span>, id, {}, <span class="function"><span class="keyword">function</span><span class="params">(result)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+  User.prototype.relationshipWith = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, callback)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -636,17 +640,16 @@ revoke your app&#39;s permissions on the server.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
-              <p>If the initial user search yields any
-results, then just return the first, but
-otherwise return nothing.</p>
+              <p>Make a request to the API</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (result.data &amp;&amp; result.data.length === <span class="number">1</span>) {
-          result = result.data[<span class="number">0</span>];
-        } <span class="keyword">else</span> {
-          result = <span class="literal">false</span>;
-        }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    request({
+      url: <span class="hljs-string">'users/'</span> + id + <span class="hljs-string">'/relationship'</span>,
+      success: callback
+    });
+
+  };</pre></div></div>
             
         </li>
         
@@ -657,19 +660,12 @@ otherwise return nothing.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
-              <p>Call the initial callback, passing the result</p>
+              <h3 id="fetching-the-profile-of-a-user-by-id-or-username">Fetching the profile of a user by ID or username</h3>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (<span class="keyword">typeof</span> callback === <span class="string">'function'</span>) {
-          callback(result);
-        }
-
-      });
-
-    }
-  
-  };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+  User.prototype.get = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, callback)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -680,11 +676,15 @@ otherwise return nothing.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
-              <h3 id="fetching-the-media-of-a-user-id-or-username">Fetching the media of a user ID or username</h3>
+              <p>Require that an ID or username be passed</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  User.prototype.media = <span class="function"><span class="keyword">function</span><span class="params">(id, options, callback)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (!id) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">'A user\'s ID or username is required for user.get()'</span>);
+    }
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> id === <span class="hljs-string">'number'</span>) {</pre></div></div>
             
         </li>
         
@@ -695,14 +695,16 @@ otherwise return nothing.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
-              <p>Require that an ID be passed</p>
+              <p>Make a request to the API</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    
-    <span class="keyword">if</span> (!id) {
-      <span class="keyword">throw</span> <span class="keyword">new</span> InstajamError(<span class="string">'A user\'s ID or username is required for user.media()'</span>);
-    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      request({
+        url: <span class="hljs-string">'users/'</span> + id,
+        success: callback
+      });
+
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> id === <span class="hljs-string">'string'</span>) {</pre></div></div>
             
         </li>
         
@@ -713,15 +715,11 @@ otherwise return nothing.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
-              <p>Make the options argument optional</p>
+              <p>Make a request to the API</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    
-    <span class="keyword">if</span> (<span class="keyword">typeof</span> options === <span class="string">'function'</span> &amp;&amp; !callback) {
-      callback = options;
-      options = <span class="literal">null</span>;
-    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      User.prototype.search.call(<span class="hljs-keyword">this</span>, id, {}, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -732,12 +730,25 @@ otherwise return nothing.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
-              <p>If we&#39;re looking up the user by ID...</p>
+              <p>Go through the results and check for
+a perfect match, then query again with that user’s ID
+otherwise return nothing.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    
-    <span class="keyword">if</span> (<span class="keyword">typeof</span> id === <span class="string">'number'</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> (result.data) {
+            <span class="hljs-keyword">var</span> userIds = result.data;
+            result = <span class="hljs-literal">false</span>;
+
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; userIds.length; i++) {
+                <span class="hljs-keyword">if</span> (userIds[i].username === id) {
+                    User.prototype.get(<span class="hljs-built_in">parseInt</span>(userIds[i].id, <span class="hljs-number">10</span>), callback);
+                    <span class="hljs-keyword">return</span>;
+                }
+            }
+        } <span class="hljs-keyword">else</span> {
+          result = <span class="hljs-literal">false</span>;
+        }</pre></div></div>
             
         </li>
         
@@ -748,17 +759,19 @@ otherwise return nothing.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
-              <p>Make a request to that API</p>
+              <p>Call the initial callback, passing the result</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      request({
-        url: <span class="string">'users/'</span> + id + <span class="string">'/media/recent'</span>,
-        data: options,
-        success: callback
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> callback === <span class="hljs-string">'function'</span>) {
+          callback(result);
+        }
+
       });
-    
-    }</pre></div></div>
+
+    }
+
+  };</pre></div></div>
             
         </li>
         
@@ -769,11 +782,12 @@ otherwise return nothing.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
-              <p>Or rather looking up the user by username...</p>
+              <h3 id="fetching-the-media-of-a-user-id-or-username">Fetching the media of a user ID or username</h3>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> id === <span class="string">'string'</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+  User.prototype.media = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, options, callback)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -784,11 +798,14 @@ otherwise return nothing.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
-              <p>...then first search for the username...</p>
+              <p>Require that an ID be passed</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      User.prototype.search.call(<span class="keyword">this</span>, id, {}, <span class="function"><span class="keyword">function</span><span class="params">(result)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+    <span class="hljs-keyword">if</span> (!id) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">'A user\'s ID or username is required for user.media()'</span>);
+    }</pre></div></div>
             
         </li>
         
@@ -799,19 +816,15 @@ otherwise return nothing.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
-              <p>If the initial user search yields any
-results, then just return the first, but
-otherwise return nothing.</p>
+              <p>Make the options argument optional</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (result.data &amp;&amp; result.data.length &gt; <span class="number">0</span>) {
-          result = result.data[<span class="number">0</span>];
-        } <span class="keyword">else</span> {
-          result = <span class="literal">false</span>;
-        }
-
-        <span class="keyword">if</span> (result) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options === <span class="hljs-string">'function'</span> &amp;&amp; !callback) {
+      callback = options;
+      options = <span class="hljs-literal">null</span>;
+    }</pre></div></div>
             
         </li>
         
@@ -822,19 +835,110 @@ otherwise return nothing.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
+              <p>If we’re looking up the user by ID…</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> id === <span class="hljs-string">'number'</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-46">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-46">&#182;</a>
+              </div>
+              <p>Make a request to that API</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      request({
+        url: <span class="hljs-string">'users/'</span> + id + <span class="hljs-string">'/media/recent'</span>,
+        data: options,
+        success: callback
+      });
+
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-47">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-47">&#182;</a>
+              </div>
+              <p>Or rather looking up the user by username…</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> id === <span class="hljs-string">'string'</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-48">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-48">&#182;</a>
+              </div>
+              <p>…then first search for the username…</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      User.prototype.search.call(<span class="hljs-keyword">this</span>, id, {}, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-49">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-49">&#182;</a>
+              </div>
+              <p>If the initial user search yields any
+results, then just return the first, but
+otherwise return nothing.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> (result.data &amp;&amp; result.data.length &gt; <span class="hljs-number">0</span>) {
+          result = result.data[<span class="hljs-number">0</span>];
+        } <span class="hljs-keyword">else</span> {
+          result = <span class="hljs-literal">false</span>;
+        }
+
+        <span class="hljs-keyword">if</span> (result) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-50">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-50">&#182;</a>
+              </div>
               <p>Make a request to that API</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>          request({
-            url: <span class="string">'users/'</span> + result.id + <span class="string">'/media/recent'</span>,
+            url: <span class="hljs-string">'users/'</span> + result.id + <span class="hljs-string">'/media/recent'</span>,
             data: options,
             success: callback
           });
 
-        } <span class="keyword">else</span> {
+        } <span class="hljs-keyword">else</span> {
 
-          <span class="keyword">if</span> (<span class="keyword">typeof</span> callback === <span class="string">'function'</span>) {
+          <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> callback === <span class="hljs-string">'function'</span>) {
             callback(result);
           }
 
@@ -849,103 +953,18 @@ otherwise return nothing.</p>
         </li>
         
         
-        <li id="section-46">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
-              </div>
-              <h3 id="searching-for-users-by-username">Searching for users by username</h3>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  User.prototype.search = <span class="function"><span class="keyword">function</span><span class="params">(term, options, callback)</span> {</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-47">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
-              </div>
-              <p>Require that a search term be passed</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (!term) {
-      <span class="keyword">throw</span> <span class="keyword">new</span> InstajamError(<span class="string">'A search term is required for user.search()'</span>);
-    }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-48">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-48">&#182;</a>
-              </div>
-              <p>Make the options argument optional</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (<span class="keyword">typeof</span> options === <span class="string">'function'</span>) {
-      callback = options;
-      options = {};
-    }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-49">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-49">&#182;</a>
-              </div>
-              <p>Add the search term to the options object</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    options.q = term;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-50">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-50">&#182;</a>
-              </div>
-              <p>Make a request to the API</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="string">'users/search'</span>,
-      data: options,
-      success: callback
-    });
-
-  };</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-51">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-51">&#182;</a>
               </div>
-              <h3 id="fetching-a-list-of-users-that-user-id-follows">Fetching a list of users that user [id] follows</h3>
+              <h3 id="searching-for-users-by-username">Searching for users by username</h3>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  User.prototype.follows = <span class="function"><span class="keyword">function</span><span class="params">(id, callback)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+  User.prototype.search = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(term, options, callback)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -956,16 +975,13 @@ otherwise return nothing.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-52">&#182;</a>
               </div>
-              <p>Make a request to the API</p>
+              <p>Require that a search term be passed</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="string">'users/'</span> + id + <span class="string">'/follows'</span>,
-      success: callback
-    });
-
-  };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (!term) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">'A search term is required for user.search()'</span>);
+    }</pre></div></div>
             
         </li>
         
@@ -976,11 +992,14 @@ otherwise return nothing.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-53">&#182;</a>
               </div>
-              <h3 id="fetching-a-list-of-followers-of-user-id-">Fetching a list of followers of user [id]</h3>
+              <p>Make the options argument optional</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  User.prototype.following = <span class="function"><span class="keyword">function</span><span class="params">(id, callback)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options === <span class="hljs-string">'function'</span>) {
+      callback = options;
+      options = {};
+    }</pre></div></div>
             
         </li>
         
@@ -991,16 +1010,11 @@ otherwise return nothing.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
-              <p>Make a request to the API</p>
+              <p>Add the search term to the options object</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="string">'users/'</span> + id + <span class="string">'/followed-by'</span>,
-      success: callback
-    });
-
-  };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    options.q = term;</pre></div></div>
             
         </li>
         
@@ -1011,13 +1025,17 @@ otherwise return nothing.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
-              <h2 id="media">Media</h2>
+              <p>Make a request to the API</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="keyword">var</span> Media = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>};
+            <div class="content"><div class='highlight'><pre>    request({
+      url: <span class="hljs-string">'users/search'</span>,
+      data: options,
+      success: callback
+    });
 
-  Media.prototype.get = <span class="function"><span class="keyword">function</span><span class="params">(id, callback)</span> {</span></pre></div></div>
+  };</pre></div></div>
             
         </li>
         
@@ -1028,20 +1046,12 @@ otherwise return nothing.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-56">&#182;</a>
               </div>
-              <p>Make a request to the API</p>
+              <h3 id="fetching-a-list-of-users-that-user-id-follows">Fetching a list of users that user [id] follows</h3>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="string">'media/'</span> + id,
-      success: callback
-    });
-
-  };
-
-  Media.prototype.search = <span class="function"><span class="keyword">function</span><span class="params">(options, callback)</span> {</span>
-
-    options = options || {};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+  User.prototype.follows = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, callback)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -1052,14 +1062,16 @@ otherwise return nothing.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-57">&#182;</a>
               </div>
-              <p>Require that a latitude and longitude are
-passed in, at a minimum.</p>
+              <p>Make a request to the API</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (!options.lat || !options.lng) {
-      <span class="keyword">throw</span> <span class="keyword">new</span> InstajamError(<span class="string">'A latitude AND a longitude are required for media.search()'</span>);
-    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    request({
+      url: <span class="hljs-string">'users/'</span> + id + <span class="hljs-string">'/follows'</span>,
+      success: callback
+    });
+
+  };</pre></div></div>
             
         </li>
         
@@ -1070,19 +1082,12 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-58">&#182;</a>
               </div>
-              <p>Make a request to the API</p>
+              <h3 id="fetching-a-list-of-followers-of-user-id-">Fetching a list of followers of user [id]</h3>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="string">'media/search'</span>,
-      data: options,
-      success: callback
-    });
-
-  };
-
-  Media.prototype.popular = <span class="function"><span class="keyword">function</span><span class="params">(callback)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+  User.prototype.following = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, callback)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -1098,17 +1103,11 @@ passed in, at a minimum.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="string">'media/popular'</span>,
+      url: <span class="hljs-string">'users/'</span> + id + <span class="hljs-string">'/followed-by'</span>,
       success: callback
     });
 
-  };
-
-  Media.prototype.comments = <span class="function"><span class="keyword">function</span><span class="params">(id, callback)</span> {</span>
-
-    <span class="keyword">if</span> (!id) {
-      <span class="keyword">throw</span> <span class="keyword">new</span> InstajamError(<span class="string">'A media ID is required for media.comments()'</span>);
-    }</pre></div></div>
+  };</pre></div></div>
             
         </li>
         
@@ -1119,22 +1118,14 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-60">&#182;</a>
               </div>
-              <p>Make a request to the API</p>
+              <h2 id="media">Media</h2>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="string">'media/'</span> + id + <span class="string">'/comments'</span>,
-      success: callback
-    });
+            <div class="content"><div class='highlight'><pre>
+  <span class="hljs-keyword">var</span> Media = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{};
 
-  };
-
-  Media.prototype.likes = <span class="function"><span class="keyword">function</span><span class="params">(id, callback)</span> {</span>
-
-    <span class="keyword">if</span> (!id) {
-      <span class="keyword">throw</span> <span class="keyword">new</span> InstajamError(<span class="string">'A media ID is required for media.likes()'</span>);
-    }</pre></div></div>
+  Media.prototype.get = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, callback)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -1150,11 +1141,15 @@ passed in, at a minimum.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="string">'media/'</span> + id + <span class="string">'/likes'</span>,
+      url: <span class="hljs-string">'media/'</span> + id,
       success: callback
     });
 
-  };</pre></div></div>
+  };
+
+  Media.prototype.search = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options, callback)</span> </span>{
+
+    options = options || {};</pre></div></div>
             
         </li>
         
@@ -1165,13 +1160,14 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-62">&#182;</a>
               </div>
-              <h2 id="tags">Tags</h2>
+              <p>Require that a latitude and longitude are
+passed in, at a minimum.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="keyword">var</span> Tag = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>};
-
-  Tag.prototype.get = <span class="function"><span class="keyword">function</span><span class="params">(name, callback)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (!options.lat || !options.lng) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">'A latitude AND a longitude are required for media.search()'</span>);
+    }</pre></div></div>
             
         </li>
         
@@ -1182,13 +1178,19 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-63">&#182;</a>
               </div>
-              <p>We need at least a tag name to get information for</p>
+              <p>Make a request to the API</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (!name) {
-      <span class="keyword">throw</span> <span class="keyword">new</span> InstajamError(<span class="string">'A tag name is required for tag.get()'</span>);
-    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    request({
+      url: <span class="hljs-string">'media/search'</span>,
+      data: options,
+      success: callback
+    });
+
+  };
+
+  Media.prototype.popular = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(callback)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -1204,13 +1206,17 @@ passed in, at a minimum.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="string">'tags/'</span> + name,
+      url: <span class="hljs-string">'media/popular'</span>,
       success: callback
     });
 
   };
 
-  Tag.prototype.media = <span class="function"><span class="keyword">function</span><span class="params">(name, options, callback)</span> {</span></pre></div></div>
+  Media.prototype.comments = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, callback)</span> </span>{
+
+    <span class="hljs-keyword">if</span> (!id) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">'A media ID is required for media.comments()'</span>);
+    }</pre></div></div>
             
         </li>
         
@@ -1221,12 +1227,21 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-65">&#182;</a>
               </div>
-              <p>We need at least a tag name to work with</p>
+              <p>Make a request to the API</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (!name) {
-      <span class="keyword">throw</span> <span class="keyword">new</span> InstajamError(<span class="string">'A tag name is required for tag.media()'</span>);
+            <div class="content"><div class='highlight'><pre>    request({
+      url: <span class="hljs-string">'media/'</span> + id + <span class="hljs-string">'/comments'</span>,
+      success: callback
+    });
+
+  };
+
+  Media.prototype.likes = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, callback)</span> </span>{
+
+    <span class="hljs-keyword">if</span> (!id) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">'A media ID is required for media.likes()'</span>);
     }</pre></div></div>
             
         </li>
@@ -1238,14 +1253,16 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-66">&#182;</a>
               </div>
-              <p>Make the options argument optional</p>
+              <p>Make a request to the API</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (<span class="keyword">typeof</span> options === <span class="string">'function'</span> &amp;&amp; !callback) {
-      callback = options;
-      options = {};
-    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    request({
+      url: <span class="hljs-string">'media/'</span> + id + <span class="hljs-string">'/likes'</span>,
+      success: callback
+    });
+
+  };</pre></div></div>
             
         </li>
         
@@ -1256,19 +1273,14 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-67">&#182;</a>
               </div>
-              <p>Make a request to the API</p>
+              <h2 id="tags">Tags</h2>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="string">'tags/'</span> + name + <span class="string">'/media/recent'</span>,
-      data: options,
-      success: callback
-    });
+            <div class="content"><div class='highlight'><pre>
+  <span class="hljs-keyword">var</span> Tag = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{};
 
-  };
-
-  Tag.prototype.search = <span class="function"><span class="keyword">function</span><span class="params">(term, callback)</span> {</span></pre></div></div>
+  Tag.prototype.get = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name, callback)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -1279,17 +1291,13 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-68">&#182;</a>
               </div>
-              <p>We need at least a tag string to search for</p>
+              <p>We need at least a tag name to get information for</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (!term) {
-      <span class="keyword">throw</span> <span class="keyword">new</span> InstajamError(<span class="string">'A tag name is required for tag.search()'</span>);
-    }
-
-    <span class="keyword">var</span> options = {
-      q: term
-    };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (!name) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">'A tag name is required for tag.get()'</span>);
+    }</pre></div></div>
             
         </li>
         
@@ -1305,12 +1313,13 @@ passed in, at a minimum.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="string">'/tags/search'</span>,
-      data: options,
+      url: <span class="hljs-string">'tags/'</span> + name,
       success: callback
     });
 
-  };</pre></div></div>
+  };
+
+  Tag.prototype.media = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name, options, callback)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -1321,13 +1330,13 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-70">&#182;</a>
               </div>
-              <h2 id="locations">Locations</h2>
+              <p>We need at least a tag name to work with</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="keyword">var</span> Location = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>};
-
-  Location.prototype.get = <span class="function"><span class="keyword">function</span><span class="params">(id, callback)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (!name) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">'A tag name is required for tag.media()'</span>);
+    }</pre></div></div>
             
         </li>
         
@@ -1338,12 +1347,13 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-71">&#182;</a>
               </div>
-              <p>We need at least a location ID to work with</p>
+              <p>Make the options argument optional</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (!id) {
-      <span class="keyword">throw</span> <span class="keyword">new</span> InstajamError(<span class="string">'An ID is required for location.get()'</span>);
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options === <span class="hljs-string">'function'</span> &amp;&amp; !callback) {
+      callback = options;
+      options = {};
     }</pre></div></div>
             
         </li>
@@ -1360,13 +1370,14 @@ passed in, at a minimum.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="string">'locations/'</span> + id,
+      url: <span class="hljs-string">'tags/'</span> + name + <span class="hljs-string">'/media/recent'</span>,
+      data: options,
       success: callback
     });
 
   };
 
-  Location.prototype.media = <span class="function"><span class="keyword">function</span><span class="params">(id, options, callback)</span> {</span></pre></div></div>
+  Tag.prototype.search = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(term, callback)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -1377,13 +1388,17 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-73">&#182;</a>
               </div>
-              <p>We need at least a location ID to work with</p>
+              <p>We need at least a tag string to search for</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (!id) {
-      <span class="keyword">throw</span> <span class="keyword">new</span> InstajamError(<span class="string">'An ID is required for location.get()'</span>);
-    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (!term) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">'A tag name is required for tag.search()'</span>);
+    }
+
+    <span class="hljs-keyword">var</span> options = {
+      q: term
+    };</pre></div></div>
             
         </li>
         
@@ -1394,14 +1409,17 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-74">&#182;</a>
               </div>
-              <p>Make the options argument optional</p>
+              <p>Make a request to the API</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (<span class="keyword">typeof</span> options === <span class="string">'function'</span> &amp;&amp; !callback) {
-      callback = options;
-      options = {};
-    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    request({
+      url: <span class="hljs-string">'/tags/search'</span>,
+      data: options,
+      success: callback
+    });
+
+  };</pre></div></div>
             
         </li>
         
@@ -1412,20 +1430,14 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-75">&#182;</a>
               </div>
-              <p>Make a request to the API</p>
+              <h2 id="locations">Locations</h2>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="string">'locations/'</span> + id + <span class="string">'/media/recent'</span>,
-      success: callback
-    });
+            <div class="content"><div class='highlight'><pre>
+  <span class="hljs-keyword">var</span> Location = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{};
 
-  };
-
-  Location.prototype.search = <span class="function"><span class="keyword">function</span><span class="params">(options, callback)</span> {</span>
-  
-    options = options || {};</pre></div></div>
+  Location.prototype.get = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, callback)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -1436,12 +1448,12 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-76">&#182;</a>
               </div>
-              <p>We need at LEAST a lat/lng pair, or a Foursquare ID to work with</p>
+              <p>We need at least a location ID to work with</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> ( (!options.lat || !options.lng) &amp;&amp; !options.foursquare_v2_id) {
-      <span class="keyword">throw</span> <span class="keyword">new</span> InstajamError(<span class="string">'A latitude and longitude OR a Foursquare place ID is required for location.search()'</span>);
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (!id) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">'An ID is required for location.get()'</span>);
     }</pre></div></div>
             
         </li>
@@ -1458,12 +1470,13 @@ passed in, at a minimum.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="string">'locations/search'</span>,
-      data: options,
+      url: <span class="hljs-string">'locations/'</span> + id,
       success: callback
     });
 
-  };</pre></div></div>
+  };
+
+  Location.prototype.media = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, options, callback)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -1474,13 +1487,13 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-78">&#182;</a>
               </div>
-              <h2 id="geographies">Geographies</h2>
+              <p>We need at least a location ID to work with</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="keyword">var</span> Geography = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>};
-
-  Geography.prototype.media = <span class="function"><span class="keyword">function</span><span class="params">(id, options, callback)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (!id) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">'An ID is required for location.get()'</span>);
+    }</pre></div></div>
             
         </li>
         
@@ -1491,12 +1504,13 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-79">&#182;</a>
               </div>
-              <p>We need at least a Geography ID to work with</p>
+              <p>Make the options argument optional</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (!id) {
-      <span class="keyword">throw</span> <span class="keyword">new</span> InstajamError(<span class="string">'A Geography ID is required for geography.get()'</span>);
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options === <span class="hljs-string">'function'</span> &amp;&amp; !callback) {
+      callback = options;
+      options = {};
     }</pre></div></div>
             
         </li>
@@ -1508,11 +1522,20 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-80">&#182;</a>
               </div>
-              <p>The options argument defaults to an empty object</p>
+              <p>Make a request to the API</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    options = options || {};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    request({
+      url: <span class="hljs-string">'locations/'</span> + id + <span class="hljs-string">'/media/recent'</span>,
+      success: callback
+    });
+
+  };
+
+  Location.prototype.search = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options, callback)</span> </span>{
+
+    options = options || {};</pre></div></div>
             
         </li>
         
@@ -1523,17 +1546,13 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-81">&#182;</a>
               </div>
-              <p>Make a request to the API</p>
+              <p>We need at LEAST a lat/lng pair, or a Foursquare ID to work with</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="string">'geographies/'</span> + id + <span class="string">'/media/recent'</span>,
-      data: options,
-      success: callback
-    });
-
-  };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> ( (!options.lat || !options.lng) &amp;&amp; !options.foursquare_v2_id) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">'A latitude and longitude OR a Foursquare place ID is required for location.search()'</span>);
+    }</pre></div></div>
             
         </li>
         
@@ -1544,15 +1563,17 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-82">&#182;</a>
               </div>
-              <h1 id="helpers">Helpers</h1>
-<p>Returns the client-specific authentication URL that is created upon initialization.</p>
-<p>Parses a given parameter from the browsers hash. 
-Optionally, the parameter can be removed from 
-the URL upon successful matching.</p>
+              <p>Make a request to the API</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="function"><span class="keyword">function</span> <span class="title">hashParam</span> <span class="params">(param, remove)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>    request({
+      url: <span class="hljs-string">'locations/search'</span>,
+      data: options,
+      success: callback
+    });
+
+  };</pre></div></div>
             
         </li>
         
@@ -1563,11 +1584,14 @@ the URL upon successful matching.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-83">&#182;</a>
               </div>
-              <p>Create a RegExp object for parsing params</p>
+              <h2 id="geographies">Geographies</h2>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> regex = <span class="keyword">new</span> RegExp(<span class="string">"(?:&amp;|#)"</span> + param + <span class="string">"=([a-z0-9._-]+)"</span>, <span class="string">"i"</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+  <span class="hljs-keyword">var</span> Geography = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{};
+
+  Geography.prototype.media = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, options, callback)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -1578,11 +1602,13 @@ the URL upon successful matching.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-84">&#182;</a>
               </div>
-              <p>Look for matches in the windows hash</p>
+              <p>We need at least a Geography ID to work with</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> matches = window.location.hash.match(regex);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (!id) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">'A Geography ID is required for geography.get()'</span>);
+    }</pre></div></div>
             
         </li>
         
@@ -1593,11 +1619,11 @@ the URL upon successful matching.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-85">&#182;</a>
               </div>
-              <p>If matches are found...</p>
+              <p>The options argument defaults to an empty object</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (matches) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    options = options || {};</pre></div></div>
             
         </li>
         
@@ -1608,14 +1634,17 @@ the URL upon successful matching.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-86">&#182;</a>
               </div>
-              <p>...then remove the parameter if specified</p>
+              <p>Make a request to the API</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="keyword">if</span> (remove) {
-        <span class="keyword">var</span> removeRegex = <span class="keyword">new</span> RegExp(<span class="string">"(?:&amp;|#)"</span> + param + <span class="string">"="</span> + matches[<span class="number">1</span>], <span class="string">"i"</span>);
-        window.location.hash = window.location.hash.replace(removeRegex, <span class="string">''</span>);
-      }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    request({
+      url: <span class="hljs-string">'geographies/'</span> + id + <span class="hljs-string">'/media/recent'</span>,
+      data: options,
+      success: callback
+    });
+
+  };</pre></div></div>
             
         </li>
         
@@ -1626,13 +1655,9 @@ the URL upon successful matching.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-87">&#182;</a>
               </div>
-              <p>...and return the first matching param</p>
+              <h1 id="helpers">Helpers</h1>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="keyword">return</span> matches[<span class="number">1</span>];
-
-    }</pre></div></div>
             
         </li>
         
@@ -1643,13 +1668,9 @@ the URL upon successful matching.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-88">&#182;</a>
               </div>
-              <p>Otherwise return false if no matching params are found</p>
+              <p>Returns the client-specific authentication URL that is created upon initialization.</p>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">return</span> <span class="literal">false</span>;
-
-  }</pre></div></div>
             
         </li>
         
@@ -1660,45 +1681,14 @@ the URL upon successful matching.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-89">&#182;</a>
               </div>
-              <p>Makes JSONP requests to the Instagram API</p>
+              <p>Parses a given parameter from the browsers hash.
+Optionally, the parameter can be removed from
+the URL upon successful matching.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="function"><span class="keyword">function</span> <span class="title">request</span> <span class="params">(options)</span> {</span>
-
-    <span class="keyword">var</span> urlBase = <span class="string">'https://api.instagram.com/v1/'</span>,
-        callbackName = <span class="string">'instajam'</span> + Math.round(<span class="keyword">new</span> Date().getTime() / <span class="number">1000</span>) + Math.floor(Math.random() * <span class="number">100</span>);
-
-    options = options || {};
-    options.data = options.data || {};
-    options.data.access_token = localStorage.getItem(<span class="string">'instagram_access_token'</span>);
-    options.data.callback = callbackName;
-    
-    <span class="keyword">var</span> queryString = serializeParams(options.data);
-
-    <span class="keyword">if</span> (options.url) {
-      options.url = urlBase + options.url + <span class="string">'?'</span> + queryString;
-
-      window[callbackName] = <span class="function"><span class="keyword">function</span><span class="params">(data)</span> {</span>
-          
-        <span class="keyword">if</span> (<span class="keyword">typeof</span> options.success === <span class="string">'function'</span>) {
-          options.success(data);
-        }
-        
-        script.parentNode.removeChild(script);
-        <span class="keyword">delete</span> window[callbackName];
-      };
-
-      <span class="keyword">var</span> script = document.createElement(<span class="string">'script'</span>);
-      script.type = <span class="string">'text/javascript'</span>;
-      script.src = options.url;
-      document.getElementsByTagName(<span class="string">'body'</span>)[<span class="number">0</span>].appendChild(script);
-
-    } <span class="keyword">else</span> {
-      <span class="keyword">throw</span> <span class="keyword">new</span> InstajamError(<span class="string">"Instajam:: Missing request URL"</span>);
-    }
-
-  }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">hashParam</span> <span class="hljs-params">(param, remove)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -1709,18 +1699,11 @@ the URL upon successful matching.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-90">&#182;</a>
               </div>
-              <p>Given a JavaScript object, return a 
-string suitable for passing in a URL</p>
+              <p>Create a RegExp object for parsing params</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="function"><span class="keyword">function</span> <span class="title">serializeParams</span> <span class="params">(obj)</span> {</span>
-    <span class="keyword">var</span> str = [];
-    <span class="keyword">for</span> (<span class="keyword">var</span> p <span class="keyword">in</span> obj) {
-      str.push(encodeURIComponent(p) + <span class="string">'='</span> + encodeURIComponent(obj[p]));
-    }
-    <span class="keyword">return</span> str.join(<span class="string">'&amp;'</span>);
-  }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> regex = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"(?:&amp;|#)"</span> + param + <span class="hljs-string">"=([a-z0-9._-]+)"</span>, <span class="hljs-string">"i"</span>);</pre></div></div>
             
         </li>
         
@@ -1731,16 +1714,11 @@ string suitable for passing in a URL</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-91">&#182;</a>
               </div>
-              <p>Define a custom error object</p>
+              <p>Look for matches in the windows hash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="function"><span class="keyword">function</span> <span class="title">InstajamError</span> <span class="params">(message)</span> {</span>
-    <span class="keyword">this</span>.name = <span class="string">"InstajamError"</span>;
-    <span class="keyword">this</span>.message = message || <span class="string">''</span>;
-  }
-
-  InstajamError.prototype = Error.prototype;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> matches = <span class="hljs-built_in">window</span>.location.hash.match(regex);</pre></div></div>
             
         </li>
         
@@ -1751,15 +1729,11 @@ string suitable for passing in a URL</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-92">&#182;</a>
               </div>
-              <p>Return new instances of the endpoint 
-helpers as top-level keys</p>
+              <p>If matches are found…</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  Instajam.user = <span class="keyword">new</span> User();
-  Instajam.media = <span class="keyword">new</span> Media();
-  Instajam.tag = <span class="keyword">new</span> Tag();
-  Instajam.location = <span class="keyword">new</span> Location();</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (matches) {</pre></div></div>
             
         </li>
         
@@ -1770,11 +1744,180 @@ helpers as top-level keys</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-93">&#182;</a>
               </div>
+              <p>…then remove the parameter if specified</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> (remove) {
+        <span class="hljs-keyword">var</span> removeRegex = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"(?:&amp;|#)"</span> + param + <span class="hljs-string">"="</span> + matches[<span class="hljs-number">1</span>], <span class="hljs-string">"i"</span>);
+        <span class="hljs-built_in">window</span>.location.hash = <span class="hljs-built_in">window</span>.location.hash.replace(removeRegex, <span class="hljs-string">''</span>);
+      }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-94">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-94">&#182;</a>
+              </div>
+              <p>…and return the first matching param</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">return</span> matches[<span class="hljs-number">1</span>];
+
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-95">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-95">&#182;</a>
+              </div>
+              <p>Otherwise return false if no matching params are found</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-96">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-96">&#182;</a>
+              </div>
+              <p>Makes JSONP requests to the Instagram API</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">request</span> <span class="hljs-params">(options)</span> </span>{
+
+    <span class="hljs-keyword">var</span> urlBase = <span class="hljs-string">'https://api.instagram.com/v1/'</span>,
+        callbackName = <span class="hljs-string">'instajam'</span> + <span class="hljs-built_in">Math</span>.round(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>().getTime() / <span class="hljs-number">1000</span>) + <span class="hljs-built_in">Math</span>.floor(<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">100</span>);
+
+    options = options || {};
+    options.data = options.data || {};
+    options.data.access_token = localStorage.getItem(<span class="hljs-string">'instagram_access_token'</span>);
+    options.data.callback = callbackName;
+
+    <span class="hljs-keyword">var</span> queryString = serializeParams(options.data);
+
+    <span class="hljs-keyword">if</span> (options.url) {
+      options.url = urlBase + options.url + <span class="hljs-string">'?'</span> + queryString;
+
+      <span class="hljs-built_in">window</span>[callbackName] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data)</span> </span>{
+
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options.success === <span class="hljs-string">'function'</span>) {
+          options.success(data);
+        }
+
+        script.parentNode.removeChild(script);
+        <span class="hljs-keyword">delete</span> <span class="hljs-built_in">window</span>[callbackName];
+      };
+
+      <span class="hljs-keyword">var</span> script = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'script'</span>);
+      script.type = <span class="hljs-string">'text/javascript'</span>;
+      script.src = options.url;
+      <span class="hljs-built_in">document</span>.getElementsByTagName(<span class="hljs-string">'body'</span>)[<span class="hljs-number">0</span>].appendChild(script);
+
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">"Instajam:: Missing request URL"</span>);
+    }
+
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-97">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-97">&#182;</a>
+              </div>
+              <p>Given a JavaScript object, return a
+string suitable for passing in a URL</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">serializeParams</span> <span class="hljs-params">(obj)</span> </span>{
+    <span class="hljs-keyword">var</span> str = [];
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> p <span class="hljs-keyword">in</span> obj) {
+      str.push(<span class="hljs-built_in">encodeURIComponent</span>(p) + <span class="hljs-string">'='</span> + <span class="hljs-built_in">encodeURIComponent</span>(obj[p]));
+    }
+    <span class="hljs-keyword">return</span> str.join(<span class="hljs-string">'&amp;'</span>);
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-98">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-98">&#182;</a>
+              </div>
+              <p>Define a custom error object</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">InstajamError</span> <span class="hljs-params">(message)</span> </span>{
+    <span class="hljs-keyword">this</span>.name = <span class="hljs-string">"InstajamError"</span>;
+    <span class="hljs-keyword">this</span>.message = message || <span class="hljs-string">''</span>;
+  }
+
+  InstajamError.prototype = <span class="hljs-built_in">Error</span>.prototype;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-99">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-99">&#182;</a>
+              </div>
+              <p>Return new instances of the endpoint
+helpers as top-level keys</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  Instajam.user = <span class="hljs-keyword">new</span> User();
+  Instajam.media = <span class="hljs-keyword">new</span> Media();
+  Instajam.tag = <span class="hljs-keyword">new</span> Tag();
+  Instajam.location = <span class="hljs-keyword">new</span> Location();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-100">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-100">&#182;</a>
+              </div>
               <p>Instajam.geography = new Geography();</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>}(window.Instajam = window.Instajam || {}));</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+  exports = Instajam;
+
+}));</pre></div></div>
             
         </li>
         

@@ -1,9 +1,28 @@
-/*! Instajam - v2.0.0 - 2015-02-23
+/*! Instajam - v2.0.0 - 2015-04-08
 * http://github.com/mikefowler/instajam/
 * Copyright (c) 2015 Mike Fowler; Licensed MIT */
-(function(Instajam) {
+(function (root, factory) {
 
   'use strict';
+
+  if (typeof define === 'function' && define.amd) {
+    // AMD
+    define(['instajam'], function (exports) {
+      factory((root.Instajam = exports));
+    });
+  } else if (typeof exports === 'object') {
+    // CommonJS
+    factory(exports);
+  } else {
+    // Browser globals
+    factory((root.Instajam = {}));
+  }
+
+}(this, function (exports) {
+
+  'use strict';
+
+  var Instajam = {};
 
   // # Initialization
 
@@ -11,7 +30,7 @@
 
     options = options || {};
 
-    // Throw an error if either the client ID or the 
+    // Throw an error if either the client ID or the
     // redirect URI isn't provided.
 
     if (!options.clientId || !options.redirectUri) {
@@ -41,41 +60,41 @@
 
   // # Authentication
 
-  // Attempts to authenticate a user via 
-  // localStorage data or by parsing data 
+  // Attempts to authenticate a user via
+  // localStorage data or by parsing data
   // from the URL hash.
 
   Instajam.authenticate = function() {
 
-    // First, check if a localStorage key 
+    // First, check if a localStorage key
     // exists for the access_token...
-    
+
     if (localStorage.getItem('instagram_access_token')) {
-      
+
       // ...and if there is, set the
-      // authenticated property to true. 
+      // authenticated property to true.
       this.authenticated = true;
-    
+
     // If there is no localStorage key...
-    
+
     } else {
-      
+
       // ...then check if there's a match
       // for access_token in the URL hash.
       if (hashParam('access_token')) {
-        
+
         // If we can parse the access_token from
         // the URL hash, set the localStorage param...
         localStorage.setItem('instagram_access_token', hashParam('access_token', true));
-        
+
         // ...and set the authenticated property to true
         this.authenticated = true;
 
       } else {
-        
+
         // Otherwise, if there is no localStorage
         // key and there is nothing to parse from
-        // the hash, set the authenticated 
+        // the hash, set the authenticated
         // property to false
         this.authenticated = false;
 
@@ -85,10 +104,10 @@
 
   };
 
-  // Effectively de-authenticates the current 
-  // user by removing their access token from 
-  // localStorage and setting the authenticated 
-  // property to false. This does **not** 
+  // Effectively de-authenticates the current
+  // user by removing their access token from
+  // localStorage and setting the authenticated
+  // property to false. This does **not**
   // revoke your app's permissions on the server.
 
   Instajam.deauthenticate = function() {
@@ -135,7 +154,7 @@
   // ### Fetching the authenticated user's activity feed
 
   Self.prototype.feed = function(options, callback) {
-    
+
     // Make the options argument optional
     if (typeof options === 'function') {
       callback = options;
@@ -173,7 +192,7 @@
   // ### Fetching a list of relationship requests for the currently authenticated user
 
   User.prototype.requests = function(callback) {
-    
+
     // Make a request to the API
     request({
       url: 'users/self/requested-by',
@@ -185,7 +204,7 @@
   // ### Getting a relationship information for the currently authenciated user and a given user ID
 
   User.prototype.relationshipWith = function(id, callback) {
-    
+
     // Make a request to the API
     request({
       url: 'users/' + id + '/relationship',
@@ -197,20 +216,20 @@
   // ### Fetching the profile of a user by ID or username
 
   User.prototype.get = function(id, callback) {
-    
+
     // Require that an ID or username be passed
     if (!id) {
       throw new InstajamError('A user\'s ID or username is required for user.get()');
     }
 
     if (typeof id === 'number') {
-      
+
       // Make a request to the API
       request({
         url: 'users/' + id,
         success: callback
       });
-    
+
     } else if (typeof id === 'string') {
 
       // Make a request to the API
@@ -219,7 +238,7 @@
         // Go through the results and check for
         // a perfect match, then query again with that user's ID
         // otherwise return nothing.
-        if (result.data) {    
+        if (result.data) {
             var userIds = result.data;
             result = false;
 
@@ -241,7 +260,7 @@
       });
 
     }
-  
+
   };
 
   // ### Fetching the media of a user ID or username
@@ -249,29 +268,29 @@
   User.prototype.media = function(id, options, callback) {
 
     // Require that an ID be passed
-    
+
     if (!id) {
       throw new InstajamError('A user\'s ID or username is required for user.media()');
     }
 
     // Make the options argument optional
-    
+
     if (typeof options === 'function' && !callback) {
       callback = options;
       options = null;
     }
 
     // If we're looking up the user by ID...
-    
+
     if (typeof id === 'number') {
-      
+
       // Make a request to that API
       request({
         url: 'users/' + id + '/media/recent',
         data: options,
         success: callback
       });
-    
+
     }
 
     // Or rather looking up the user by username...
@@ -316,7 +335,7 @@
   // ### Searching for users by username
 
   User.prototype.search = function(term, options, callback) {
-    
+
     // Require that a search term be passed
     if (!term) {
       throw new InstajamError('A search term is required for user.search()');
@@ -343,7 +362,7 @@
   // ### Fetching a list of users that user [id] follows
 
   User.prototype.follows = function(id, callback) {
-    
+
     // Make a request to the API
     request({
       url: 'users/' + id + '/follows',
@@ -355,7 +374,7 @@
   // ### Fetching a list of followers of user [id]
 
   User.prototype.following = function(id, callback) {
-    
+
     // Make a request to the API
     request({
       url: 'users/' + id + '/followed-by',
@@ -440,7 +459,7 @@
   var Tag = function() {};
 
   Tag.prototype.get = function(name, callback) {
-    
+
     // We need at least a tag name to get information for
     if (!name) {
       throw new InstajamError('A tag name is required for tag.get()');
@@ -455,7 +474,7 @@
   };
 
   Tag.prototype.media = function(name, options, callback) {
-      
+
     // We need at least a tag name to work with
     if (!name) {
       throw new InstajamError('A tag name is required for tag.media()');
@@ -477,7 +496,7 @@
   };
 
   Tag.prototype.search = function(term, callback) {
-    
+
     // We need at least a tag string to search for
     if (!term) {
       throw new InstajamError('A tag name is required for tag.search()');
@@ -501,7 +520,7 @@
   var Location = function() {};
 
   Location.prototype.get = function(id, callback) {
-    
+
     // We need at least a location ID to work with
     if (!id) {
       throw new InstajamError('An ID is required for location.get()');
@@ -516,7 +535,7 @@
   };
 
   Location.prototype.media = function(id, options, callback) {
-    
+
     // We need at least a location ID to work with
     if (!id) {
       throw new InstajamError('An ID is required for location.get()');
@@ -537,7 +556,7 @@
   };
 
   Location.prototype.search = function(options, callback) {
-  
+
     options = options || {};
 
     // We need at LEAST a lat/lng pair, or a Foursquare ID to work with
@@ -559,7 +578,7 @@
   var Geography = function() {};
 
   Geography.prototype.media = function(id, options, callback) {
-      
+
     // We need at least a Geography ID to work with
     if (!id) {
       throw new InstajamError('A Geography ID is required for geography.get()');
@@ -581,8 +600,8 @@
 
   // Returns the client-specific authentication URL that is created upon initialization.
 
-  // Parses a given parameter from the browsers hash. 
-  // Optionally, the parameter can be removed from 
+  // Parses a given parameter from the browsers hash.
+  // Optionally, the parameter can be removed from
   // the URL upon successful matching.
 
   function hashParam (param, remove) {
@@ -623,18 +642,18 @@
     options.data = options.data || {};
     options.data.access_token = localStorage.getItem('instagram_access_token');
     options.data.callback = callbackName;
-    
+
     var queryString = serializeParams(options.data);
 
     if (options.url) {
       options.url = urlBase + options.url + '?' + queryString;
 
       window[callbackName] = function(data) {
-          
+
         if (typeof options.success === 'function') {
           options.success(data);
         }
-        
+
         script.parentNode.removeChild(script);
         delete window[callbackName];
       };
@@ -650,7 +669,7 @@
 
   }
 
-  // Given a JavaScript object, return a 
+  // Given a JavaScript object, return a
   // string suitable for passing in a URL
 
   function serializeParams (obj) {
@@ -670,7 +689,7 @@
 
   InstajamError.prototype = Error.prototype;
 
-  // Return new instances of the endpoint 
+  // Return new instances of the endpoint
   // helpers as top-level keys
 
   Instajam.user = new User();
@@ -679,4 +698,6 @@
   Instajam.location = new Location();
   // Instajam.geography = new Geography();
 
-}(window.Instajam = window.Instajam || {}));
+  exports = Instajam;
+
+}));

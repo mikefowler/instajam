@@ -7,7 +7,7 @@
   <title>Instajam</title>
   <meta name="description" content="Instajam is a wrapper for the Instagram API.">
   <meta name="keywords" content="instajam, instagram, javascript, api, mike fowler">
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
   <link rel="stylesheet" href="css/vendor/ladda.min.css"></script>
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -16,7 +16,7 @@
   <header role="banner" class="masthead">
     <h1 class="masthead__branding">Instajam</h1>
   </header>
-  
+
   <div id="main" class="container" role="main"></div>
 
   <footer role="contentinfo" class="footer container">A thing made by <a href="http://mikefowler.me">Mike Fowler</a>.</footer>
@@ -24,7 +24,7 @@
   <div class="overlay js-overlay"></div>
 
   <script name="main" type="text/template">
-    
+
     <div class="auth-hero">
       <h2>Instajam is a wrapper for the Instagram API.</h2>
       <% if (!authenticated) { %>
@@ -138,7 +138,7 @@
     <% } %>
 
     <h4>Fetching the users following another user, by user ID
-    
+
     <pre><code class="javascript">API.user.following(id, callback);</code></pre>
 
     <% if (authenticated) { %>
@@ -271,14 +271,14 @@
 
   <a class="github-ribbon" href="http://github.com/mikefowler/instajam"><img src="images/github.png" alt="Fork me on Github" /></a>
 
-  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script>
   <script src="js/vendor/spin.min.js"></script>
   <script src="js/vendor/ladda.min.js"></script>
-  
-  <script src="dist/instajam.min.js"></script>
+
+  <script src="src/instajam.js"></script>
   <script src="js/app.js"></script>
 
   <script type="text/javascript">

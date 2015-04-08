@@ -1,4 +1,4 @@
-{    
+{
   "curly": true,
   "eqeqeq": true,
   "immed": true,
@@ -23,6 +23,8 @@
     "beforeEach" : false,
     "afterEach"  : false,
     "expect"     : false,
-    "spyOn"      : false
+    "spyOn"      : false,
+    "define"     : false,
+    "exports"    : false
   }
 }

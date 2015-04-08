@@ -1,8 +1,9 @@
 {
   "name": "instajam",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "Instajam is a JavaScript wrapper for the Instagram API.",
   "dependencies": {},
+  "main": "src/instajam.js",
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-concat": "~0.3.0",
