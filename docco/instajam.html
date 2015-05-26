@@ -88,9 +88,7 @@
 
 }(<span class="hljs-keyword">this</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(exports)</span> </span>{
 <span class="hljs-pi">
-  'use strict'</span>;
-
-  <span class="hljs-keyword">var</span> Instajam = {};</pre></div></div>
+  'use strict'</span>;</pre></div></div>
             
         </li>
         
@@ -106,7 +104,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>
-  Instajam.init = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> </span>{
+  exports.init = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> </span>{
 
     options = options || {};</pre></div></div>
             
@@ -215,7 +213,7 @@ from the URL hash.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>
-  Instajam.authenticate = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+  exports.authenticate = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -357,7 +355,7 @@ revoke your app’s permissions on the server.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>
-  Instajam.deauthenticate = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+  exports.deauthenticate = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
     localStorage.removeItem(<span class="hljs-string">'instagram_access_token'</span>);
     <span class="hljs-keyword">this</span>.authenticated = <span class="hljs-literal">false</span>;
   };</pre></div></div>
@@ -1584,14 +1582,9 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-83">&#182;</a>
               </div>
-              <h2 id="geographies">Geographies</h2>
+              <h1 id="helpers">Helpers</h1>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  <span class="hljs-keyword">var</span> Geography = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{};
-
-  Geography.prototype.media = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, options, callback)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -1602,13 +1595,9 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-84">&#182;</a>
               </div>
-              <p>We need at least a Geography ID to work with</p>
+              <p>Returns the client-specific authentication URL that is created upon initialization.</p>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (!id) {
-      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">'A Geography ID is required for geography.get()'</span>);
-    }</pre></div></div>
             
         </li>
         
@@ -1618,68 +1607,6 @@ passed in, at a minimum.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-85">&#182;</a>
-              </div>
-              <p>The options argument defaults to an empty object</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    options = options || {};</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-86">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-86">&#182;</a>
-              </div>
-              <p>Make a request to the API</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="hljs-string">'geographies/'</span> + id + <span class="hljs-string">'/media/recent'</span>,
-      data: options,
-      success: callback
-    });
-
-  };</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-87">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-87">&#182;</a>
-              </div>
-              <h1 id="helpers">Helpers</h1>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-88">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-88">&#182;</a>
-              </div>
-              <p>Returns the client-specific authentication URL that is created upon initialization.</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-89">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-89">&#182;</a>
               </div>
               <p>Parses a given parameter from the browsers hash.
 Optionally, the parameter can be removed from
@@ -1693,11 +1620,11 @@ the URL upon successful matching.</p>
         </li>
         
         
-        <li id="section-90">
+        <li id="section-86">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-90">&#182;</a>
+                <a class="pilcrow" href="#section-86">&#182;</a>
               </div>
               <p>Create a RegExp object for parsing params</p>
 
@@ -1708,11 +1635,11 @@ the URL upon successful matching.</p>
         </li>
         
         
-        <li id="section-91">
+        <li id="section-87">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-91">&#182;</a>
+                <a class="pilcrow" href="#section-87">&#182;</a>
               </div>
               <p>Look for matches in the windows hash</p>
 
@@ -1723,11 +1650,11 @@ the URL upon successful matching.</p>
         </li>
         
         
-        <li id="section-92">
+        <li id="section-88">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-92">&#182;</a>
+                <a class="pilcrow" href="#section-88">&#182;</a>
               </div>
               <p>If matches are found…</p>
 
@@ -1738,11 +1665,11 @@ the URL upon successful matching.</p>
         </li>
         
         
-        <li id="section-93">
+        <li id="section-89">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-93">&#182;</a>
+                <a class="pilcrow" href="#section-89">&#182;</a>
               </div>
               <p>…then remove the parameter if specified</p>
 
@@ -1756,11 +1683,11 @@ the URL upon successful matching.</p>
         </li>
         
         
-        <li id="section-94">
+        <li id="section-90">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-94">&#182;</a>
+                <a class="pilcrow" href="#section-90">&#182;</a>
               </div>
               <p>…and return the first matching param</p>
 
@@ -1773,11 +1700,11 @@ the URL upon successful matching.</p>
         </li>
         
         
-        <li id="section-95">
+        <li id="section-91">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-95">&#182;</a>
+                <a class="pilcrow" href="#section-91">&#182;</a>
               </div>
               <p>Otherwise return false if no matching params are found</p>
 
@@ -1790,11 +1717,11 @@ the URL upon successful matching.</p>
         </li>
         
         
-        <li id="section-96">
+        <li id="section-92">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-96">&#182;</a>
+                <a class="pilcrow" href="#section-92">&#182;</a>
               </div>
               <p>Makes JSONP requests to the Instagram API</p>
 
@@ -1840,11 +1767,11 @@ the URL upon successful matching.</p>
         </li>
         
         
-        <li id="section-97">
+        <li id="section-93">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-97">&#182;</a>
+                <a class="pilcrow" href="#section-93">&#182;</a>
               </div>
               <p>Given a JavaScript object, return a
 string suitable for passing in a URL</p>
@@ -1863,11 +1790,11 @@ string suitable for passing in a URL</p>
         </li>
         
         
-        <li id="section-98">
+        <li id="section-94">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-98">&#182;</a>
+                <a class="pilcrow" href="#section-94">&#182;</a>
               </div>
               <p>Define a custom error object</p>
 
@@ -1884,11 +1811,11 @@ string suitable for passing in a URL</p>
         </li>
         
         
-        <li id="section-99">
+        <li id="section-95">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-99">&#182;</a>
+                <a class="pilcrow" href="#section-95">&#182;</a>
               </div>
               <p>Return new instances of the endpoint
 helpers as top-level keys</p>
@@ -1896,26 +1823,10 @@ helpers as top-level keys</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>
-  Instajam.user = <span class="hljs-keyword">new</span> User();
-  Instajam.media = <span class="hljs-keyword">new</span> Media();
-  Instajam.tag = <span class="hljs-keyword">new</span> Tag();
-  Instajam.location = <span class="hljs-keyword">new</span> Location();</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-100">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-100">&#182;</a>
-              </div>
-              <p>Instajam.geography = new Geography();</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  exports = Instajam;
+  exports.user = <span class="hljs-keyword">new</span> User();
+  exports.media = <span class="hljs-keyword">new</span> Media();
+  exports.tag = <span class="hljs-keyword">new</span> Tag();
+  exports.location = <span class="hljs-keyword">new</span> Location();
 
 }));</pre></div></div>
             
