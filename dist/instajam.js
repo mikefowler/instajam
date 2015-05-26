@@ -1,6 +1,6 @@
-/*! Instajam - v2.0.0 - 2015-04-08
+/*! instajam - v2.0.3 - 2015-05-26
 * http://github.com/mikefowler/instajam/
-* Copyright (c) 2015 Mike Fowler; Licensed MIT */
+* Copyright (c) 2015 Mike Fowler */
 (function (root, factory) {
 
   'use strict';
@@ -22,11 +22,9 @@
 
   'use strict';
 
-  var Instajam = {};
-
   // # Initialization
 
-  Instajam.init = function(options) {
+  exports.init = function(options) {
 
     options = options || {};
 
@@ -64,7 +62,7 @@
   // localStorage data or by parsing data
   // from the URL hash.
 
-  Instajam.authenticate = function() {
+  exports.authenticate = function() {
 
     // First, check if a localStorage key
     // exists for the access_token...
@@ -110,7 +108,7 @@
   // property to false. This does **not**
   // revoke your app's permissions on the server.
 
-  Instajam.deauthenticate = function() {
+  exports.deauthenticate = function() {
     localStorage.removeItem('instagram_access_token');
     this.authenticated = false;
   };
@@ -573,29 +571,6 @@
 
   };
 
-  // ## Geographies
-
-  var Geography = function() {};
-
-  Geography.prototype.media = function(id, options, callback) {
-
-    // We need at least a Geography ID to work with
-    if (!id) {
-      throw new InstajamError('A Geography ID is required for geography.get()');
-    }
-
-    // The options argument defaults to an empty object
-    options = options || {};
-
-    // Make a request to the API
-    request({
-      url: 'geographies/' + id + '/media/recent',
-      data: options,
-      success: callback
-    });
-
-  };
-
   // # Helpers
 
   // Returns the client-specific authentication URL that is created upon initialization.
@@ -692,12 +667,9 @@
   // Return new instances of the endpoint
   // helpers as top-level keys
 
-  Instajam.user = new User();
-  Instajam.media = new Media();
-  Instajam.tag = new Tag();
-  Instajam.location = new Location();
-  // Instajam.geography = new Geography();
-
-  exports = Instajam;
+  exports.user = new User();
+  exports.media = new Media();
+  exports.tag = new Tag();
+  exports.location = new Location();
 
 }));

@@ -3,15 +3,12 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
-    // Metadata.
-    meta: {
-      version: '2.0.0'
-    },
-    banner: '/*! Instajam - v<%= meta.version %> - ' +
+    pkg: grunt.file.readJSON('package.json'),
+    banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
       '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-      '* http://github.com/mikefowler/instajam/\n' +
+      '* <%= pkg.homepage %>/\n' +
       '* Copyright (c) <%= grunt.template.today("yyyy") %> ' +
-      'Mike Fowler; Licensed MIT */\n',
+      '<%= pkg.author %> */\n',
     // Task configuration.
     concat: {
       options: {
@@ -89,7 +86,7 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['test', 'watch']);
 
   // Running build will test the code, then handle concatination,
-  // minification, copying new files, and then building documentation 
+  // minification, copying new files, and then building documentation
   grunt.registerTask('build', ['concat', 'uglify', 'docco']);
 
   // Tests the library by validating with JSHint

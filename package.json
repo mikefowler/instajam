@@ -1,7 +1,8 @@
 {
   "name": "instajam",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Instajam is a JavaScript wrapper for the Instagram API.",
+  "homepage": "http://github.com/mikefowler/instajam",
   "dependencies": {},
   "main": "src/instajam.js",
   "devDependencies": {
