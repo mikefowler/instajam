@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(root, factory)</span> </span>{
+            <div class="content"><div class='highlight'><pre>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">root, factory</span>) </span>{
 <span class="hljs-pi">
   'use strict'</span>;
 
@@ -49,7 +49,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    define([<span class="hljs-string">'instajam'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(exports)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    define([<span class="hljs-string">'instajam'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">exports</span>) </span>{
       factory((root.Instajam = exports));
     });
   } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> exports === <span class="hljs-string">'object'</span>) {</pre></div></div>
@@ -86,7 +86,7 @@
             <div class="content"><div class='highlight'><pre>    factory((root.Instajam = {}));
   }
 
-}(<span class="hljs-keyword">this</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(exports)</span> </span>{
+}(<span class="hljs-keyword">this</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">exports</span>) </span>{
 <span class="hljs-pi">
   'use strict'</span>;</pre></div></div>
             
@@ -104,7 +104,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>
-  exports.init = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> </span>{
+  exports.init = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options</span>) </span>{
 
     options = options || {};</pre></div></div>
             
@@ -173,6 +173,68 @@ constructor parameters.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
+              <p>If an access token has already been generated, setup that one
+instead of requesting our own</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (options.accessToken) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>set the local storage param</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        localStorage.setItem(<span class="hljs-string">'instagram_access_token'</span>, options.accessToken);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>…and set the authenticated property to true</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">this</span>.authenticated = <span class="hljs-literal">true</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>skip the normal authentication</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
               <p>When the library is initialized, verify whether
 a user is currently authenticated.</p>
 
@@ -187,11 +249,11 @@ a user is currently authenticated.</p>
         </li>
         
         
-        <li id="section-10">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <h1 id="authentication">Authentication</h1>
 
@@ -200,11 +262,11 @@ a user is currently authenticated.</p>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>Attempts to authenticate a user via
 localStorage data or by parsing data
@@ -213,16 +275,16 @@ from the URL hash.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>
-  exports.authenticate = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+  exports.authenticate = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-12">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>First, check if a localStorage key
 exists for the access_token…</p>
@@ -235,11 +297,11 @@ exists for the access_token…</p>
         </li>
         
         
-        <li id="section-13">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>…and if there is, set the
 authenticated property to true.</p>
@@ -251,11 +313,11 @@ authenticated property to true.</p>
         </li>
         
         
-        <li id="section-14">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>If there is no localStorage key…</p>
 
@@ -267,11 +329,11 @@ authenticated property to true.</p>
         </li>
         
         
-        <li id="section-15">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>…then check if there’s a match
 for access_token in the URL hash.</p>
@@ -283,11 +345,11 @@ for access_token in the URL hash.</p>
         </li>
         
         
-        <li id="section-16">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>If we can parse the access_token from
 the URL hash, set the localStorage param…</p>
@@ -299,11 +361,11 @@ the URL hash, set the localStorage param…</p>
         </li>
         
         
-        <li id="section-17">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>…and set the authenticated property to true</p>
 
@@ -316,11 +378,11 @@ the URL hash, set the localStorage param…</p>
         </li>
         
         
-        <li id="section-18">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>Otherwise, if there is no localStorage
 key and there is nothing to parse from
@@ -340,11 +402,11 @@ property to false</p>
         </li>
         
         
-        <li id="section-19">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>Effectively de-authenticates the current
 user by removing their access token from
@@ -355,78 +417,10 @@ revoke your app’s permissions on the server.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>
-  exports.deauthenticate = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+  exports.deauthenticate = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
     localStorage.removeItem(<span class="hljs-string">'instagram_access_token'</span>);
     <span class="hljs-keyword">this</span>.authenticated = <span class="hljs-literal">false</span>;
   };</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-20">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
-              </div>
-              <h1 id="endpoints">Endpoints</h1>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-21">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
-              </div>
-              <h2 id="users">Users</h2>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  <span class="hljs-keyword">var</span> User = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{};
-  <span class="hljs-keyword">var</span> Self = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{};
-  User.prototype.self = <span class="hljs-keyword">new</span> Self();</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-22">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
-              </div>
-              <h3 id="fetching-the-authenticated-users-s-profile">Fetching the authenticated users’s profile</h3>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  Self.prototype.profile = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(callback)</span> </span>{
-    request({
-      url: <span class="hljs-string">'users/self'</span>,
-      success: callback
-    });
-  };</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-23">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
-              </div>
-              <h3 id="fetching-the-authenticated-user-s-media">Fetching the authenticated user’s media</h3>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  Self.prototype.media = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options, callback)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -436,6 +430,74 @@ revoke your app’s permissions on the server.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <h1 id="endpoints">Endpoints</h1>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <h2 id="users">Users</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  <span class="hljs-keyword">var</span> User = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{};
+  <span class="hljs-keyword">var</span> Self = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{};
+  User.prototype.self = <span class="hljs-keyword">new</span> Self();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <h3 id="fetching-the-authenticated-users-s-profile">Fetching the authenticated users’s profile</h3>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  Self.prototype.profile = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">callback</span>) </span>{
+    request({
+      url: <span class="hljs-string">'users/self'</span>,
+      success: callback
+    });
+  };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <h3 id="fetching-the-authenticated-user-s-media">Fetching the authenticated user’s media</h3>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  Self.prototype.media = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options, callback</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>Make the options argument optional</p>
 
@@ -449,11 +511,11 @@ revoke your app’s permissions on the server.</p>
         </li>
         
         
-        <li id="section-25">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>Make a request to the API</p>
 
@@ -470,27 +532,27 @@ revoke your app’s permissions on the server.</p>
         </li>
         
         
-        <li id="section-26">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <h3 id="fetching-the-authenticated-user-s-activity-feed">Fetching the authenticated user’s activity feed</h3>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>
-  Self.prototype.feed = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options, callback)</span> </span>{</pre></div></div>
+  Self.prototype.feed = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options, callback</span>) </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-27">
+        <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>Make the options argument optional</p>
 
@@ -504,11 +566,11 @@ revoke your app’s permissions on the server.</p>
         </li>
         
         
-        <li id="section-28">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>Make a request to the API</p>
 
@@ -525,27 +587,27 @@ revoke your app’s permissions on the server.</p>
         </li>
         
         
-        <li id="section-29">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <h3 id="fetching-the-authenticated-user-s-favorites-">Fetching the authenticated user’s favorites.</h3>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>
-  Self.prototype.favorites = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options, callback)</span> </span>{</pre></div></div>
+  Self.prototype.favorites = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options, callback</span>) </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-30">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>Make the options argument optional</p>
 
@@ -559,11 +621,11 @@ revoke your app’s permissions on the server.</p>
         </li>
         
         
-        <li id="section-31">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>Make a request to the API</p>
 
@@ -580,27 +642,27 @@ revoke your app’s permissions on the server.</p>
         </li>
         
         
-        <li id="section-32">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <h3 id="fetching-a-list-of-relationship-requests-for-the-currently-authenticated-user">Fetching a list of relationship requests for the currently authenticated user</h3>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>
-  User.prototype.requests = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(callback)</span> </span>{</pre></div></div>
+  User.prototype.requests = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">callback</span>) </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-33">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>Make a request to the API</p>
 
@@ -616,27 +678,27 @@ revoke your app’s permissions on the server.</p>
         </li>
         
         
-        <li id="section-34">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <h3 id="getting-a-relationship-information-for-the-currently-authenciated-user-and-a-given-user-id">Getting a relationship information for the currently authenciated user and a given user ID</h3>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>
-  User.prototype.relationshipWith = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, callback)</span> </span>{</pre></div></div>
+  User.prototype.relationshipWith = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">id, callback</span>) </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-35">
+        <li id="section-39">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <p>Make a request to the API</p>
 
@@ -652,27 +714,27 @@ revoke your app’s permissions on the server.</p>
         </li>
         
         
-        <li id="section-36">
+        <li id="section-40">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <h3 id="fetching-the-profile-of-a-user-by-id-or-username">Fetching the profile of a user by ID or username</h3>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>
-  User.prototype.get = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, callback)</span> </span>{</pre></div></div>
+  User.prototype.get = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">id, callback</span>) </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-37">
+        <li id="section-41">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               <p>Require that an ID or username be passed</p>
 
@@ -687,11 +749,11 @@ revoke your app’s permissions on the server.</p>
         </li>
         
         
-        <li id="section-38">
+        <li id="section-42">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
+                <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
               <p>Make a request to the API</p>
 
@@ -707,26 +769,26 @@ revoke your app’s permissions on the server.</p>
         </li>
         
         
-        <li id="section-39">
+        <li id="section-43">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
+                <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
               <p>Make a request to the API</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      User.prototype.search.call(<span class="hljs-keyword">this</span>, id, {}, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      User.prototype.search.call(<span class="hljs-keyword">this</span>, id, {}, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-40">
+        <li id="section-44">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
+                <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
               <p>Go through the results and check for
 a perfect match, then query again with that user’s ID
@@ -751,11 +813,11 @@ otherwise return nothing.</p>
         </li>
         
         
-        <li id="section-41">
+        <li id="section-45">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
+                <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
               <p>Call the initial callback, passing the result</p>
 
@@ -774,27 +836,27 @@ otherwise return nothing.</p>
         </li>
         
         
-        <li id="section-42">
+        <li id="section-46">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
+                <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
               <h3 id="fetching-the-media-of-a-user-id-or-username">Fetching the media of a user ID or username</h3>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>
-  User.prototype.media = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, options, callback)</span> </span>{</pre></div></div>
+  User.prototype.media = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">id, options, callback</span>) </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-43">
+        <li id="section-47">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
+                <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
               <p>Require that an ID be passed</p>
 
@@ -808,11 +870,11 @@ otherwise return nothing.</p>
         </li>
         
         
-        <li id="section-44">
+        <li id="section-48">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
+                <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
               <p>Make the options argument optional</p>
 
@@ -827,11 +889,11 @@ otherwise return nothing.</p>
         </li>
         
         
-        <li id="section-45">
+        <li id="section-49">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-45">&#182;</a>
+                <a class="pilcrow" href="#section-49">&#182;</a>
               </div>
               <p>If we’re looking up the user by ID…</p>
 
@@ -843,11 +905,11 @@ otherwise return nothing.</p>
         </li>
         
         
-        <li id="section-46">
+        <li id="section-50">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
+                <a class="pilcrow" href="#section-50">&#182;</a>
               </div>
               <p>Make a request to that API</p>
 
@@ -864,11 +926,11 @@ otherwise return nothing.</p>
         </li>
         
         
-        <li id="section-47">
+        <li id="section-51">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
+                <a class="pilcrow" href="#section-51">&#182;</a>
               </div>
               <p>Or rather looking up the user by username…</p>
 
@@ -880,26 +942,26 @@ otherwise return nothing.</p>
         </li>
         
         
-        <li id="section-48">
+        <li id="section-52">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-48">&#182;</a>
+                <a class="pilcrow" href="#section-52">&#182;</a>
               </div>
               <p>…then first search for the username…</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      User.prototype.search.call(<span class="hljs-keyword">this</span>, id, {}, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      User.prototype.search.call(<span class="hljs-keyword">this</span>, id, {}, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-49">
+        <li id="section-53">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-49">&#182;</a>
+                <a class="pilcrow" href="#section-53">&#182;</a>
               </div>
               <p>If the initial user search yields any
 results, then just return the first, but
@@ -918,11 +980,11 @@ otherwise return nothing.</p>
         </li>
         
         
-        <li id="section-50">
+        <li id="section-54">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-50">&#182;</a>
+                <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
               <p>Make a request to that API</p>
 
@@ -951,27 +1013,27 @@ otherwise return nothing.</p>
         </li>
         
         
-        <li id="section-51">
+        <li id="section-55">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-51">&#182;</a>
+                <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
               <h3 id="searching-for-users-by-username">Searching for users by username</h3>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>
-  User.prototype.search = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(term, options, callback)</span> </span>{</pre></div></div>
+  User.prototype.search = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">term, options, callback</span>) </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-52">
+        <li id="section-56">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-52">&#182;</a>
+                <a class="pilcrow" href="#section-56">&#182;</a>
               </div>
               <p>Require that a search term be passed</p>
 
@@ -984,11 +1046,11 @@ otherwise return nothing.</p>
         </li>
         
         
-        <li id="section-53">
+        <li id="section-57">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-53">&#182;</a>
+                <a class="pilcrow" href="#section-57">&#182;</a>
               </div>
               <p>Make the options argument optional</p>
 
@@ -1002,11 +1064,11 @@ otherwise return nothing.</p>
         </li>
         
         
-        <li id="section-54">
+        <li id="section-58">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-54">&#182;</a>
+                <a class="pilcrow" href="#section-58">&#182;</a>
               </div>
               <p>Add the search term to the options object</p>
 
@@ -1017,11 +1079,11 @@ otherwise return nothing.</p>
         </li>
         
         
-        <li id="section-55">
+        <li id="section-59">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-55">&#182;</a>
+                <a class="pilcrow" href="#section-59">&#182;</a>
               </div>
               <p>Make a request to the API</p>
 
@@ -1038,92 +1100,18 @@ otherwise return nothing.</p>
         </li>
         
         
-        <li id="section-56">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-56">&#182;</a>
-              </div>
-              <h3 id="fetching-a-list-of-users-that-user-id-follows">Fetching a list of users that user [id] follows</h3>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  User.prototype.follows = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, callback)</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-57">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-57">&#182;</a>
-              </div>
-              <p>Make a request to the API</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="hljs-string">'users/'</span> + id + <span class="hljs-string">'/follows'</span>,
-      success: callback
-    });
-
-  };</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-58">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-58">&#182;</a>
-              </div>
-              <h3 id="fetching-a-list-of-followers-of-user-id-">Fetching a list of followers of user [id]</h3>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  User.prototype.following = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, callback)</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-59">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-59">&#182;</a>
-              </div>
-              <p>Make a request to the API</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="hljs-string">'users/'</span> + id + <span class="hljs-string">'/followed-by'</span>,
-      success: callback
-    });
-
-  };</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-60">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-60">&#182;</a>
               </div>
-              <h2 id="media">Media</h2>
+              <h3 id="fetching-a-list-of-users-that-user-id-follows">Fetching a list of users that user [id] follows</h3>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>
-  <span class="hljs-keyword">var</span> Media = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{};
-
-  Media.prototype.get = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, callback)</span> </span>{</pre></div></div>
+  User.prototype.follows = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">id, callback</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -1139,15 +1127,11 @@ otherwise return nothing.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="hljs-string">'media/'</span> + id,
+      url: <span class="hljs-string">'users/'</span> + id + <span class="hljs-string">'/follows'</span>,
       success: callback
     });
 
-  };
-
-  Media.prototype.search = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options, callback)</span> </span>{
-
-    options = options || {};</pre></div></div>
+  };</pre></div></div>
             
         </li>
         
@@ -1158,14 +1142,12 @@ otherwise return nothing.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-62">&#182;</a>
               </div>
-              <p>Require that a latitude and longitude are
-passed in, at a minimum.</p>
+              <h3 id="fetching-a-list-of-followers-of-user-id-">Fetching a list of followers of user [id]</h3>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (!options.lat || !options.lng) {
-      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">'A latitude AND a longitude are required for media.search()'</span>);
-    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+  User.prototype.following = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">id, callback</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -1181,14 +1163,11 @@ passed in, at a minimum.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="hljs-string">'media/search'</span>,
-      data: options,
+      url: <span class="hljs-string">'users/'</span> + id + <span class="hljs-string">'/followed-by'</span>,
       success: callback
     });
 
-  };
-
-  Media.prototype.popular = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(callback)</span> </span>{</pre></div></div>
+  };</pre></div></div>
             
         </li>
         
@@ -1199,22 +1178,14 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-64">&#182;</a>
               </div>
-              <p>Make a request to the API</p>
+              <h2 id="media">Media</h2>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="hljs-string">'media/popular'</span>,
-      success: callback
-    });
+            <div class="content"><div class='highlight'><pre>
+  <span class="hljs-keyword">var</span> Media = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{};
 
-  };
-
-  Media.prototype.comments = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, callback)</span> </span>{
-
-    <span class="hljs-keyword">if</span> (!id) {
-      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">'A media ID is required for media.comments()'</span>);
-    }</pre></div></div>
+  Media.prototype.get = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">id, callback</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -1230,17 +1201,15 @@ passed in, at a minimum.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="hljs-string">'media/'</span> + id + <span class="hljs-string">'/comments'</span>,
+      url: <span class="hljs-string">'media/'</span> + id,
       success: callback
     });
 
   };
 
-  Media.prototype.likes = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, callback)</span> </span>{
+  Media.prototype.search = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options, callback</span>) </span>{
 
-    <span class="hljs-keyword">if</span> (!id) {
-      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">'A media ID is required for media.likes()'</span>);
-    }</pre></div></div>
+    options = options || {};</pre></div></div>
             
         </li>
         
@@ -1251,16 +1220,14 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-66">&#182;</a>
               </div>
-              <p>Make a request to the API</p>
+              <p>Require that a latitude and longitude are
+passed in, at a minimum.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="hljs-string">'media/'</span> + id + <span class="hljs-string">'/likes'</span>,
-      success: callback
-    });
-
-  };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (!options.lat || !options.lng) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">'A latitude AND a longitude are required for media.search()'</span>);
+    }</pre></div></div>
             
         </li>
         
@@ -1271,14 +1238,19 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-67">&#182;</a>
               </div>
-              <h2 id="tags">Tags</h2>
+              <p>Make a request to the API</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>
-  <span class="hljs-keyword">var</span> Tag = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{};
+            <div class="content"><div class='highlight'><pre>    request({
+      url: <span class="hljs-string">'media/search'</span>,
+      data: options,
+      success: callback
+    });
 
-  Tag.prototype.get = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name, callback)</span> </span>{</pre></div></div>
+  };
+
+  Media.prototype.popular = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">callback</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -1289,12 +1261,21 @@ passed in, at a minimum.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-68">&#182;</a>
               </div>
-              <p>We need at least a tag name to get information for</p>
+              <p>Make a request to the API</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (!name) {
-      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">'A tag name is required for tag.get()'</span>);
+            <div class="content"><div class='highlight'><pre>    request({
+      url: <span class="hljs-string">'media/popular'</span>,
+      success: callback
+    });
+
+  };
+
+  Media.prototype.comments = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">id, callback</span>) </span>{
+
+    <span class="hljs-keyword">if</span> (!id) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">'A media ID is required for media.comments()'</span>);
     }</pre></div></div>
             
         </li>
@@ -1311,13 +1292,17 @@ passed in, at a minimum.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>    request({
-      url: <span class="hljs-string">'tags/'</span> + name,
+      url: <span class="hljs-string">'media/'</span> + id + <span class="hljs-string">'/comments'</span>,
       success: callback
     });
 
   };
 
-  Tag.prototype.media = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name, options, callback)</span> </span>{</pre></div></div>
+  Media.prototype.likes = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">id, callback</span>) </span>{
+
+    <span class="hljs-keyword">if</span> (!id) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">'A media ID is required for media.likes()'</span>);
+    }</pre></div></div>
             
         </li>
         
@@ -1327,6 +1312,83 @@ passed in, at a minimum.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-70">&#182;</a>
+              </div>
+              <p>Make a request to the API</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    request({
+      url: <span class="hljs-string">'media/'</span> + id + <span class="hljs-string">'/likes'</span>,
+      success: callback
+    });
+
+  };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-71">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-71">&#182;</a>
+              </div>
+              <h2 id="tags">Tags</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  <span class="hljs-keyword">var</span> Tag = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{};
+
+  Tag.prototype.get = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">name, callback</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-72">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-72">&#182;</a>
+              </div>
+              <p>We need at least a tag name to get information for</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (!name) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InstajamError(<span class="hljs-string">'A tag name is required for tag.get()'</span>);
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-73">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-73">&#182;</a>
+              </div>
+              <p>Make a request to the API</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    request({
+      url: <span class="hljs-string">'tags/'</span> + name,
+      success: callback
+    });
+
+  };
+
+  Tag.prototype.media = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">name, options, callback</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-74">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-74">&#182;</a>
               </div>
               <p>We need at least a tag name to work with</p>
 
@@ -1339,11 +1401,11 @@ passed in, at a minimum.</p>
         </li>
         
         
-        <li id="section-71">
+        <li id="section-75">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-71">&#182;</a>
+                <a class="pilcrow" href="#section-75">&#182;</a>
               </div>
               <p>Make the options argument optional</p>
 
@@ -1357,11 +1419,11 @@ passed in, at a minimum.</p>
         </li>
         
         
-        <li id="section-72">
+        <li id="section-76">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-72">&#182;</a>
+                <a class="pilcrow" href="#section-76">&#182;</a>
               </div>
               <p>Make a request to the API</p>
 
@@ -1375,16 +1437,16 @@ passed in, at a minimum.</p>
 
   };
 
-  Tag.prototype.search = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(term, callback)</span> </span>{</pre></div></div>
+  Tag.prototype.search = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">term, callback</span>) </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-73">
+        <li id="section-77">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-73">&#182;</a>
+                <a class="pilcrow" href="#section-77">&#182;</a>
               </div>
               <p>We need at least a tag string to search for</p>
 
@@ -1401,11 +1463,11 @@ passed in, at a minimum.</p>
         </li>
         
         
-        <li id="section-74">
+        <li id="section-78">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-74">&#182;</a>
+                <a class="pilcrow" href="#section-78">&#182;</a>
               </div>
               <p>Make a request to the API</p>
 
@@ -1422,29 +1484,29 @@ passed in, at a minimum.</p>
         </li>
         
         
-        <li id="section-75">
+        <li id="section-79">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-75">&#182;</a>
+                <a class="pilcrow" href="#section-79">&#182;</a>
               </div>
               <h2 id="locations">Locations</h2>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>
-  <span class="hljs-keyword">var</span> Location = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{};
+  <span class="hljs-keyword">var</span> Location = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{};
 
-  Location.prototype.get = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, callback)</span> </span>{</pre></div></div>
+  Location.prototype.get = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">id, callback</span>) </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-76">
+        <li id="section-80">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-76">&#182;</a>
+                <a class="pilcrow" href="#section-80">&#182;</a>
               </div>
               <p>We need at least a location ID to work with</p>
 
@@ -1457,11 +1519,11 @@ passed in, at a minimum.</p>
         </li>
         
         
-        <li id="section-77">
+        <li id="section-81">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-77">&#182;</a>
+                <a class="pilcrow" href="#section-81">&#182;</a>
               </div>
               <p>Make a request to the API</p>
 
@@ -1474,16 +1536,16 @@ passed in, at a minimum.</p>
 
   };
 
-  Location.prototype.media = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, options, callback)</span> </span>{</pre></div></div>
+  Location.prototype.media = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">id, options, callback</span>) </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-78">
+        <li id="section-82">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-78">&#182;</a>
+                <a class="pilcrow" href="#section-82">&#182;</a>
               </div>
               <p>We need at least a location ID to work with</p>
 
@@ -1496,11 +1558,11 @@ passed in, at a minimum.</p>
         </li>
         
         
-        <li id="section-79">
+        <li id="section-83">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-79">&#182;</a>
+                <a class="pilcrow" href="#section-83">&#182;</a>
               </div>
               <p>Make the options argument optional</p>
 
@@ -1514,11 +1576,11 @@ passed in, at a minimum.</p>
         </li>
         
         
-        <li id="section-80">
+        <li id="section-84">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-80">&#182;</a>
+                <a class="pilcrow" href="#section-84">&#182;</a>
               </div>
               <p>Make a request to the API</p>
 
@@ -1531,18 +1593,18 @@ passed in, at a minimum.</p>
 
   };
 
-  Location.prototype.search = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options, callback)</span> </span>{
+  Location.prototype.search = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options, callback</span>) </span>{
 
     options = options || {};</pre></div></div>
             
         </li>
         
         
-        <li id="section-81">
+        <li id="section-85">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-81">&#182;</a>
+                <a class="pilcrow" href="#section-85">&#182;</a>
               </div>
               <p>We need at LEAST a lat/lng pair, or a Foursquare ID to work with</p>
 
@@ -1555,11 +1617,11 @@ passed in, at a minimum.</p>
         </li>
         
         
-        <li id="section-82">
+        <li id="section-86">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-82">&#182;</a>
+                <a class="pilcrow" href="#section-86">&#182;</a>
               </div>
               <p>Make a request to the API</p>
 
@@ -1576,76 +1638,15 @@ passed in, at a minimum.</p>
         </li>
         
         
-        <li id="section-83">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-83">&#182;</a>
-              </div>
-              <h1 id="helpers">Helpers</h1>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-84">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-84">&#182;</a>
-              </div>
-              <p>Returns the client-specific authentication URL that is created upon initialization.</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-85">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-85">&#182;</a>
-              </div>
-              <p>Parses a given parameter from the browsers hash.
-Optionally, the parameter can be removed from
-the URL upon successful matching.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">hashParam</span> <span class="hljs-params">(param, remove)</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-86">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-86">&#182;</a>
-              </div>
-              <p>Create a RegExp object for parsing params</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> regex = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"(?:&amp;|#)"</span> + param + <span class="hljs-string">"=([a-z0-9._-]+)"</span>, <span class="hljs-string">"i"</span>);</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-87">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-87">&#182;</a>
               </div>
-              <p>Look for matches in the windows hash</p>
+              <h1 id="helpers">Helpers</h1>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> matches = <span class="hljs-built_in">window</span>.location.hash.match(regex);</pre></div></div>
             
         </li>
         
@@ -1656,11 +1657,9 @@ the URL upon successful matching.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-88">&#182;</a>
               </div>
-              <p>If matches are found…</p>
+              <p>Returns the client-specific authentication URL that is created upon initialization.</p>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (matches) {</pre></div></div>
             
         </li>
         
@@ -1670,6 +1669,69 @@ the URL upon successful matching.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-89">&#182;</a>
+              </div>
+              <p>Parses a given parameter from the browsers hash.
+Optionally, the parameter can be removed from
+the URL upon successful matching.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">hashParam</span> (<span class="hljs-params">param, remove</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-90">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-90">&#182;</a>
+              </div>
+              <p>Create a RegExp object for parsing params</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> regex = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"(?:&amp;|#)"</span> + param + <span class="hljs-string">"=([a-z0-9._-]+)"</span>, <span class="hljs-string">"i"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-91">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-91">&#182;</a>
+              </div>
+              <p>Look for matches in the windows hash</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> matches = <span class="hljs-built_in">window</span>.location.hash.match(regex);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-92">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-92">&#182;</a>
+              </div>
+              <p>If matches are found…</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (matches) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-93">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-93">&#182;</a>
               </div>
               <p>…then remove the parameter if specified</p>
 
@@ -1683,11 +1745,11 @@ the URL upon successful matching.</p>
         </li>
         
         
-        <li id="section-90">
+        <li id="section-94">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-90">&#182;</a>
+                <a class="pilcrow" href="#section-94">&#182;</a>
               </div>
               <p>…and return the first matching param</p>
 
@@ -1700,11 +1762,11 @@ the URL upon successful matching.</p>
         </li>
         
         
-        <li id="section-91">
+        <li id="section-95">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-91">&#182;</a>
+                <a class="pilcrow" href="#section-95">&#182;</a>
               </div>
               <p>Otherwise return false if no matching params are found</p>
 
@@ -1717,18 +1779,18 @@ the URL upon successful matching.</p>
         </li>
         
         
-        <li id="section-92">
+        <li id="section-96">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-92">&#182;</a>
+                <a class="pilcrow" href="#section-96">&#182;</a>
               </div>
               <p>Makes JSONP requests to the Instagram API</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>
-  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">request</span> <span class="hljs-params">(options)</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">request</span> (<span class="hljs-params">options</span>) </span>{
 
     <span class="hljs-keyword">var</span> urlBase = <span class="hljs-string">'https://api.instagram.com/v1/'</span>,
         callbackName = <span class="hljs-string">'instajam'</span> + <span class="hljs-built_in">Math</span>.round(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>().getTime() / <span class="hljs-number">1000</span>) + <span class="hljs-built_in">Math</span>.floor(<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">100</span>);
@@ -1743,7 +1805,7 @@ the URL upon successful matching.</p>
     <span class="hljs-keyword">if</span> (options.url) {
       options.url = urlBase + options.url + <span class="hljs-string">'?'</span> + queryString;
 
-      <span class="hljs-built_in">window</span>[callbackName] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data)</span> </span>{
+      <span class="hljs-built_in">window</span>[callbackName] = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>) </span>{
 
         <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options.success === <span class="hljs-string">'function'</span>) {
           options.success(data);
@@ -1767,11 +1829,11 @@ the URL upon successful matching.</p>
         </li>
         
         
-        <li id="section-93">
+        <li id="section-97">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-93">&#182;</a>
+                <a class="pilcrow" href="#section-97">&#182;</a>
               </div>
               <p>Given a JavaScript object, return a
 string suitable for passing in a URL</p>
@@ -1779,7 +1841,7 @@ string suitable for passing in a URL</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>
-  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">serializeParams</span> <span class="hljs-params">(obj)</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">serializeParams</span> (<span class="hljs-params">obj</span>) </span>{
     <span class="hljs-keyword">var</span> str = [];
     <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> p <span class="hljs-keyword">in</span> obj) {
       str.push(<span class="hljs-built_in">encodeURIComponent</span>(p) + <span class="hljs-string">'='</span> + <span class="hljs-built_in">encodeURIComponent</span>(obj[p]));
@@ -1790,18 +1852,18 @@ string suitable for passing in a URL</p>
         </li>
         
         
-        <li id="section-94">
+        <li id="section-98">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-94">&#182;</a>
+                <a class="pilcrow" href="#section-98">&#182;</a>
               </div>
               <p>Define a custom error object</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>
-  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">InstajamError</span> <span class="hljs-params">(message)</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">InstajamError</span> (<span class="hljs-params">message</span>) </span>{
     <span class="hljs-keyword">this</span>.name = <span class="hljs-string">"InstajamError"</span>;
     <span class="hljs-keyword">this</span>.message = message || <span class="hljs-string">''</span>;
   }
@@ -1811,11 +1873,11 @@ string suitable for passing in a URL</p>
         </li>
         
         
-        <li id="section-95">
+        <li id="section-99">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-95">&#182;</a>
+                <a class="pilcrow" href="#section-99">&#182;</a>
               </div>
               <p>Return new instances of the endpoint
 helpers as top-level keys</p>

@@ -1,4 +1,4 @@
-/*! instajam - v2.0.3 - 2015-05-26
+/*! instajam - v2.0.3 - 2015-07-30
 * http://github.com/mikefowler/instajam/
 * Copyright (c) 2015 Mike Fowler */
 (function (root, factory) {
@@ -47,6 +47,20 @@
     // Build an authentication URL using
     // constructor parameters.
     this.authUrl = 'https://instagram.com/oauth/authorize/?client_id=' + options.clientId + '&redirect_uri=' + options.redirectUri + '&response_type=token' + (this.scope || '');
+
+    // If an access token has already been generated, setup that one
+    // instead of requesting our own
+    if (options.accessToken) {
+
+        // set the local storage param
+        localStorage.setItem('instagram_access_token', options.accessToken);
+
+        // ...and set the authenticated property to true
+        this.authenticated = true;
+
+        // skip the normal authentication
+        return this;
+    }
 
     // When the library is initialized, verify whether
     // a user is currently authenticated.
