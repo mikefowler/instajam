@@ -52,7 +52,6 @@
     // instead of requesting our own
     if (options.accessToken) {
 
-
         // set the local storage param
         localStorage.setItem('instagram_access_token', options.accessToken);
 
