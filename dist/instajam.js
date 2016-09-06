@@ -46,7 +46,7 @@
 
     // Build an authentication URL using
     // constructor parameters.
-    this.authUrl = 'https://instagram.com/oauth/authorize/?client_id=' + options.clientId + '&redirect_uri=' + options.redirectUri + '&response_type=token' + (this.scope || '');
+    this.authUrl = 'https://api.instagram.com/oauth/authorize/?client_id=' + options.clientId + '&redirect_uri=' + options.redirectUri + '&response_type=token' + (this.scope || '');
 
     // If an access token has already been generated, setup that one
     // instead of requesting our own
