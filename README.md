@@ -1,4 +1,5 @@
-# Instajam
+# Instagram having new skills
+# learn with Mikefowler
 
 Instajam is a JavaScript wrapper for the Instagram API. You provide the access token, we provide the jam. (And Instagram provides the gram. Or the pictures. Or... whatever.)
 
@@ -31,6 +32,7 @@ bower install instajam
 ```
 
 ## Contributing
+## thank you for visiting
 
 Contributions, fixes, or work on a test suite is welcome. If you are fixing a bug, please open an issue first with details on how to replicate the bug, and mention the issue number in your pull request.
 
